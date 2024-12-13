@@ -1,5 +1,5 @@
 import 'package:live_admin/app/global_imports.dart';
-
+import 'package:live_admin/app/modules/auth_module/widgets/sliding_widget.dart';
 
 class LeftPanel extends StatelessWidget {
   const LeftPanel({super.key});
@@ -16,10 +16,7 @@ class LeftPanel extends StatelessWidget {
             end: Alignment.centerRight,
           ),
         ),
-        child: Image.asset(
-          Assets.frame,
-          fit: BoxFit.cover,
-        ),
+        child: SlidingImage(),
       ),
     );
   }

@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:live_admin/app/routes/app_pages.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/utils/widgets/app_bar/custom_app_bar.dart';
 
 class SplashPage extends GetWidget {
@@ -8,31 +7,52 @@ class SplashPage extends GetWidget {
 
   @override
   Widget build(BuildContext context) {
-    ///Your Function in the Future
+    // Navigate to Home after 2 seconds
     Future.delayed(const Duration(seconds: 2), () {
-      // 2s over, navigate to a new page
       Get.offNamed(AppRoutes.home);
     });
 
-    ///Your widget
     return Scaffold(
       appBar: CustomAppBar(),
-      body: Stack(
+      body: Column(
         children: [
-          Center(
-            child: FlutterLogo(
-              size: Get.size.width * 0.4,
+          // Center content (Logo and Title)
+          Expanded(
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // App Logo
+                  Image.asset(
+                    Assets.logo,
+                    width: Get.size.width * 0.3, // Adjust logo size
+                  ),
+                  const SizedBox(height: 16),
+
+                  // App Name
+                  Text(
+                    AppStrings.appName, // Replace with your app's name
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white, // Adjust based on your theme
+                        ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
             ),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              margin: EdgeInsets.only(
-                bottom: Get.context!.mediaQueryPadding.bottom + 10,
-              ),
-              child: const CircularProgressIndicator(),
+
+          // Loader at the bottom
+          Padding(
+            padding: EdgeInsets.only(
+              bottom: Get.context!.mediaQueryPadding.bottom + 20,
             ),
-          )
+            child: SpinKitFadingCircle(
+              color: AppColors.white,
+              size: 50.0, // Adjust loader size
+            ),
+          ),
         ],
       ),
     );

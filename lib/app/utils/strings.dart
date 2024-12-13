@@ -1,5 +1,5 @@
 class AppStrings {
-  static const String appName = 'Live Admin';
+  static const String appName = 'Europe Box';
   static const String loginDescription =
       "Please log-in to your account and start the adventure";
   static const String welcome = "Welcome";

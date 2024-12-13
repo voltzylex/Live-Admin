@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:live_admin/app/global_imports.dart' show AppColors;
 
-
 class AppTheme {
   static ThemeData darkTheme = ThemeData(
     // brightness: Brightness.dark, // Ensures the theme is dark
@@ -17,6 +16,7 @@ class AppTheme {
         fontWeight: FontWeight.bold,
       ),
     ),
+
     textTheme: TextTheme(
       headlineLarge: TextStyle(color: Colors.white),
       bodyLarge: TextStyle(color: Colors.white, fontSize: 16),
@@ -31,25 +31,37 @@ class AppTheme {
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.primaryColor,
-        foregroundColor: Colors.white,
-        textStyle: TextStyle(fontSize: 16),
+        backgroundColor: AppColors.primaryColor, // Button's background color
+        foregroundColor: Colors.white, // Button's text color
+        disabledBackgroundColor: AppColors.grey, // Disabled button background
+        disabledForegroundColor: AppColors.white, // Disabled button text color
+        textStyle: TextStyle(
+          fontSize: 16, // Font size of the button text
+          fontWeight:
+              FontWeight.bold, // Optional: Set the font weight if needed
+        ),
+        // padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0), // Padding for button
       ),
     ),
+
     inputDecorationTheme: InputDecorationTheme(
-      filled: true,
-      fillColor: Colors.grey[800],
+      filled: false, // No fill color
+      hintStyle: TextStyle(color: Colors.white70),
+      labelStyle: TextStyle(color: Colors.white),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(30.0),
-        borderSide: BorderSide(color: Colors.white), // White border
+        borderSide: BorderSide(color: Colors.white), // Default border color
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(30.0),
         borderSide:
-            BorderSide(color: AppColors.white), // Primary color for focus
+            BorderSide(color: AppColors.white), // Primary color when focused
       ),
-      hintStyle: TextStyle(color: Colors.white70),
-      labelStyle: TextStyle(color: Colors.white),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30.0),
+        borderSide: BorderSide(
+            color: Colors.white), // Default border color when not focused
+      ),
     ),
     colorScheme:
         ColorScheme.fromSwatch().copyWith(secondary: AppColors.secondaryColor),
