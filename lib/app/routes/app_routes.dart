@@ -1,5 +1,9 @@
+part of './app_pages.dart';
+
 class AppRoutes {
-  static const String home = '/home';
-  static const String profile = '/profile';
-  static const String notFound = '/not-found';
+  AppRoutes._();
+  static const initial = '/';
+  static const home = '/home'; // Home page
+  static const login = '/login'; // Login page
+  static const register = '/register'; // Register page
 }

@@ -1,20 +1,19 @@
 import 'package:get/get.dart';
-import 'package:live_admin/app/routes/app_routes.dart';
-import 'package:live_admin/app/ui/pages/home/home_page.dart';
-import '../bindings/home_binding.dart';
+import 'package:live_admin/app/modules/login_module/login_page.dart';
+import 'package:live_admin/app/modules/splash_module/splash_page.dart';
+
+part './app_routes.dart';
 
 class AppPages {
-  static final routes = [
+  AppPages._();
+  static final pages = [
+    GetPage(
+      name: AppRoutes.initial,
+      page: () => const SplashPage(),
+    ),
     GetPage(
       name: AppRoutes.home,
-      page: () => HomePage(),
-      binding: HomeBinding(),
+      page: () => const LoginPage(),
     ),
-  
   ];
-
-  // static final unknownRoute = GetPage(
-  //   name: AppRoutes.notFound,
-  //   page: () => NotFoundPage(),
-  // );
 }

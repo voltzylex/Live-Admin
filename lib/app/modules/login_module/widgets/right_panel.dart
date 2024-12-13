@@ -1,4 +1,6 @@
+
 import 'package:live_admin/app/global_imports.dart';
+import 'package:live_admin/app/utils/strings.dart';
 
 class RightPanel extends StatelessWidget {
   const RightPanel({super.key});
@@ -61,12 +63,11 @@ class RightPanel extends StatelessWidget {
 
             // Email TextField
             TextField(
-              key: UniqueKey(),
               decoration: InputDecoration(
                 hintText: "Email",
                 hintStyle: Theme.of(context).inputDecorationTheme.hintStyle,
-                // filled: Theme.of(context).inputDecorationTheme.filled,
-                // fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+                filled: Theme.of(context).inputDecorationTheme.filled,
+                fillColor: Theme.of(context).inputDecorationTheme.fillColor,
                 border: Theme.of(context).inputDecorationTheme.border,
               ),
               style: const TextStyle(color: Colors.white),
@@ -76,7 +77,6 @@ class RightPanel extends StatelessWidget {
 
             // Password TextField
             TextField(
-              key: UniqueKey(),
               obscureText: true, // Obscure password input
               decoration: InputDecoration(
                 hintText: "Password",
