@@ -1,6 +1,6 @@
 // Core Flutter imports
 export 'package:flutter/material.dart';
-export 'package:get/get.dart';
+export 'package:get/get.dart' hide VoidCallback;
 // Controllers
 export 'package:live_admin/app/controllers/home_controller.dart';
 // Utilities

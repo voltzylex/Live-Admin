@@ -1,24 +1,26 @@
+
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:live_admin/app/controllers/home_controller.dart';
-import 'package:live_admin/app/ui/utils/app_colors.dart';
 
 import 'widgets/left_panel.dart';
 import 'widgets/right_panel.dart';
 
-class HomePage extends GetView<HomeController> {
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.black,
-      body: SafeArea(
-        child: Row(
-          children: const [
-            LeftPanel(), // Left panel widget
-            RightPanel(), // Right panel widget
-          ],
-        ),
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isSmallScreen = constraints.maxWidth < 800;
+        return Scaffold(
+          body: Row(
+            children: [
+              if (!isSmallScreen) const LeftPanel(),
+              const RightPanel(),
+            ],
+          ),
+        );
+      },
     );
   }
 }
