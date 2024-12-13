@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:live_admin/app/ui/utils/app_colors.dart';
-import 'package:live_admin/app/ui/utils/strings.dart';
+
+import 'package:live_admin/app/global_imports.dart';
 
 class RightPanel extends StatelessWidget {
   const RightPanel({super.key});
@@ -37,7 +35,7 @@ class RightPanel extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  "Welcome",
+                  AppStrings.welcome,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
@@ -98,7 +96,7 @@ class RightPanel extends StatelessWidget {
                   // Add Forgot Password logic here
                 },
                 child: Text(
-                  "Forgot Password?",
+                  AppStrings.forgot,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Theme.of(context).colorScheme.secondary,
                         fontWeight: FontWeight.bold,
@@ -123,7 +121,7 @@ class RightPanel extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
                 child: const Text(
-                  "Login",
+                  AppStrings.login,
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
