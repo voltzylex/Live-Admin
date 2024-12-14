@@ -3,8 +3,7 @@ import 'package:live_admin/app/global_imports.dart' show AppColors;
 
 class AppTheme {
   static ThemeData darkTheme = ThemeData(
-    // brightness: Brightness.dark, // Ensures the theme is dark
-    primaryColor: AppColors.primary, // Secondary color
+    primaryColor: AppColors.primary, // Primary color
     scaffoldBackgroundColor: Colors.black, // Background for Scaffold
     appBarTheme: AppBarTheme(
       backgroundColor: Colors.black,
@@ -22,7 +21,10 @@ class AppTheme {
       bodyLarge: TextStyle(color: Colors.white, fontSize: 16),
       bodyMedium: TextStyle(color: Colors.white70, fontSize: 14),
       titleLarge: TextStyle(
-          color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+        color: Colors.white,
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+      ),
     ),
     iconTheme: IconThemeData(color: Colors.white),
     buttonTheme: ButtonThemeData(
@@ -37,16 +39,17 @@ class AppTheme {
         disabledForegroundColor: AppColors.white, // Disabled button text color
         textStyle: TextStyle(
           fontSize: 16, // Font size of the button text
-          fontWeight:
-              FontWeight.bold, // Optional: Set the font weight if needed
+          fontWeight: FontWeight.bold, // Font weight of button text
         ),
-        // padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0), // Padding for button
       ),
     ),
 
+    // Common input decoration for TextField and Dropdown
     inputDecorationTheme: InputDecorationTheme(
       filled: false, // No fill color
-      hintStyle: TextStyle(color: Colors.white70),
+      hintStyle: TextStyle(
+          color: AppColors
+              .hintText), // Using AppColors.hintText for hint text color
       labelStyle: TextStyle(color: Colors.white),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(30.0),
@@ -63,6 +66,19 @@ class AppTheme {
             color: Colors.white), // Default border color when not focused
       ),
     ),
+
+    // For dropdown styling in general
+    dropdownMenuTheme: DropdownMenuThemeData(
+      // Customizes the dropdown menu (when opened)
+      menuStyle: MenuStyle(
+        backgroundColor: WidgetStateProperty.all(
+            AppColors.backgroundDark), // Background color for dropdown
+        shape: WidgetStateProperty.all(RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        )),
+      ),
+    ),
+
     colorScheme:
         ColorScheme.fromSwatch().copyWith(secondary: AppColors.secondaryColor),
   );

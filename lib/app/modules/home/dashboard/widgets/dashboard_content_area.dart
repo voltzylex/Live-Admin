@@ -16,7 +16,6 @@ class DashboardContentArea extends StatelessWidget {
         color: AppColors.black,
         padding: const EdgeInsets.all(30),
         child: Container(
-          padding: const EdgeInsets.all(16.0),
           decoration: BoxDecoration(
             color: AppColors.content,
             borderRadius: BorderRadius.circular(16),
