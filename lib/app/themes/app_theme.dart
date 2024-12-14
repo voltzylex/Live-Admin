@@ -4,7 +4,7 @@ import 'package:live_admin/app/global_imports.dart' show AppColors;
 class AppTheme {
   static ThemeData darkTheme = ThemeData(
     // brightness: Brightness.dark, // Ensures the theme is dark
-    primaryColor: AppColors.primaryColor, // Secondary color
+    primaryColor: AppColors.primary, // Secondary color
     scaffoldBackgroundColor: Colors.black, // Background for Scaffold
     appBarTheme: AppBarTheme(
       backgroundColor: Colors.black,
@@ -26,12 +26,12 @@ class AppTheme {
     ),
     iconTheme: IconThemeData(color: Colors.white),
     buttonTheme: ButtonThemeData(
-      buttonColor: AppColors.primaryColor,
+      buttonColor: AppColors.primary,
       textTheme: ButtonTextTheme.primary,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.primaryColor, // Button's background color
+        backgroundColor: AppColors.primary, // Button's background color
         foregroundColor: Colors.white, // Button's text color
         disabledBackgroundColor: AppColors.grey, // Disabled button background
         disabledForegroundColor: AppColors.white, // Disabled button text color

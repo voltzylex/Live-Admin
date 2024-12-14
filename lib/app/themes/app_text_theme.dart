@@ -22,7 +22,7 @@ class AppTextStyles {
     // fontFamily: "",
     fontSize: 16,
     fontWeight: FontWeight.normal,
-    color: AppColors.primaryColor,
+    color: AppColors.primary,
   );
 }
 
@@ -133,9 +133,7 @@ extension AppFontColor on TextStyle {
   TextStyle get blackColor => copyWith(color: AppColors.black);
 
   /// color: AppColors.kPrimaryColor,
-  TextStyle get kPrimaryColor => copyWith(color: AppColors.primaryColor);
-
-
+  TextStyle get kPrimaryColor => copyWith(color: AppColors.primary);
 
   /// color: AppColors.neutral3,
   TextStyle get redColor => copyWith(color: AppColors.red);
@@ -151,20 +149,16 @@ extension AppFontDecoration on TextStyle {
   TextStyle get overline => copyWith(decoration: TextDecoration.overline);
 
   /// decoration: TextDecoration.underline,
-  TextStyle get underline =>
-      copyWith(decoration: TextDecoration.underline);
+  TextStyle get underline => copyWith(decoration: TextDecoration.underline);
 
   /// decoration: TextDecoration.overline,
-  TextStyle get noneDecoration =>
-      copyWith(decoration: TextDecoration.none);
+  TextStyle get noneDecoration => copyWith(decoration: TextDecoration.none);
 
   /// decoration: TextDecoration.lineThrough,
-  TextStyle get lineThrough =>
-      copyWith(decoration: TextDecoration.lineThrough);
+  TextStyle get lineThrough => copyWith(decoration: TextDecoration.lineThrough);
 }
 
 extension AppFontFamily on TextStyle {
   /// fontFamily: GoogleFonts.roboto().fontFamily,
-  TextStyle get roboto =>
-      copyWith(fontFamily: GoogleFonts.roboto().fontFamily);
+  TextStyle get roboto => copyWith(fontFamily: GoogleFonts.roboto().fontFamily);
 }

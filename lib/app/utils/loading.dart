@@ -6,11 +6,11 @@ import 'package:live_admin/app/themes/app_text_theme.dart';
 
 class Loading extends StatelessWidget {
   const Loading({
-    Key? key,
+    super.key,
     this.title,
     this.opacity,
     this.loadingType = LoadingType.chasingDots,
-  }) : super(key: key);
+  });
 
   final String? title;
   final double? opacity;
@@ -20,17 +20,17 @@ class Loading extends StatelessWidget {
     switch (loadingType) {
       case LoadingType.dualRing:
         return const SpinKitDualRing(
-          color: AppColors.primaryColor,
+          color: AppColors.primary,
           size: 50,
         );
       case LoadingType.doubleBounce:
-        return  SpinKitDoubleBounce(
-          color: AppColors.primaryColor,
+        return SpinKitDoubleBounce(
+          color: AppColors.primary,
           size: 50,
         );
       default:
         return SpinKitChasingDots(
-          color: AppColors.primaryColor,
+          color: AppColors.primary,
           size: 50,
         );
     }
