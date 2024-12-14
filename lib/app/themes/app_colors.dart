@@ -23,19 +23,23 @@ class AppColors {
 
   // Neutral Colors
   static const Color lightGrey = Color(0xFFD3D3D3); // #D3D3D3
-  static const Color darkGrey = Color(0xFF595959);  // #595959
+  static const Color darkGrey = Color(0xFF595959); // #595959
   static const Color mediumGrey = Color(0xFFB0B0B0); // #B0B0B0
 
   // Background Colors
   static const Color backgroundLight = Color(0xFFF5F5F5); // #F5F5F5
-  static const Color backgroundDark = Color(0xFF121212); // #121212
+  static const Color backgroundDark = Color(0xFF0B0A0F); // #121212
+  static const Color content = Color(0xff222126);
 
   // Transparent
   static const Color transparent = Colors.transparent;
 
   // Custom Shades
-  static const Color primaryLight = Color(0xFF4A6EB1); // Lighter shade of primary
+  static const Color primaryLight =
+      Color(0xFF4A6EB1); // Lighter shade of primary
   static const Color primaryDark = Color(0xFF011E63); // Darker shade of primary
-  static const Color secondaryLight = Color(0xFFFFDF6A); // Lighter shade of secondary
-  static const Color secondaryDark = Color(0xFFC79E00); // Darker shade of secondary
+  static const Color secondaryLight =
+      Color(0xFFFFDF6A); // Lighter shade of secondary
+  static const Color secondaryDark =
+      Color(0xFFC79E00); // Darker shade of secondary
 }

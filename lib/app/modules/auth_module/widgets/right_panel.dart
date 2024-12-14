@@ -1,6 +1,5 @@
 import 'package:live_admin/app/global_imports.dart';
 
-
 class RightPanel extends StatefulWidget {
   const RightPanel({super.key});
 
@@ -165,6 +164,7 @@ class _RightPanelState extends State<RightPanel> {
                     if (_formKey.currentState?.validate() ?? false) {
                       print("Validation passed");
                       // Handle successful login
+                      Get.toNamed(AppRoutes.dashboard);
                     } else {
                       print("Validation failed");
                     }
