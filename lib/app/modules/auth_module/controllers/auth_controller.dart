@@ -61,7 +61,7 @@ class AuthController extends GetxController {
       user(response);
       log("User Data: ${user.toJson()}");
       if (user.value != null) {
-        Get.toNamed(AppRoutes.dashboard);
+        Get.offAllNamed(AppRoutes.dashboard);
       }
     } catch (e) {
       isLoading(false);

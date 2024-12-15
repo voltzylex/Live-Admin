@@ -1,4 +1,5 @@
 import 'package:live_admin/app/global_imports.dart';
+import 'package:live_admin/app/themes/app_text_theme.dart';
 
 class MoviesPage extends StatelessWidget {
   const MoviesPage({super.key});
@@ -160,10 +161,11 @@ class MoviesPage extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.grey,
+                        foregroundColor: AppColors.borderL1,
+                        backgroundColor: AppColors.content,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
+                            borderRadius: BorderRadius.circular(30),
+                            side: BorderSide(color: AppColors.borderL1)),
                       ),
                       child: Text('Cancel'),
                     ),
@@ -172,12 +174,16 @@ class MoviesPage extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
-                        foregroundColor: AppColors.primary, // Primary color
+                        // foregroundColor: AppColors.primary, // Primary color
+                        // backgroundColor: AppColors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
                       ),
-                      child: Text('Publish'),
+                      child: Text(
+                        AppStrings.save,
+                        style: AppTextStyles.base.whiteColor,
+                      ),
                     ),
                   ],
                 ),
