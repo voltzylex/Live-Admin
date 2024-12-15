@@ -14,6 +14,9 @@ dependencies:
   google_fonts: ^6.2.1
   responsive_framework: ^1.5.1
   form_builder_validators: ^11.0.0
+  equatable: ^2.0.7
+  shared_preferences: ^2.3.3
+
 
 dev_dependencies:
   flutter_test:

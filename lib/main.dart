@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:live_admin/app/controllers/bindings.dart';
 import 'package:live_admin/app/routes/app_pages.dart';
 import 'package:live_admin/app/themes/app_theme.dart';
-
 import 'package:live_admin/app/utils/common.dart';
 import 'package:live_admin/app/utils/extensions.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.darkTheme,
         getPages: AppPages.pages,
         debugShowCheckedModeBanner: false,
+        initialBinding: InitialBindings(),
       ),
     );
   }

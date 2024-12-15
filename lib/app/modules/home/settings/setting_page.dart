@@ -6,9 +6,15 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text(
-        'Settings Page',
-        style: TextStyle(fontSize: 18, color: Colors.white),
+      child: InkWell(
+        onTap: () {
+          SC.to.clearUserData();
+          Get.offAllNamed(AppRoutes.initial);
+        },
+        child: Text(
+          'Settings Page',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
       ),
     );
   }

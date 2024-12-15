@@ -6,6 +6,9 @@ class DashboardContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('Dashboard Content'));
+    return Center(
+        child: Text(SC.to.username.isNotEmpty
+            ? SC.to.username.value
+            : 'Dashboard Content'));
   }
 }

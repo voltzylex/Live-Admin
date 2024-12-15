@@ -1,5 +1,5 @@
 import 'package:live_admin/app/global_imports.dart';
-import 'package:live_admin/app/modules/auth_module/auth_controller.dart';
+import 'package:live_admin/app/modules/auth_module/controllers/auth_controller.dart';
 
 import '../widgets/left_panel.dart';
 

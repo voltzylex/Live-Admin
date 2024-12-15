@@ -3,7 +3,9 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/status/http_status.dart';
+import 'package:live_admin/app/controllers/storage_controller.dart';
 import 'package:live_admin/app/data/api/api_error.dart';
+import 'package:live_admin/app/modules/auth_module/controllers/login_model.dart';
 import 'package:live_admin/app/utils/constants.dart';
 
 class ApiConnect extends GetConnect {
@@ -59,13 +61,13 @@ class ApiConnect extends GetConnect {
   }) {
     _checkIfDisposed();
 
-    Map<String, String> _headers = headers ?? <String, String>{};
+    Map<String, String> headers0 = headers ?? <String, String>{};
     // _headers["Authorization"] = "Bearer " + HiveAdapter.getAccessToken();
 
     _reqBody = query;
     return httpClient.get<T>(
       url,
-      headers: _headers,
+      headers: headers0,
       contentType: contentType,
       query: query,
       decoder: decoder,
@@ -82,13 +84,13 @@ class ApiConnect extends GetConnect {
   }) {
     _checkIfDisposed();
 
-    Map<String, String> _headers = headers ?? <String, String>{};
+    Map<String, String> headers0 = headers ?? <String, String>{};
     // _headers["Authorization"] = "Bearer " + HiveAdapter.getAccessToken();
 
     _reqBody = query;
     return httpClient.delete<T>(
       url,
-      headers: _headers,
+      headers: headers0,
       contentType: contentType,
       query: query,
       decoder: decoder,
@@ -107,7 +109,7 @@ class ApiConnect extends GetConnect {
   }) {
     _checkIfDisposed();
 
-    Map<String, String> _headers = headers ?? <String, String>{};
+    Map<String, String> headers0 = headers ?? <String, String>{};
     // _headers["Authorization"] = "Bearer " + HiveAdapter.getAccessToken();
     try {
       _reqBody = body;
@@ -118,7 +120,7 @@ class ApiConnect extends GetConnect {
     return httpClient.post<T>(
       url,
       body: body,
-      headers: _headers,
+      headers: headers0,
       contentType: contentType,
       query: query,
       decoder: decoder,
@@ -138,7 +140,7 @@ class ApiConnect extends GetConnect {
   }) {
     _checkIfDisposed();
 
-    Map<String, String> _headers = headers ?? <String, String>{};
+    Map<String, String> headers0 = headers ?? <String, String>{};
     // _headers["Authorization"] = "Bearer " + HiveAdapter.getAccessToken();
 
     _reqBody = body;
@@ -146,7 +148,7 @@ class ApiConnect extends GetConnect {
     return httpClient.put<T>(
       url,
       body: body,
-      headers: _headers,
+      headers: headers0,
       contentType: contentType,
       query: query,
       decoder: decoder,
@@ -165,6 +167,24 @@ class ApiConnect extends GetConnect {
   void _checkIfDisposed() {
     if (isDisposed) {
       throw 'Can not emit events to disposed clients';
+    }
+  }
+
+// login
+
+  Future<LoginModel> login(String email, String password) async {
+    final body = {
+      'email': email,
+      'password': password,
+    };
+
+    try {
+      _reqBody = body;
+      final response = await post(EndPoints.login, jsonEncode(body));
+      SC.to.saveUser(LoginModel.fromJson(response.body));
+      return LoginModel.fromJson(response.body);
+    } finally {
+      _reqBody = null;
     }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:live_admin/app/controllers/storage_controller.dart';
 import 'package:live_admin/app/global_imports.dart';
 
 class DashboardAppBar extends StatelessWidget {
@@ -51,18 +52,21 @@ class DashboardAppBar extends StatelessWidget {
           const SizedBox(width: 20),
 
           // Profile Section
-          Row(
-            children: [
-              CircleAvatar(
-                backgroundImage: AssetImage(Assets.logo), // Profile Picture
-                radius: 20,
-              ),
-              const SizedBox(width: 10),
-              const Text(
-                'John Doe',
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-            ],
+          InkWell(
+            onTap: () => SC.to.clearUserData(),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  backgroundImage: AssetImage(Assets.logo), // Profile Picture
+                  radius: 20,
+                ),
+                const SizedBox(width: 10),
+                const Text(
+                  'John Doe',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ],
+            ),
           ),
         ],
       ),

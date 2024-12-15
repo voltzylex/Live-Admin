@@ -1,4 +1,6 @@
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:live_admin/app/global_imports.dart';
+import 'package:live_admin/app/modules/auth_module/controllers/auth_controller.dart';
 
 class RightPanel extends StatefulWidget {
   const RightPanel({super.key});
@@ -10,10 +12,19 @@ class RightPanel extends StatefulWidget {
 class _RightPanelState extends State<RightPanel> {
   final _formKey = GlobalKey<FormState>();
   final _passwordVisibility = ValueNotifier<bool>(true);
+  final email = TextEditingController(text: "sunildeveloper1@yopmail.com");
+  final password = TextEditingController(text: "123456");
+  final _auth = Get.put(AuthController());
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   void dispose() {
     _passwordVisibility.dispose();
+    email.dispose();
+    password.dispose();
     super.dispose();
   }
 
@@ -79,6 +90,7 @@ class _RightPanelState extends State<RightPanel> {
 
               // Email TextFormField
               TextFormField(
+                controller: email,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 decoration: InputDecoration(
                   hintText: "Email",
@@ -102,6 +114,7 @@ class _RightPanelState extends State<RightPanel> {
                 valueListenable: _passwordVisibility,
                 builder: (context, isPasswordVisible, child) {
                   return TextFormField(
+                    controller: password,
                     obscureText: isPasswordVisible,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: InputDecoration(
@@ -160,11 +173,12 @@ class _RightPanelState extends State<RightPanel> {
                 height: 50,
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState?.validate() ?? false) {
                       print("Validation passed");
                       // Handle successful login
-                      Get.toNamed(AppRoutes.dashboard);
+                      await _auth.login(email.text, password.text);
+                      // Get.toNamed(AppRoutes.dashboard);
                     } else {
                       print("Validation failed");
                     }
@@ -175,13 +189,20 @@ class _RightPanelState extends State<RightPanel> {
                     ),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                   ),
-                  child: const Text(
-                    AppStrings.login,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  child: Obx(
+                    () => _auth.isLoading.value
+                        ? SpinKitFadingCircle(
+                            color: AppColors.white,
+                            size: 25.0, // Adjust loader size
+                          )
+                        : const Text(
+                            AppStrings.login,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                   ),
                 ),
               ),

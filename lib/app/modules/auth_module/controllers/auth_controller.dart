@@ -1,13 +1,17 @@
 import 'dart:async';
+import 'dart:developer';
 
-import 'package:get/get.dart';
+import 'package:live_admin/app/data/api/api_connect.dart';
+import 'package:live_admin/app/global_imports.dart';
+import 'package:live_admin/app/modules/auth_module/controllers/login_model.dart';
 
 class AuthController extends GetxController {
   RxBool isTimerActive = false.obs;
   RxInt secondsRemaining = 60.obs;
   RxBool isObscurePassword = true.obs;
+  RxBool isLoading = false.obs;
   RxBool isObscureConfirmPassword = true.obs;
-
+  Rxn<LoginModel> user = Rxn();
   Timer? _timer;
 
   // Start timer for resend link
@@ -44,5 +48,24 @@ class AuthController extends GetxController {
   void onClose() {
     _timer?.cancel();
     super.onClose();
+  }
+
+  Future<void> login(String username, String password) async {
+    try {
+      // You can now use user.value to get the current LoginModel
+      // Call your API or perform further actions
+      // Example:
+      isLoading(true);
+      final response = await ApiConnect.instance.login(username, password);
+      isLoading(false);
+      user(response);
+      log("User Data: ${user.toJson()}");
+      if (user.value != null) {
+        Get.toNamed(AppRoutes.dashboard);
+      }
+    } catch (e) {
+      isLoading(false);
+      print('Login error: $e');
+    }
   }
 }
