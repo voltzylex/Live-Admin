@@ -14,7 +14,8 @@ class AppPages {
     GetPage(
         name: AppRoutes.initial,
         page: () => const SplashPage(),
-        middlewares: [AuthMiddleware()]),
+        middlewares: [AuthMiddleware()],
+        children: []),
     GetPage(
       name: AppRoutes.forgot,
       page: () => ForgotPasswordPage(),
