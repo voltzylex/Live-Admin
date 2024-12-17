@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
@@ -202,7 +203,7 @@ class MoviesPage extends StatelessWidget {
                                   title: mov.movieNameController.text,
                                   poster: kDebugMode
                                       ? "this is image link"
-                                      : mov.image.value.toString(),
+                                      : base64Encode(mov.image.value!),
                                   movieUrl: mov.uploadLinkController.text,
                                   categories: [mov.categoryController.text],
                                   tags: [mov.typeController.text]);
