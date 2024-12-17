@@ -3,8 +3,10 @@ import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/movies/controllers/movies_controller.dart';
 
 class TypeWidget extends StatelessWidget {
-  const TypeWidget({super.key, required this.typeController});
+  const TypeWidget(
+      {super.key, required this.typeController, required this.mov});
   final TextEditingController typeController;
+  final MoviesController mov;
   @override
   Widget build(BuildContext context) {
     final mov = Get.find<MoviesController>();
@@ -20,14 +22,23 @@ class TypeWidget extends StatelessWidget {
                     type.toLowerCase().contains(pattern.toLowerCase()))
                 .toList();
           },
+          controller: typeController,
           builder: (context, controller, focusNode) {
             return TextFormField(
-              controller: typeController,
+              controller: controller,
               focusNode: focusNode,
               decoration: InputDecoration(
                 labelText: 'Select type',
-                border: OutlineInputBorder(),
               ),
+              validator: (value) {
+                if (value?.isEmpty ?? true) {
+                  return "Please select Movie Type";
+                }
+                if (mov.type.contains(mov.selectedType.value) == false) {
+                  return "Please select Movie Type from the list";
+                }
+                return null;
+              },
             );
           },
           itemBuilder: (context, String suggestion) {

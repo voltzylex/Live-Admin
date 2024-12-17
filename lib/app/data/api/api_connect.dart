@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/status/http_status.dart';
 import 'package:live_admin/app/controllers/storage_controller.dart';
 import 'package:live_admin/app/data/api/api_error.dart';
 import 'package:live_admin/app/modules/auth_module/controllers/login_model.dart';
+import 'package:live_admin/app/modules/home/movies/models/add_movie_model.dart';
 import 'package:live_admin/app/utils/constants.dart';
 
 class ApiConnect extends GetConnect {
@@ -23,10 +25,10 @@ class ApiConnect extends GetConnect {
       _printKV('method', request.method);
       _printKV('followRedirects', request.followRedirects);
       logPrint('headers:');
-      request.headers.forEach((key, v) => _printKV(' $key', v));
+      request.headers.forEach((key, v) => _printKV(' $key', v.toString()));
       logPrint('data:');
       if (_reqBody is Map) {
-        _reqBody?.forEach((key, v) => _printKV(' $key', v));
+        _reqBody?.forEach((key, v) => _printKV(' $key', v.toString()));
       } else {
         _printAll(_reqBody.toString());
       }
@@ -40,7 +42,7 @@ class ApiConnect extends GetConnect {
       _printKV('statusCode', response.statusCode!);
       if (response.headers != null) {
         logPrint('headers:');
-        response.headers?.forEach((key, v) => _printKV(' $key', v));
+        response.headers?.forEach((key, v) => _printKV(' $key', v.toString()));
       }
       logPrint('Response Text:');
       _printAll(response.bodyString);
@@ -170,6 +172,13 @@ class ApiConnect extends GetConnect {
     }
   }
 
+  // auth header
+  Future<Map<String, String>> authHeader() async {
+    return {
+      "Authorization": "Bearer ${await SC.to.getToken()}",
+      "Accept": "application/json",
+    };
+  }
 // login
 
   Future<LoginModel> login(String email, String password) async {
@@ -185,6 +194,18 @@ class ApiConnect extends GetConnect {
       return LoginModel.fromJson(response.body);
     } finally {
       _reqBody = null;
+    }
+  }
+
+  // add movie
+  Future<Response> addMovie(AddMovie mov) async {
+    try {
+      final res = await post(EndPoints.addMovie, mov.toJson(),
+          headers: await authHeader());
+      log("Response ${res.body}");
+      return res;
+    } catch (e) {
+      return Response(body: e.toString());
     }
   }
 }

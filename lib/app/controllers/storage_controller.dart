@@ -34,6 +34,17 @@ class SC extends GetxController {
     username.value = user.admin?.name ?? "User";
   }
 
+  Future<LoginModel?> getUser() async {
+    SharedPreferences prefs = await _getPrefs();
+    final user = prefs.getString('user');
+
+    return user != null ? LoginModel.fromJson(jsonDecode(user)) : null;
+  }
+
+  Future<String?> getToken() async {
+    return (await getUser())?.accessToken;
+  }
+
   // Retrieve login status from SharedPreferences
   Future<bool> loadLoginStatus() async {
     SharedPreferences prefs = await _getPrefs();

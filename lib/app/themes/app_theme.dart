@@ -45,27 +45,7 @@ class AppTheme {
     ),
 
     // Common input decoration for TextField and Dropdown
-    inputDecorationTheme: InputDecorationTheme(
-      filled: false, // No fill color
-      hintStyle: TextStyle(
-          color: AppColors
-              .hintText), // Using AppColors.hintText for hint text color
-      labelStyle: TextStyle(color: Colors.white),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(30.0),
-        borderSide: BorderSide(color: Colors.white), // Default border color
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(30.0),
-        borderSide:
-            BorderSide(color: AppColors.white), // Primary color when focused
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(30.0),
-        borderSide: BorderSide(
-            color: Colors.white), // Default border color when not focused
-      ),
-    ),
+    inputDecorationTheme: inputDecorationTheme,
 
     // For dropdown styling in general
     dropdownMenuTheme: DropdownMenuThemeData(
@@ -83,3 +63,71 @@ class AppTheme {
         ColorScheme.fromSwatch().copyWith(secondary: AppColors.secondaryColor),
   );
 }
+
+final inputDecorationTheme = InputDecorationTheme(
+  filled: false, // No fill color
+  hintStyle: TextStyle(
+    color: AppColors.hintText, // Hint text color
+  ),
+  labelStyle: const TextStyle(
+    color: Colors.white, // Label color
+  ),
+
+  // Default border
+  border: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(30.0),
+    borderSide: BorderSide(
+      color: AppColors.white, // Default border color
+    ),
+  ),
+
+  // Focused border
+  focusedBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(30.0),
+    borderSide: BorderSide(
+      color: AppColors.primary, // Border color when focused
+      width: 2.0, // Slightly thicker border on focus
+    ),
+  ),
+
+  // Enabled border
+  enabledBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(30.0),
+    borderSide: BorderSide(
+      color: AppColors.white, // Border color when enabled
+    ),
+  ),
+
+  // Error border
+  errorBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(30.0),
+    borderSide: BorderSide(
+      color: AppColors.red, // Border color when there's an error
+      width: 2.0,
+    ),
+  ),
+
+  // Focused error border
+  focusedErrorBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(30.0),
+    borderSide: BorderSide(
+      color: AppColors.red, // Border color when focused with an error
+      width: 2.5, // Slightly thicker for emphasis
+    ),
+  ),
+
+  // Disabled border
+  disabledBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(30.0),
+    borderSide: BorderSide(
+      color:
+          AppColors.hintText.withOpacity(0.5), // Lighter border when disabled
+    ),
+  ),
+
+  // Content padding for better alignment inside the input field
+  contentPadding: const EdgeInsets.symmetric(
+    horizontal: 20.0,
+    vertical: 16.0,
+  ),
+);

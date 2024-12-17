@@ -1,16 +1,40 @@
+import 'package:flutter_spinkit/flutter_spinkit.dart' show SpinKitFadingCircle;
+import 'package:live_admin/app/global_imports.dart';
+
 class EndPoints {
   const EndPoints._();
 
   static const String baseUrl = 'https://iptv.sunilflutter.in/api/';
   static const String login = "admin/login";
   static const String user = "userdata";
-
+  static const String addMovie = "admin/movies";
   static const Duration timeout = Duration(seconds: 30);
 
   static const String token = 'authToken';
 }
 
 enum LoadDataState { initialize, loading, loaded, error, timeout, unknownerror }
+
+showLoading() {
+  if (Get.isDialogOpen ?? false) {
+    return;
+  }
+  Get.dialog(
+    Container(
+        height: Get.height,
+        width: Get.width,
+        alignment: Alignment.center,
+        child: SpinKitFadingCircle(
+          color: AppColors.white,
+          size: 50.0, // Adjust loader size
+        )),
+    barrierDismissible: false,
+  );
+}
+
+hideLoading() {
+  Get.back();
+}
 
 List<String> movieCategories = [
   "Action",

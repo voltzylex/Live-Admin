@@ -10,7 +10,7 @@ class SplashPage extends GetWidget {
     // Navigate to Home after 2 seconds
     // Future.delayed(const Duration(seconds: 2), () {
     //   Get.offNamed(AppRoutes.login);
-    // });
+  // });
 
     return Scaffold(
       appBar: CustomAppBar(),

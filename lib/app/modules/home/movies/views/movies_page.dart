@@ -1,5 +1,10 @@
+import 'dart:developer';
+
+import 'package:flutter/foundation.dart';
+import 'package:live_admin/app/data/api/api_connect.dart';
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/movies/controllers/movies_controller.dart';
+import 'package:live_admin/app/modules/home/movies/models/add_movie_model.dart';
 import 'package:live_admin/app/modules/home/movies/widgets/category_widget.dart';
 import 'package:live_admin/app/modules/home/movies/widgets/type_widget.dart';
 import 'package:live_admin/app/themes/app_text_theme.dart';
@@ -10,11 +15,6 @@ class MoviesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mov = Get.put(MoviesController());
-    final TextEditingController categoryController = TextEditingController();
-    final TextEditingController typeController = TextEditingController();
-    final TextEditingController movieNameController = TextEditingController();
-    final TextEditingController uploadLinkController = TextEditingController();
-    final TextEditingController descriptionController = TextEditingController();
 
     // Form key for validation
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -96,7 +96,7 @@ class MoviesPage extends StatelessWidget {
                     Text('Movie Name', style: TextStyle(color: Colors.white)),
                     const SizedBox(height: 8),
                     TextFormField(
-                      controller: movieNameController,
+                      controller: mov.movieNameController,
                       decoration: InputDecoration(
                         hintText: 'Enter movie name',
                       ),
@@ -115,27 +115,34 @@ class MoviesPage extends StatelessWidget {
                         // Category TypeAhead Field
                         Expanded(
                             child: CategoryWidget(
-                          categoryController: categoryController,
+                          categoryController: mov.categoryController,
+                          mov: mov,
                         )),
                         const SizedBox(width: 16),
                         // Type TypeAhead Field
                         Expanded(
-                          child: TypeWidget(typeController: typeController),
+                          child: TypeWidget(
+                            typeController: mov.typeController,
+                            mov: mov,
+                          ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 16),
 
                     // Upload Link field
-                    Text('Upload Link', style: TextStyle(color: Colors.white)),
+                    Text('Movie Link', style: TextStyle(color: Colors.white)),
                     const SizedBox(height: 8),
                     TextFormField(
-                      controller: uploadLinkController,
+                      controller: mov.uploadLinkController,
                       decoration: InputDecoration(
-                        hintText: 'Enter upload link',
+                        hintText: 'Enter Movie link',
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
+                          return "Movie link cannot be empty";
+                        }
+                        if (value.isEmpty || (!value.isURL)) {
                           return 'Please enter a valid link';
                         }
                         return null;
@@ -148,7 +155,7 @@ class MoviesPage extends StatelessWidget {
                         style: TextStyle(color: Colors.white)),
                     const SizedBox(height: 8),
                     TextFormField(
-                      controller: descriptionController,
+                      controller: mov.descriptionController,
                       maxLines: 5,
                       decoration: InputDecoration(
                         hintText: 'Enter movie description',
@@ -180,24 +187,30 @@ class MoviesPage extends StatelessWidget {
                           ),
                           child: Text('Cancel'),
                         ),
-                        const SizedBox(width: 16),
+                        SizedBox(width: 16),
 
                         // Publish Button
                         ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
+                            log("Auth header : ${await ApiConnect.instance.authHeader()}");
                             // mov.isSubmitPressed.value = true;
-                            if (formKey.currentState?.validate() ??
-                                false &&
-                                    categoryController.text.isNotEmpty &&
-                                    typeController.text.isNotEmpty) {
-                              // Perform save or publish logic
-                              // mov.saveMovie(
-                              //   movieName: movieNameController.text,
-                              //   category: categoryController.text,
-                              //   type: typeController.text,
-                              //   uploadLink: uploadLinkController.text,
-                              //   description: descriptionController.text,
-                              // );
+
+                            if ((formKey.currentState?.validate() ?? false) &&
+                                mov.categoryController.text.isNotEmpty &&
+                                mov.typeController.text.isNotEmpty) {
+                              final movie = AddMovie(
+                                  title: mov.movieNameController.text,
+                                  poster: kDebugMode
+                                      ? "this is image link"
+                                      : mov.image.value.toString(),
+                                  movieUrl: mov.uploadLinkController.text,
+                                  categories: [mov.categoryController.text],
+                                  tags: [mov.typeController.text]);
+                              log("Movie ${movie.toJson()}");
+                              await mov.uploadMovie(
+                                context,
+                                movie,
+                              );
                             }
                           },
                           style: ElevatedButton.styleFrom(
