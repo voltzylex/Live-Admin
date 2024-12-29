@@ -77,31 +77,31 @@ class _DashboardPageState extends State<DashboardPage> {
               children: [
                 DashboardNavItem(
                   label: 'Dashboard',
-                  icon: Icons.dashboard,
+                  icon: 'assets/images/dashboard.svg',
                   page: '/dashboard',
                   isSelected: currentPage == '/dashboard',
                 ),
                 DashboardNavItem(
                   label: 'User',
-                  icon: Icons.person,
+                  icon: 'assets/images/user.svg',
                   page: '/user',
                   isSelected: currentPage == '/user',
                 ),
                 DashboardNavItem(
                   label: 'Movies',
-                  icon: Icons.movie,
+                  icon: 'assets/images/movies.svg',
                   page: '/movies',
                   isSelected: currentPage == '/movies',
                 ),
                 DashboardNavItem(
                   label: 'Membership',
-                  icon: Icons.card_membership,
+                  icon: 'assets/images/membership.svg',
                   page: '/membership',
                   isSelected: currentPage == '/membership',
                 ),
                 DashboardNavItem(
                   label: 'Settings',
-                  icon: Icons.settings,
+                  icon: 'assets/images/settings.svg',
                   page: '/settings',
                   isSelected: currentPage == '/settings',
                 ),

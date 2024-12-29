@@ -1,8 +1,9 @@
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:live_admin/app/global_imports.dart';
 
 class DashboardNavItem extends StatelessWidget {
   final String label;
-  final IconData icon;
+  final String icon;
   final String page;
   final bool isSelected;
 
@@ -25,11 +26,17 @@ class DashboardNavItem extends StatelessWidget {
           hoverColor: AppColors.primaryLight, // Hover color for the background
           onTap: () => Get.find<DashboardController>().navigateTo(page),
           child: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 12.0,
+            ),
             child: Row(
               children: [
-                Icon(icon, color: Colors.white),
+                SvgPicture.asset(
+                  icon,
+                  color: isSelected ? Colors.white : Colors.grey,
+                  height: 20,
+                ),
                 const SizedBox(width: 10),
                 Text(
                   label,

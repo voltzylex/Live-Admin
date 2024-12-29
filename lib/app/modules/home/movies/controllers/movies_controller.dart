@@ -18,6 +18,8 @@ class MoviesController extends GetxController {
   final category = movieCategories;
   RxString selectedCategory = ''.obs;
   RxString selectedType = ''.obs;
+  RxBool isUpload = false.obs;
+
   @override
   onClose() {
     clearField();

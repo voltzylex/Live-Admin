@@ -1,4 +1,3 @@
-import 'package:live_admin/app/controllers/storage_controller.dart';
 import 'package:live_admin/app/global_imports.dart';
 
 class AuthMiddleware extends GetMiddleware {
@@ -17,7 +16,7 @@ class AuthMiddleware extends GetMiddleware {
 
   Future<void> _checkLoginStatus() async {
     final isUserLoggedIn = await SC.to.loadLoginStatus();
-    
+
     // Perform navigation after async check
     await Future.delayed(Duration(seconds: 2), () {
       if (isUserLoggedIn) {
