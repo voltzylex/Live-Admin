@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:live_admin/app/global_imports.dart';
+import 'package:live_admin/app/modules/home/movies/controllers/movies_controller.dart';
 import 'package:live_admin/app/utils/widgets/app_button/base_button.dart';
 
 class MoviesListPage extends StatefulWidget {
@@ -12,6 +12,7 @@ class MoviesListPage extends StatefulWidget {
 class _MoviesListPageState extends State<MoviesListPage> {
   @override
   Widget build(BuildContext context) {
+    final mv = MoviesController().to;
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Column(
@@ -57,7 +58,10 @@ class _MoviesListPageState extends State<MoviesListPage> {
                     ],
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  // Get.toNamed()
+                  mv.isUpload.toggle();
+                },
               ),
             ],
           ).paddingAll(20)

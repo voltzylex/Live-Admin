@@ -174,4 +174,5 @@ class Common {
   }
 
   static void dismissKeyboard() => Get.focusScope!.unfocus();
+
 }

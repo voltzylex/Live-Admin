@@ -7,6 +7,9 @@ import 'package:live_admin/app/modules/home/movies/models/add_movie_model.dart';
 import 'package:live_admin/app/utils/constants.dart';
 
 class MoviesController extends GetxController {
+  MoviesController get to => Get.isRegistered<MoviesController>()
+      ? Get.find<MoviesController>()
+      : Get.put(MoviesController());
   final TextEditingController categoryController = TextEditingController();
   final TextEditingController typeController = TextEditingController();
   final TextEditingController movieNameController = TextEditingController();

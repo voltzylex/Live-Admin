@@ -183,6 +183,7 @@ class MoviesPage extends StatelessWidget {
                           ElevatedButton(
                             onPressed: () {
                               formKey.currentState?.reset();
+                              mov.isUpload.toggle();
                             },
                             style: ElevatedButton.styleFrom(
                               foregroundColor: AppColors.borderL1,
