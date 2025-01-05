@@ -8,6 +8,7 @@ class EndPoints {
   static const String login = "admin/login";
   static const String user = "userdata";
   static const String addMovie = "admin/movies";
+  static String getMovie(int page) => "movies?page=$page";
   static const Duration timeout = Duration(seconds: 30);
 
   static const String token = 'authToken';
@@ -36,7 +37,7 @@ hideLoading() {
   Get.back();
 }
 
-List<String> movieCategories = [
+const List<String> movieCategories = [
   "Action",
   "Adventure",
   "Animation",
@@ -95,7 +96,7 @@ List<String> movieCategories = [
   "Werewolf",
   "Supernatural Horror",
 ];
-List<String> movieTypes = [
+const List<String> movieTypes = [
   "Feature Film",
   "Short Film",
   "Documentary",

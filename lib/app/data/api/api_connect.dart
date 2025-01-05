@@ -208,6 +208,16 @@ class ApiConnect extends GetConnect {
       return Response(body: e.toString());
     }
   }
+
+  Future<Response> getMovies(int page) async {
+    try {
+      final res =
+          await get(EndPoints.getMovie(page), headers: await authHeader());
+      return res;
+    } catch (e) {
+      return Response(body: e.toString());
+    }
+  }
 }
 
 extension ResErr<T> on Response<T> {

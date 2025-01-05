@@ -10,27 +10,29 @@ class Loading extends StatelessWidget {
     this.title,
     this.opacity,
     this.loadingType = LoadingType.chasingDots,
+    this.loadingColor,
   });
 
   final String? title;
   final double? opacity;
   final LoadingType loadingType;
+  final Color? loadingColor;
 
   Widget getLoading() {
     switch (loadingType) {
       case LoadingType.dualRing:
-        return const SpinKitDualRing(
-          color: AppColors.primary,
+        return SpinKitDualRing(
+          color: loadingColor ?? AppColors.primary,
           size: 50,
         );
       case LoadingType.doubleBounce:
         return SpinKitDoubleBounce(
-          color: AppColors.primary,
+          color: loadingColor ?? AppColors.primary,
           size: 50,
         );
       default:
         return SpinKitChasingDots(
-          color: AppColors.primary,
+          color: loadingColor ?? AppColors.primary,
           size: 50,
         );
     }
