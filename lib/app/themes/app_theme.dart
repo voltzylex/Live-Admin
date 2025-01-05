@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:live_admin/app/global_imports.dart' show AppColors;
+import 'package:live_admin/app/global_imports.dart' show AppColors, kRadius;
 
 class AppTheme {
   static ThemeData darkTheme = ThemeData(
@@ -20,6 +20,9 @@ class AppTheme {
       headlineLarge: TextStyle(color: Colors.white),
       bodyLarge: TextStyle(color: Colors.white, fontSize: 16),
       bodyMedium: TextStyle(color: Colors.white70, fontSize: 14),
+      bodySmall: TextStyle(color: AppColors.white),
+      titleSmall: TextStyle(color: AppColors.white),
+      titleMedium: TextStyle(color: AppColors.white),
       titleLarge: TextStyle(
         color: Colors.white,
         fontSize: 18,
@@ -27,6 +30,9 @@ class AppTheme {
       ),
     ),
     iconTheme: IconThemeData(color: Colors.white),
+    iconButtonTheme: IconButtonThemeData(
+        style:
+            ButtonStyle(iconColor: WidgetStateProperty.all(AppColors.white))),
     buttonTheme: ButtonThemeData(
       buttonColor: AppColors.primary,
       textTheme: ButtonTextTheme.primary,
@@ -54,7 +60,7 @@ class AppTheme {
         backgroundColor: WidgetStateProperty.all(
             AppColors.backgroundDark), // Background color for dropdown
         shape: WidgetStateProperty.all(RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(kRadius),
         )),
       ),
     ),
@@ -75,7 +81,7 @@ final inputDecorationTheme = InputDecorationTheme(
 
   // Default border
   border: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(30.0),
+    borderRadius: BorderRadius.circular(kRadius),
     borderSide: BorderSide(
       color: AppColors.white, // Default border color
     ),
@@ -83,7 +89,7 @@ final inputDecorationTheme = InputDecorationTheme(
 
   // Focused border
   focusedBorder: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(30.0),
+    borderRadius: BorderRadius.circular(kRadius),
     borderSide: BorderSide(
       color: AppColors.primary, // Border color when focused
       width: 2.0, // Slightly thicker border on focus
@@ -92,7 +98,7 @@ final inputDecorationTheme = InputDecorationTheme(
 
   // Enabled border
   enabledBorder: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(30.0),
+    borderRadius: BorderRadius.circular(kRadius),
     borderSide: BorderSide(
       color: AppColors.white, // Border color when enabled
     ),
@@ -100,7 +106,7 @@ final inputDecorationTheme = InputDecorationTheme(
 
   // Error border
   errorBorder: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(30.0),
+    borderRadius: BorderRadius.circular(kRadius),
     borderSide: BorderSide(
       color: AppColors.red, // Border color when there's an error
       width: 2.0,
@@ -109,7 +115,7 @@ final inputDecorationTheme = InputDecorationTheme(
 
   // Focused error border
   focusedErrorBorder: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(30.0),
+    borderRadius: BorderRadius.circular(kRadius),
     borderSide: BorderSide(
       color: AppColors.red, // Border color when focused with an error
       width: 2.5, // Slightly thicker for emphasis
@@ -118,7 +124,7 @@ final inputDecorationTheme = InputDecorationTheme(
 
   // Disabled border
   disabledBorder: OutlineInputBorder(
-    borderRadius: BorderRadius.circular(30.0),
+    borderRadius: BorderRadius.circular(kRadius),
     borderSide: BorderSide(
       color:
           AppColors.hintText.withOpacity(0.5), // Lighter border when disabled

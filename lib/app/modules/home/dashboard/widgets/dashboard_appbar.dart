@@ -24,15 +24,15 @@ class DashboardAppBar extends StatelessWidget {
                 filled: true,
                 fillColor: AppColors.content,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(kRadius),
                   borderSide: BorderSide.none,
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(kRadius),
                   borderSide: BorderSide.none,
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(kRadius),
                   borderSide: BorderSide.none,
                 ),
               ),

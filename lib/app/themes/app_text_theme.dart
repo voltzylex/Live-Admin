@@ -1,7 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'app_colors.dart';
-import 'package:flutter/material.dart';
 
 /// Standardized textstyle
 /// FontWeight + FontSize + Color + FontStyle + decoration
@@ -23,6 +23,10 @@ class AppTextStyles {
     fontSize: 16,
     fontWeight: FontWeight.normal,
     color: AppColors.primary,
+  );
+  static const TextStyle title = TextStyle(
+    fontSize: 22,
+    color: AppColors.white,
   );
 }
 

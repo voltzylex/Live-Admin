@@ -32,7 +32,7 @@ class Common {
         child: Container(
           height: 100,
           width: 100,
-          decoration:  BoxDecoration(
+          decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(5)),
             color: AppColors.grey,
           ),
@@ -121,11 +121,11 @@ class Common {
   }
 
   static Future showSuccess({String? title}) async {
-    Timer? _timer;
+    Timer? timer;
     return await Get.dialog(
       Builder(
         builder: (BuildContext builderContext) {
-          _timer = Timer(const Duration(seconds: 2), () {
+          timer = Timer(const Duration(seconds: 2), () {
             Get.back();
           });
 
@@ -167,12 +167,11 @@ class Common {
       barrierColor: Colors.black26,
       transitionCurve: Curves.easeInOutBack,
     ).then((val) {
-      if (_timer!.isActive) {
-        _timer!.cancel();
+      if (timer!.isActive) {
+        timer!.cancel();
       }
     });
   }
 
   static void dismissKeyboard() => Get.focusScope!.unfocus();
-
 }

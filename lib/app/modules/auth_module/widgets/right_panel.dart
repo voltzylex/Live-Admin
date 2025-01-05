@@ -185,7 +185,7 @@ class _RightPanelState extends State<RightPanel> {
                   },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
+                      borderRadius: BorderRadius.circular(kRadius),
                     ),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                   ),

@@ -44,4 +44,8 @@ class AppColors {
       Color(0xFFFFDF6A); // Lighter shade of secondary
   static const Color secondaryDark =
       Color(0xFFC79E00); // Darker shade of secondary
+  static const Color table1 = Color(0xff2C2B2F);
+  static const Color table2 = Color(0xff1A1A1C);
 }
+
+const double kRadius = 30;

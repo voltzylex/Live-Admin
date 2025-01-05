@@ -189,7 +189,7 @@ class MoviesPage extends StatelessWidget {
                               foregroundColor: AppColors.borderL1,
                               backgroundColor: AppColors.content,
                               shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30),
+                                  borderRadius: BorderRadius.circular(kRadius),
                                   side: BorderSide(color: AppColors.borderL1)),
                             ),
                             child: Text('Cancel'),
@@ -222,7 +222,7 @@ class MoviesPage extends StatelessWidget {
                             },
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30),
+                                borderRadius: BorderRadius.circular(kRadius),
                               ),
                             ),
                             child: Text(
