@@ -30,6 +30,8 @@ class AppTheme {
       ),
     ),
     iconTheme: IconThemeData(color: Colors.white),
+    primaryIconTheme: IconThemeData(color: AppColors.white),
+
     iconButtonTheme: IconButtonThemeData(
         style:
             ButtonStyle(iconColor: WidgetStateProperty.all(AppColors.white))),

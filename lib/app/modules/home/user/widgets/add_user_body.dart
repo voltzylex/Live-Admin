@@ -167,7 +167,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                     style: TextStyle(color: AppColors.white),
                   ),
                 ),
-              )
+              ),
             ],
           ).paddingSymmetric(horizontal: 20)
         ],

@@ -1,8 +1,10 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:live_admin/app/global_imports.dart';
+import 'package:live_admin/app/modules/home/movies/controllers/movies_controller.dart';
 
 class MoviesListPage extends StatefulWidget {
-  const MoviesListPage({super.key});
+  const MoviesListPage({super.key, required this.mov});
+  final MoviesController mov;
 
   @override
   State<MoviesListPage> createState() => _MoviesListPageState();
@@ -65,7 +67,42 @@ class _MoviesListPageState extends State<MoviesListPage> {
       backgroundColor: AppColors.transparent,
       body: Column(
         children: [
-          Row(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Movies',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ).paddingAll(20),
+              BaseButton(
+                onPressed: () => widget.mov.isUpload.toggle(),
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: Get.width * 0.04, vertical: 10),
+                  decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      borderRadius: BorderRadius.circular(kRadius)),
+                  child: Row(
+                    spacing: 10,
+                    children: [
+                      Icon(
+                        Icons.add,
+                        color: AppColors.white,
+                      ),
+                      Text(
+                        "Upload Movie",
+                        style: TextStyle(color: AppColors.white),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
           Expanded(
             child: DataTable2(
               columnSpacing: 12,
@@ -121,24 +158,28 @@ class _MoviesListPageState extends State<MoviesListPage> {
                         placeholder: true,
                         showEditIcon: true,
                         onTap: () => _editMovie(movie["id"]),
-                        Row(
-                          children: [
-                            Theme(
-                              data: ThemeData(useMaterial3: false),
-                              child: Switch(
-                                value: movie["status"],
-                                onChanged: (_) => _toggleStatus(movie["id"]),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              Theme(
+                                data: ThemeData(useMaterial3: false),
+                                child: Switch(
+                                  value: movie["status"],
+                                  onChanged: (_) => _toggleStatus(movie["id"]),
+                                ),
                               ),
-                            ),
-                            // IconButton(
-                            //   icon: const Icon(Icons.edit, color: Colors.blue),
-                            //   onPressed: () => _editMovie(movie["id"]),
-                            // ),
-                            IconButton(
-                              icon: const Icon(Icons.delete, color: Colors.red),
-                              onPressed: () => _deleteMovie(movie["id"]),
-                            ),
-                          ],
+                              // IconButton(
+                              //   icon: const Icon(Icons.edit, color: Colors.blue),
+                              //   onPressed: () => _editMovie(movie["id"]),
+                              // ),
+                              IconButton(
+                                icon:
+                                    const Icon(Icons.delete, color: Colors.red),
+                                onPressed: () => _deleteMovie(movie["id"]),
+                              ),
+                            ],
+                          ),
                         )),
                   ],
                 );
