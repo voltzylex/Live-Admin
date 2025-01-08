@@ -1,5 +1,7 @@
+import 'dart:developer';
 import 'dart:typed_data';
 
+import 'package:data_table_2/data_table_2.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:live_admin/app/data/api/api_connect.dart';
 import 'package:live_admin/app/global_imports.dart';
@@ -25,6 +27,7 @@ class MoviesController extends GetxController with StateMixin<MoviesModel> {
   RxString selectedType = ''.obs;
   RxBool isUpload = false.obs;
   RxList<Movie> movies = <Movie>[].obs;
+  final PaginatorController pageController = PaginatorController();
   @override
   onClose() {
     clearField();
@@ -35,6 +38,7 @@ class MoviesController extends GetxController with StateMixin<MoviesModel> {
   onInit() {
     super.onInit();
     getMovies(1);
+   
   }
 
   clearField() {

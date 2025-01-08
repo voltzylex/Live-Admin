@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:live_admin/app/modules/auth_module/controllers/login_model.dart';
@@ -42,7 +43,9 @@ class SC extends GetxController {
   }
 
   Future<String?> getToken() async {
-    return (await getUser())?.accessToken;
+    final token = (await getUser())?.accessToken;
+    log("Token : $token");
+    return token;
   }
 
   // Retrieve login status from SharedPreferences

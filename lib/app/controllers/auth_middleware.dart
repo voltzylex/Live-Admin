@@ -16,7 +16,7 @@ class AuthMiddleware extends GetMiddleware {
 
   Future<void> _checkLoginStatus() async {
     final isUserLoggedIn = await SC.to.loadLoginStatus();
-
+    SC.to.getToken();
     // Perform navigation after async check
     await Future.delayed(Duration(seconds: 2), () {
       if (isUserLoggedIn) {

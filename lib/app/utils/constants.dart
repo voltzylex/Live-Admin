@@ -4,7 +4,8 @@ import 'package:live_admin/app/global_imports.dart';
 class EndPoints {
   const EndPoints._();
 
-  static const String baseUrl = 'https://iptv.sunilflutter.in/api/';
+  // static const String baseUrl = 'https://iptv.sunilflutter.in/api/';
+  static const String baseUrl = 'https://iptv.justdemo.website/api/';
   static const String login = "admin/login";
   static const String user = "userdata";
   static const String addMovie = "admin/movies";
