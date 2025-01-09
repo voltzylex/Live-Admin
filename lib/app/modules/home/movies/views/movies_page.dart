@@ -24,7 +24,7 @@ class MoviesPage extends StatelessWidget {
     return Obx(() {
       if (!mov.isUpload.value) {
         return MoviesListPage(
-          controller: mov,
+          mov: mov,
         );
       }
       return Scaffold(

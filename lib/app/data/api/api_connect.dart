@@ -45,6 +45,9 @@ class ApiConnect extends GetConnect {
         response.headers?.forEach((key, v) => _printKV(' $key', v.toString()));
       }
       logPrint('Response Text:');
+      if (response.statusCode == 401) {
+        SC.to.clearUserData();
+      }
       _printAll(response.bodyString);
       logPrint('*************************************');
       return response;
@@ -213,6 +216,15 @@ class ApiConnect extends GetConnect {
     try {
       final res =
           await get(EndPoints.getMovie(page), headers: await authHeader());
+      return res;
+    } catch (e) {
+      return Response(body: e.toString());
+    }
+  }
+
+  Future<Response> getUsers() async {
+    try {
+      final res = await get(EndPoints.getUser, headers: await authHeader());
       return res;
     } catch (e) {
       return Response(body: e.toString());

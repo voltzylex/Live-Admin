@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'dart:typed_data';
 
-import 'package:data_table_2/data_table_2.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:live_admin/app/data/api/api_connect.dart';
 import 'package:live_admin/app/global_imports.dart';
@@ -26,8 +25,10 @@ class MoviesController extends GetxController with StateMixin<MoviesModel> {
   RxString selectedCategory = ''.obs;
   RxString selectedType = ''.obs;
   RxBool isUpload = false.obs;
-  RxList<Movie> movies = <Movie>[].obs;
+  // RxList<Movie> movies = <Movie>[].obs;
   final PaginatorController pageController = PaginatorController();
+  RxInt currenP = 1.obs;
+
   @override
   onClose() {
     clearField();
@@ -38,7 +39,15 @@ class MoviesController extends GetxController with StateMixin<MoviesModel> {
   onInit() {
     super.onInit();
     getMovies(1);
-   
+    ever(
+      currenP,
+      (callback) {
+        log("Callback is $callback");
+        if (callback != (state?.meta?.currentPage ?? 0)) {
+          getMovies(callback);
+        }
+      },
+    );
   }
 
   clearField() {
@@ -109,7 +118,7 @@ class MoviesController extends GetxController with StateMixin<MoviesModel> {
       change(null, status: RxStatus.loading()); // Set loading state
       final res = await ApiConnect.instance.getMovies(page ?? 1);
       final mov = MoviesModel.fromJson(res.body);
-      movies.addAll(mov.movies);
+      // movies.addAll(mov.movies);
       change(mov, status: RxStatus.success());
     } catch (e) {
       // Set error state

@@ -19,10 +19,10 @@ class ShimmerTable extends StatelessWidget {
               highlightColor: Colors.grey[700]!,
               child: Row(
                 children: List.generate(
-                  7, // Number of columns
+                  10, // Number of columns
                   (index) => Expanded(
                     child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 8),
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
                       height: 30,
                       color: Colors.grey[800], // Placeholder color
                     ),
@@ -36,7 +36,7 @@ class ShimmerTable extends StatelessWidget {
           Expanded(
             child: ListView.builder(
               itemCount: 10, // Number of shimmer rows
-              itemBuilder: (context, index) {
+              itemBuilder: (context, rowIndex) {
                 return Container(
                   margin: const EdgeInsets.symmetric(vertical: 4),
                   height: 50,
@@ -44,14 +44,29 @@ class ShimmerTable extends StatelessWidget {
                   child: Shimmer.fromColors(
                     baseColor: Colors.grey[800]!,
                     highlightColor: Colors.grey[700]!,
-                    child: Row(
-                      children: List.generate(
-                        7, // Number of columns
-                        (colIndex) => Expanded(
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 8),
-                            height: 30,
-                            color: Colors.grey[800], // Placeholder color
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 8),
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[800],
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Row(
+                        children: List.generate(
+                          10, // Number of columns
+                          (colIndex) => Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  right: BorderSide(
+                                    color: Colors.grey[900]!, // Divider color
+                                    width: 1,
+                                  ),
+                                ),
+                              ),
+                              alignment: Alignment.center,
+                              child: const SizedBox.shrink(), // Placeholder
+                            ),
                           ),
                         ),
                       ),
@@ -65,11 +80,4 @@ class ShimmerTable extends StatelessWidget {
       ),
     );
   }
-}
-
-void main() {
-  runApp(const MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: ShimmerTable(),
-  ));
 }

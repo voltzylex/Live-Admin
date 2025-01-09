@@ -1,9 +1,11 @@
 import 'dart:typed_data';
 
 import 'package:image_picker/image_picker.dart';
+import 'package:live_admin/app/data/api/api_connect.dart';
 import 'package:live_admin/app/global_imports.dart';
+import 'package:live_admin/app/modules/home/user/models/users_model.dart';
 
-class UserController extends GetxController {
+class UserController extends GetxController with StateMixin<UsersModel> {
   UserController get to => Get.isRegistered<UserController>()
       ? Get.find<UserController>()
       : Get.put(UserController());
@@ -17,6 +19,11 @@ class UserController extends GetxController {
       userId = TextEditingController(),
       createP = TextEditingController(),
       confirmP = TextEditingController();
+  @override
+  onInit() {
+    super.onInit();
+    getUsers();
+  }
 
   Rx<bool> toggleUser() => isUser.toggle();
   // Add movies-specific logic here.
@@ -58,5 +65,18 @@ class UserController extends GetxController {
     confirmP.clear();
     image.value = null;
     isUser(true);
+  }
+
+  Future<void> getUsers() async {
+    try {
+      change(null, status: RxStatus.loading()); // Set loading state
+      final res = await ApiConnect.instance.getUsers();
+      final user = UsersModel.fromJson(res.body);
+      // movies.addAll(mov.movies);
+      change(user, status: RxStatus.success());
+    } catch (e) {
+      // Set error state
+      change(null, status: RxStatus.error('Failed to load data'));
+    }
   }
 }

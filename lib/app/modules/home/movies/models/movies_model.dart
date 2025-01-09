@@ -119,6 +119,7 @@ class Movie extends Equatable {
     required this.trailerUrl,
     required this.movieUrl,
     required this.viewCount,
+    required this.status,
     required this.createdAt,
     required this.updatedAt,
     required this.categories,
@@ -136,6 +137,7 @@ class Movie extends Equatable {
   final String trailerUrl;
   final String movieUrl;
   final num viewCount;
+  final bool status;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final List<Category> categories;
@@ -153,6 +155,7 @@ class Movie extends Equatable {
     String? trailerUrl,
     String? movieUrl,
     num? viewCount,
+    bool? status,
     DateTime? createdAt,
     DateTime? updatedAt,
     List<Category>? categories,
@@ -170,6 +173,7 @@ class Movie extends Equatable {
       trailerUrl: trailerUrl ?? this.trailerUrl,
       movieUrl: movieUrl ?? this.movieUrl,
       viewCount: viewCount ?? this.viewCount,
+      status: status ?? this.status,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       categories: categories ?? this.categories,
@@ -190,6 +194,7 @@ class Movie extends Equatable {
       trailerUrl: json["trailer_url"] ?? "",
       movieUrl: json["movie_url"] ?? "",
       viewCount: json["view_count"] ?? 0,
+      status: json["status"] ?? false,
       createdAt: DateTime.tryParse(json["created_at"] ?? ""),
       updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
       categories: json["categories"] == null
@@ -214,6 +219,7 @@ class Movie extends Equatable {
         "trailer_url": trailerUrl,
         "movie_url": movieUrl,
         "view_count": viewCount,
+        "status": status,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
         "categories": categories.map((x) => x.toJson()).toList(),
@@ -233,6 +239,7 @@ class Movie extends Equatable {
         trailerUrl,
         movieUrl,
         viewCount,
+        status,
         createdAt,
         updatedAt,
         categories,

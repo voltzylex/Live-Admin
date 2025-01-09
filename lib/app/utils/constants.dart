@@ -10,6 +10,7 @@ class EndPoints {
   static const String user = "userdata";
   static const String addMovie = "admin/movies";
   static String getMovie(int page) => "movies?page=$page";
+  static const String getUser = "admin/users";
   static const Duration timeout = Duration(seconds: 30);
 
   static const String token = 'authToken';
