@@ -8,9 +8,9 @@ class SplashPage extends GetWidget {
   @override
   Widget build(BuildContext context) {
     // Navigate to Home after 2 seconds
-    // Future.delayed(const Duration(seconds: 2), () {
-    //   Get.offNamed(AppRoutes.login);
-  // });
+    Future.delayed(const Duration(seconds: 2), () {
+      Get.offNamed(AppRoutes.login);
+    });
 
     return Scaffold(
       appBar: CustomAppBar(),

@@ -1,25 +1,27 @@
-import 'package:equatable/equatable.dart';
-
-class UsersModel extends Equatable {
+class UsersModel {
     UsersModel({
         required this.success,
         required this.message,
         required this.users,
+        required this.meta,
     });
 
     final bool success;
     final String message;
     final List<User> users;
+    final Meta? meta;
 
     UsersModel copyWith({
         bool? success,
         String? message,
         List<User>? users,
+        Meta? meta,
     }) {
         return UsersModel(
             success: success ?? this.success,
             message: message ?? this.message,
             users: users ?? this.users,
+            meta: meta ?? this.meta,
         );
     }
 
@@ -28,6 +30,7 @@ class UsersModel extends Equatable {
             success: json["success"] ?? false,
             message: json["message"] ?? "",
             users: json["users"] == null ? [] : List<User>.from(json["users"]!.map((x) => User.fromJson(x))),
+            meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
         );
     }
 
@@ -35,14 +38,57 @@ class UsersModel extends Equatable {
         "success": success,
         "message": message,
         "users": users.map((x) => x?.toJson()).toList(),
+        "meta": meta?.toJson(),
     };
 
-    @override
-    List<Object?> get props => [
-    success, message, users, ];
 }
 
-class User extends Equatable {
+class Meta {
+    Meta({
+        required this.total,
+        required this.currentPage,
+        required this.perPage,
+        required this.lastPage,
+    });
+
+    final num total;
+    final num currentPage;
+    final num perPage;
+    final num lastPage;
+
+    Meta copyWith({
+        num? total,
+        num? currentPage,
+        num? perPage,
+        num? lastPage,
+    }) {
+        return Meta(
+            total: total ?? this.total,
+            currentPage: currentPage ?? this.currentPage,
+            perPage: perPage ?? this.perPage,
+            lastPage: lastPage ?? this.lastPage,
+        );
+    }
+
+    factory Meta.fromJson(Map<String, dynamic> json){ 
+        return Meta(
+            total: json["total"] ?? 0,
+            currentPage: json["currentPage"] ?? 0,
+            perPage: json["perPage"] ?? 0,
+            lastPage: json["lastPage"] ?? 0,
+        );
+    }
+
+    Map<String, dynamic> toJson() => {
+        "total": total,
+        "currentPage": currentPage,
+        "perPage": perPage,
+        "lastPage": lastPage,
+    };
+
+}
+
+class User {
     User({
         required this.id,
         required this.name,
@@ -97,7 +143,4 @@ class User extends Equatable {
         "updated_at": updatedAt?.toIso8601String(),
     };
 
-    @override
-    List<Object?> get props => [
-    id, name, email, emailVerifiedAt, createdAt, updatedAt, ];
 }

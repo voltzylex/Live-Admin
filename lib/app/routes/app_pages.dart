@@ -12,24 +12,26 @@ class AppPages {
   AppPages._();
   static final pages = [
     GetPage(
-        name: AppRoutes.initial,
-        page: () => const SplashPage(),
-        middlewares: [AuthMiddleware()],
-        children: []),
-    GetPage(
-      name: AppRoutes.forgot,
-      page: () => ForgotPasswordPage(),
-    ),
-    GetPage(
       name: AppRoutes.login,
       page: () => const LoginPage(),
     ),
     GetPage(
+      name: AppRoutes.initial,
+      page: () => const SplashPage(),
+    ),
+    GetPage(
+      name: AppRoutes.forgot,
+      page: () => ForgotPasswordPage(),
+      middlewares: [AuthMiddleware()],
+    ),
+    GetPage(
       name: AppRoutes.dashboard,
+      middlewares: [AuthMiddleware()],
       page: () => const DashboardPage(),
     ),
     GetPage(
       name: AppRoutes.reset,
+      middlewares: [AuthMiddleware()],
       page: () => const ResetPasswordPage(),
     ),
   ];

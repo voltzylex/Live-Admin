@@ -1,29 +1,29 @@
+import 'dart:developer';
+
 import 'package:live_admin/app/global_imports.dart';
 
 class AuthMiddleware extends GetMiddleware {
   @override
   RouteSettings? redirect(String? route) {
-    // Temporarily redirect to a loading page (if you have one) or null to let the check happen
-    return null;
+    log("Route is $route");
+    if (SC.to.isUserLoggedIn.value && (route != "/login")) {
+      return RouteSettings(
+        name: route,
+      );
+    } else {
+      return RouteSettings(
+        name: AppRoutes.login,
+      );
+    }
   }
 
-  @override
-  GetPage? onPageCalled(GetPage? page) {
-    // Perform async check before resolving navigation
-    _checkLoginStatus();
-    return super.onPageCalled(page);
-  }
-
-  Future<void> _checkLoginStatus() async {
-    final isUserLoggedIn = await SC.to.loadLoginStatus();
-    SC.to.getToken();
-    // Perform navigation after async check
-    await Future.delayed(Duration(seconds: 2), () {
-      if (isUserLoggedIn) {
-        Get.offAllNamed(AppRoutes.dashboard); // Navigate to Dashboard
-      } else {
-        Get.offAllNamed(AppRoutes.login); // Navigate to Login
-      }
-    });
-  }
+  // @override
+  // GetPage? onPageCalled(GetPage? page) {
+  //   log("Void on page called");
+  //   if (SC.to.isUserLoggedIn.value) {
+  //     return page;
+  //   } else {
+  //     return GetPage(name: AppRoutes.login, page: () => LoginPage());
+  //   }
+  // }
 }

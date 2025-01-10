@@ -18,6 +18,9 @@ class _RightPanelState extends State<RightPanel> {
   @override
   void initState() {
     super.initState();
+    if (SC.to.isUserLoggedIn.value) {
+      Get.offAllNamed(AppRoutes.dashboard);
+    }
   }
 
   @override
