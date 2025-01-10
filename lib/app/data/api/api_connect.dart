@@ -2,10 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/status/http_status.dart';
-import 'package:live_admin/app/controllers/storage_controller.dart';
 import 'package:live_admin/app/data/api/api_error.dart';
+import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/auth_module/controllers/login_model.dart';
 import 'package:live_admin/app/modules/home/movies/models/add_movie_model.dart';
 import 'package:live_admin/app/utils/constants.dart';
@@ -36,7 +35,7 @@ class ApiConnect extends GetConnect {
       return request;
     });
 
-    httpClient.addResponseModifier((request, response) {
+    httpClient.addResponseModifier((request, response) async {
       logPrint('************** Response **************');
       _printKV('uri', response.request!.url);
       _printKV('statusCode', response.statusCode!);
@@ -46,7 +45,11 @@ class ApiConnect extends GetConnect {
       }
       logPrint('Response Text:');
       if (response.statusCode == 401) {
-        SC.to.clearUserData();
+        SC.to.clearUserData().then(
+          (value) {
+            Get.offAllNamed(AppRoutes.login);
+          },
+        );
       }
       _printAll(response.bodyString);
       logPrint('*************************************');
@@ -216,6 +219,26 @@ class ApiConnect extends GetConnect {
     try {
       final res =
           await get(EndPoints.getMovie(page), headers: await authHeader());
+      return res;
+    } catch (e) {
+      return Response(body: e.toString());
+    }
+  }
+
+  Future<Response> getSeries(int page) async {
+    try {
+      final res =
+          await get(EndPoints.getSeries(page), headers: await authHeader());
+      return res;
+    } catch (e) {
+      return Response(body: e.toString());
+    }
+  }
+
+  Future<Response> getMemberships(int page) async {
+    try {
+      final res = await get(EndPoints.getMemberships(page),
+          headers: await authHeader());
       return res;
     } catch (e) {
       return Response(body: e.toString());

@@ -18,9 +18,7 @@ class _RightPanelState extends State<RightPanel> {
   @override
   void initState() {
     super.initState();
-    if (SC.to.isUserLoggedIn.value) {
-      Get.offAllNamed(AppRoutes.dashboard);
-    }
+   
   }
 
   @override
@@ -180,7 +178,7 @@ class _RightPanelState extends State<RightPanel> {
                     if (_formKey.currentState?.validate() ?? false) {
                       print("Validation passed");
                       // Handle successful login
-                      await _auth.login(email.text, password.text);
+                      await _auth.login(email.text, password.text, context);
                       // Get.toNamed(AppRoutes.dashboard);
                     } else {
                       print("Validation failed");

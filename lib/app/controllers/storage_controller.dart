@@ -15,59 +15,86 @@ class SC extends GetxController {
   RxBool isUserLoggedIn = false.obs;
   RxString username = ''.obs;
 
-  // Method to initialize SharedPreferences
-  Future<SharedPreferences> _getPrefs() async {
-    return await SharedPreferences.getInstance();
+  SharedPreferences? _prefs;
+
+  // Initialize SharedPreferences (call this during app initialization)
+  Future<void> init() async {
+    _prefs = await SharedPreferences.getInstance();
+    loadLoginStatus(); // Preload login status
+    loadUsername(); // Preload username
   }
 
   // Save login status to SharedPreferences
   Future<void> saveLoginStatus(bool isLoggedIn) async {
-    SharedPreferences prefs = await _getPrefs();
-    await prefs.setBool('isLoggedIn', isLoggedIn);
-    isUserLoggedIn.value = isLoggedIn;
+    try {
+      await _prefs?.setBool('isLoggedIn', isLoggedIn);
+      isUserLoggedIn.value = isLoggedIn;
+    } catch (e) {
+      log("Error saving login status: $e");
+    }
   }
 
-  // Save username to SharedPreferences
+  // Save user to SharedPreferences
   Future<void> saveUser(LoginModel user) async {
-    SharedPreferences prefs = await _getPrefs();
-    await prefs.setString('user', jsonEncode(user.toJson()));
-    saveLoginStatus(true);
-    username.value = user.admin?.name ?? "User";
+    try {
+      await _prefs?.setString('user', jsonEncode(user.toJson()));
+      saveLoginStatus(true); // Automatically update login status
+      username.value = user.admin?.name ?? "User";
+    } catch (e) {
+      log("Error saving user: $e");
+    }
   }
 
+  // Get user from SharedPreferences
   Future<LoginModel?> getUser() async {
-    SharedPreferences prefs = await _getPrefs();
-    final user = prefs.getString('user');
-
-    return user != null ? LoginModel.fromJson(jsonDecode(user)) : null;
+    try {
+      final user = _prefs?.getString('user');
+      return user != null ? LoginModel.fromJson(jsonDecode(user)) : null;
+    } catch (e) {
+      log("Error retrieving user: $e");
+      return null;
+    }
   }
 
+  // Get token from user
   Future<String?> getToken() async {
-    final token = (await getUser())?.accessToken;
-    log("Token : $token");
-    return token;
+    try {
+      final token = (await getUser())?.accessToken;
+      log("Token: $token");
+      return token;
+    } catch (e) {
+      log("Error retrieving token: $e");
+      return null;
+    }
   }
 
   // Retrieve login status from SharedPreferences
-  Future<bool> loadLoginStatus() async {
-    SharedPreferences prefs = await _getPrefs();
-
-    isUserLoggedIn.value = prefs.getBool('isLoggedIn') ?? false;
-    return isUserLoggedIn.value;
+  Future<void> loadLoginStatus() async {
+    try {
+      isUserLoggedIn.value = _prefs?.getBool('isLoggedIn') ?? false;
+    } catch (e) {
+      log("Error loading login status: $e");
+    }
   }
 
   // Retrieve username from SharedPreferences
-  Future<void> loadUsername() async {
-    SharedPreferences prefs = await _getPrefs();
-    username.value = prefs.getString('username') ?? '';
+  void loadUsername() {
+    try {
+      username.value = _prefs?.getString('username') ?? '';
+    } catch (e) {
+      log("Error loading username: $e");
+    }
   }
 
   // Clear SharedPreferences data (e.g., logout)
   Future<void> clearUserData() async {
-    SharedPreferences prefs = await _getPrefs();
-    await prefs.remove('isLoggedIn');
-    await prefs.remove('username');
-    isUserLoggedIn.value = false;
-    username.value = '';
+    try {
+      await _prefs?.remove('isLoggedIn');
+      await _prefs?.remove('user');
+      isUserLoggedIn.value = false;
+      username.value = '';
+    } catch (e) {
+      log("Error clearing user data: $e");
+    }
   }
 }

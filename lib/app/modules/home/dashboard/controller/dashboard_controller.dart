@@ -11,6 +11,10 @@ class DashboardController extends GetxController {
   String? currentRoute;
 
   final RxString currentPage = '/dashboard'.obs;
+  // Update the current page
+  void changePage(String page) {
+    currentPage.value = page;
+  }
 
   void navigateTo(String page) {
     if (currentPage.value != page) {

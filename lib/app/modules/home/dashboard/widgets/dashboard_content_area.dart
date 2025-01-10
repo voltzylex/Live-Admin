@@ -2,6 +2,7 @@ import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/dashboard/views/dashboard_content.dart';
 import 'package:live_admin/app/modules/home/membership/views/membership_page.dart';
 import 'package:live_admin/app/modules/home/movies/views/movies_page.dart';
+import 'package:live_admin/app/modules/home/series/views/series_page.dart';
 import 'package:live_admin/app/modules/home/settings/setting_page.dart';
 import 'package:live_admin/app/modules/home/user/user_page.dart';
 
@@ -10,7 +11,8 @@ class DashboardContentArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dash = Get.put(DashboardController());
+    final dashboard = Get.find<DashboardController>();
+
     return Expanded(
       child: Container(
         color: AppColors.black,
@@ -20,31 +22,47 @@ class DashboardContentArea extends StatelessWidget {
             color: AppColors.content,
             borderRadius: BorderRadius.circular(16),
           ),
-          child: Navigator(
-            key: Get.find<DashboardController>().navigatorKey,
-            onGenerateRoute: (settings) {
-              switch (settings.name) {
-                case '/dashboard':
-                  return MaterialPageRoute(
-                      builder: (_) => const DashboardContent());
-                case '/user':
-                  return MaterialPageRoute(builder: (_) => const UserPage());
-                case '/movies':
-                  return MaterialPageRoute(builder: (_) => const MoviesPage());
-                case '/membership':
-                  return MaterialPageRoute(
-                      builder: (_) => const MembershipPage());
-                case '/settings':
-                  return MaterialPageRoute(
-                      builder: (_) => const SettingsPage());
-                default:
-                  return MaterialPageRoute(
-                      builder: (_) => const DashboardContent());
-              }
-            },
-          ),
+          child: Obx(() {
+            // Use AnimatedSwitcher for smooth transitions
+            return AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300), // Animation duration
+              switchInCurve: Curves.easeInOut, // Customize animation curves
+              switchOutCurve: Curves.easeInOut,
+              transitionBuilder: (child, animation) {
+                // Customize the transition (e.g., fade + scale)
+                return FadeTransition(
+                  opacity: animation,
+                  child: FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  ),
+                );
+              },
+              child: _getPage(dashboard.currentPage.value),
+            );
+          }),
         ),
       ),
     );
+  }
+
+  // Method to get the appropriate widget based on the current page
+  Widget _getPage(String page) {
+    switch (page) {
+      case '/dashboard':
+        return const DashboardContent(key: ValueKey('/dashboard'));
+      case '/user':
+        return const UserPage(key: ValueKey('/user'));
+      case '/movies':
+        return const MoviesPage(key: ValueKey('/movies'));
+      case '/membership':
+        return const MembershipPage(key: ValueKey('/membership'));
+      case '/settings':
+        return const SettingsPage(key: ValueKey('/settings'));
+      case "/series":
+        return const SeriesPage(key: ValueKey("/series"));
+      default:
+        return const DashboardContent(key: ValueKey('default'));
+    }
   }
 }

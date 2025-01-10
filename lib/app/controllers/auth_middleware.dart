@@ -1,29 +1,25 @@
-import 'dart:developer';
-
 import 'package:live_admin/app/global_imports.dart';
 
 class AuthMiddleware extends GetMiddleware {
   @override
   RouteSettings? redirect(String? route) {
-    log("Route is $route");
-    if (SC.to.isUserLoggedIn.value && (route != "/login")) {
-      return RouteSettings(
-        name: route,
-      );
-    } else {
-      return RouteSettings(
-        name: AppRoutes.login,
-      );
-    }
-  }
+    SC.to.loadLoginStatus();
 
-  // @override
-  // GetPage? onPageCalled(GetPage? page) {
-  //   log("Void on page called");
-  //   if (SC.to.isUserLoggedIn.value) {
-  //     return page;
-  //   } else {
-  //     return GetPage(name: AppRoutes.login, page: () => LoginPage());
-  //   }
-  // }
+    if (route == AppRoutes.initial) {
+      // Special case for splash screen
+      if (SC.to.isUserLoggedIn.value) {
+        return const RouteSettings(
+            name: AppRoutes.dashboard); // Redirect to dashboard
+      } else {
+        return const RouteSettings(name: AppRoutes.login); // Redirect to login
+      }
+    }
+
+    // For other routes
+    if (!SC.to.isUserLoggedIn.value) {
+      return const RouteSettings(name: AppRoutes.login); // Redirect to login
+    }
+
+    return null; // Allow access
+  }
 }

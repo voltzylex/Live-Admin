@@ -1,49 +1,49 @@
 import 'package:live_admin/app/global_imports.dart';
-import 'package:live_admin/app/modules/home/movies/controllers/movies_controller.dart';
-import 'package:live_admin/app/modules/home/movies/models/movies_model.dart';
-
-import 'package:live_admin/app/modules/home/movies/widgets/movie_data_source.dart';
+import 'package:live_admin/app/modules/home/Series/widgets/Series_data_source.dart';
+import 'package:live_admin/app/modules/home/series/controllers/series_controller.dart';
 import 'package:live_admin/app/themes/app_text_theme.dart';
 
-class MoviesListPage extends StatefulWidget {
-  const MoviesListPage({super.key, required this.mov});
-  final MoviesController mov;
+import '../models/series_model.dart';
+
+class SeriesListPage extends StatefulWidget {
+  const SeriesListPage({super.key, required this.series});
+  final SeriesController series;
 
   @override
-  State<MoviesListPage> createState() => _MoviesListPageState();
+  State<SeriesListPage> createState() => _SeriesListPageState();
 }
 
-class _MoviesListPageState extends State<MoviesListPage> {
+class _SeriesListPageState extends State<SeriesListPage> {
   // Handle toggle status
   void _toggleStatus(int id) {
     // Implement status toggle logic here
   }
 
-  // Handle edit movie action
-  void _editMovie(int id) {
+  // Handle edit Series action
+  void _editSeries(int id) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Edit movie with ID: $id')),
+      SnackBar(content: Text('Edit Series with ID: $id')),
     );
   }
 
-  // Handle delete movie action
-  void _deleteMovie(int id) {
+  // Handle delete Series action
+  void _deleteSeries(int id) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Deleted movie with ID: $id')),
+      SnackBar(content: Text('Deleted Series with ID: $id')),
     );
   }
 
   // Navigate to the next page
   void _nextPage(int lastPage) {
-    if (widget.mov.currenP.value < lastPage) {
-      widget.mov.currenP.value++;
+    if (widget.series.currenP.value < lastPage) {
+      widget.series.currenP.value++;
     }
   }
 
   // Navigate to the previous page
   void _prevPage() {
-    if (widget.mov.currenP.value > 1) {
-      widget.mov.currenP.value--;
+    if (widget.series.currenP.value > 1) {
+      widget.series.currenP.value--;
     }
   }
 
@@ -56,10 +56,10 @@ class _MoviesListPageState extends State<MoviesListPage> {
           // Header Row with Title and Upload Button
           _buildHeader(),
 
-          // Movie List Table with Pagination
+          // Series List Table with Pagination
           Expanded(
-            child: widget.mov.obx(
-              (state) => _buildMovieTable(state!),
+            child: widget.series.obx(
+              (state) => _buildSeriesTable(state!),
               onLoading: const ShimmerTable(),
               onError: (error) => Center(
                 child: Text(
@@ -71,7 +71,7 @@ class _MoviesListPageState extends State<MoviesListPage> {
           ),
 
           // Pagination Controls
-          widget.mov.obx(
+          widget.series.obx(
             (state) => _buildPagination(state!),
             onLoading: const SizedBox(height: 60),
           ),
@@ -87,7 +87,7 @@ class _MoviesListPageState extends State<MoviesListPage> {
         Padding(
           padding: const EdgeInsets.all(20.0),
           child: const Text(
-            'Movies',
+            'Series',
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
@@ -97,7 +97,7 @@ class _MoviesListPageState extends State<MoviesListPage> {
         ),
         BaseButton(
           onPressed: () {
-            widget.mov.isUpload.toggle();
+            widget.series.isUpload.toggle();
           },
           child: Container(
             padding: EdgeInsets.symmetric(
@@ -114,7 +114,7 @@ class _MoviesListPageState extends State<MoviesListPage> {
                 const Icon(Icons.add, color: AppColors.white),
                 const SizedBox(width: 10),
                 const Text(
-                  "Upload Movie",
+                  "Upload Series",
                   style: TextStyle(color: AppColors.white),
                 ),
               ],
@@ -125,7 +125,7 @@ class _MoviesListPageState extends State<MoviesListPage> {
     );
   }
 
-  Widget _buildMovieTable(MoviesModel state) {
+  Widget _buildSeriesTable(SeriesModel state) {
     return Theme(
       data: ThemeData.dark(),
       child: PaginatedDataTable2(
@@ -137,7 +137,7 @@ class _MoviesListPageState extends State<MoviesListPage> {
         headingRowColor: MaterialStateProperty.all(AppColors.content),
         columns: const [
           DataColumn2(label: Text('ID'), size: ColumnSize.S),
-          DataColumn2(label: Text('Movie Name'), size: ColumnSize.L),
+          DataColumn2(label: Text('Series Name'), size: ColumnSize.L),
           DataColumn2(label: Text('Category'), size: ColumnSize.M),
           DataColumn2(label: Text('Type'), size: ColumnSize.M),
           DataColumn2(label: Text('Upload Date'), size: ColumnSize.M),
@@ -145,18 +145,18 @@ class _MoviesListPageState extends State<MoviesListPage> {
           DataColumn2(label: Text('Actions'), size: ColumnSize.S),
         ],
         hidePaginator: true,
-        source: MovieDataSource(
+        source: SeriesDataSource(
           context,
-          state.movies,
-          onEdit: _editMovie,
-          onDelete: _deleteMovie,
+          state.series,
+          onEdit: _editSeries,
+          onDelete: _deleteSeries,
           onToggleStatus: _toggleStatus,
         ),
       ),
     );
   }
 
-  Widget _buildPagination(MoviesModel state) {
+  Widget _buildPagination(SeriesModel state) {
     final currentPage = state.meta!.currentPage;
     final lastPage = state.meta!.lastPage;
 
@@ -182,7 +182,7 @@ class _MoviesListPageState extends State<MoviesListPage> {
                 ),
                 const TextSpan(text: ' to '),
                 TextSpan(
-                  text: '${state.movies.length}',
+                  text: '${state.series.length}',
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: AppColors.white,
@@ -211,7 +211,7 @@ class _MoviesListPageState extends State<MoviesListPage> {
                 final isActive = page == currentPage;
                 return GestureDetector(
                   onTap: () => setState(() {
-                    widget.mov.currenP.value = page;
+                    widget.series.currenP.value = page;
                   }),
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 7),

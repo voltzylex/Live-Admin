@@ -18,3 +18,4 @@ export 'package:live_admin/app/utils/widgets/app_button/base_button.dart';
 export 'package:data_table_2/data_table_2.dart';
 export 'package:flutter_svg/svg.dart';
 export 'package:intl/intl.dart' hide TextDirection;
+export 'package:live_admin/app/utils/widgets/shimmers/shimmer_table.dart';

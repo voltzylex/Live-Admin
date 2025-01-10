@@ -50,13 +50,17 @@ class AuthController extends GetxController {
     super.onClose();
   }
 
-  Future<void> login(String username, String password) async {
+  Future<void> login(
+    String username,
+    String password,
+    BuildContext context
+  ) async {
     try {
       // You can now use user.value to get the current LoginModel
       // Call your API or perform further actions
       // Example:
       isLoading(true);
-      final response = await ApiConnect.instance.login(username, password);
+      final response = await ApiConnect.instance.login(username, password,);
       isLoading(false);
       user(response);
       log("User Data: ${user.toJson()}");
@@ -65,6 +69,12 @@ class AuthController extends GetxController {
       }
     } catch (e) {
       isLoading(false);
+      ToastHelper.showToast(
+        context: context,
+        title: e.toString(),
+        description: '',
+        type: ToastType.error,
+      );
       print('Login error: $e');
     }
   }

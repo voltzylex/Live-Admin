@@ -10,14 +10,15 @@ part './app_routes.dart';
 
 class AppPages {
   AppPages._();
+
   static final pages = [
-    GetPage(
-      name: AppRoutes.login,
-      page: () => const LoginPage(),
-    ),
     GetPage(
       name: AppRoutes.initial,
       page: () => const SplashPage(),
+    ),
+    GetPage(
+      name: AppRoutes.login,
+      page: () => const LoginPage(),
     ),
     GetPage(
       name: AppRoutes.forgot,
@@ -26,13 +27,13 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.dashboard,
-      middlewares: [AuthMiddleware()],
       page: () => const DashboardPage(),
+      middlewares: [AuthMiddleware()],
     ),
     GetPage(
       name: AppRoutes.reset,
-      middlewares: [AuthMiddleware()],
       page: () => const ResetPasswordPage(),
+      middlewares: [AuthMiddleware()],
     ),
   ];
 }

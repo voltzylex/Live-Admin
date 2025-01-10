@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
 import 'package:live_admin/app/controllers/bindings.dart';
-import 'package:live_admin/app/routes/app_pages.dart';
+import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/themes/app_theme.dart';
 import 'package:live_admin/app/utils/common.dart';
 import 'package:live_admin/app/utils/extensions.dart';
@@ -9,7 +7,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await SC.to.init();
   runApp(const MyApp());
 }
 

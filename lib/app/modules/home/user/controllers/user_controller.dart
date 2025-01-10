@@ -19,6 +19,8 @@ class UserController extends GetxController with StateMixin<UsersModel> {
       userId = TextEditingController(),
       createP = TextEditingController(),
       confirmP = TextEditingController();
+
+  RxInt currentPage = 1.obs;
   @override
   onInit() {
     super.onInit();

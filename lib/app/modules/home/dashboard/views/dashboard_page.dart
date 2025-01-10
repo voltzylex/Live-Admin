@@ -94,17 +94,23 @@ class _DashboardPageState extends State<DashboardPage> {
                   isSelected: currentPage == '/movies',
                 ),
                 DashboardNavItem(
+                  label: 'Series',
+                  icon: 'assets/images/movies.svg',
+                  page: '/series',
+                  isSelected: currentPage == '/series',
+                ),
+                DashboardNavItem(
                   label: 'Membership',
                   icon: 'assets/images/membership.svg',
                   page: '/membership',
                   isSelected: currentPage == '/membership',
                 ),
-                DashboardNavItem(
-                  label: 'Settings',
-                  icon: 'assets/images/settings.svg',
-                  page: '/settings',
-                  isSelected: currentPage == '/settings',
-                ),
+                // DashboardNavItem(
+                //   label: 'Settings',
+                //   icon: 'assets/images/settings.svg',
+                //   page: '/settings',
+                //   isSelected: currentPage == '/settings',
+                // ),
               ],
             );
           }),

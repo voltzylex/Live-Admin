@@ -1,12 +1,13 @@
+// ListMembershipBody.dart
 import 'package:live_admin/app/global_imports.dart';
-import 'package:live_admin/app/modules/home/user/controllers/user_controller.dart';
-import 'package:live_admin/app/modules/home/user/models/users_model.dart';
-import 'package:live_admin/app/modules/home/user/widgets/user_data_source.dart';
+import 'package:live_admin/app/modules/home/membership/controllers/membership_controller.dart';
+import 'package:live_admin/app/modules/home/membership/models/membership_model.dart';
+import 'package:live_admin/app/modules/home/user/widgets/membership_data_source.dart';
 import 'package:live_admin/app/themes/app_text_theme.dart';
 
-class ListUserBody extends StatelessWidget {
-  final UserController user;
-  const ListUserBody({super.key, required this.user});
+class ListMembershipBody extends StatelessWidget {
+  final MembershipController membership;
+  const ListMembershipBody({super.key, required this.membership});
 
   @override
   Widget build(BuildContext context) {
@@ -15,10 +16,10 @@ class ListUserBody extends StatelessWidget {
         // Header Row with Title and Add Button
         _buildHeader(),
 
-        // User List Table with Pagination
+        // Membership List Table with Pagination
         Expanded(
-          child: user.obx(
-            (state) => _buildUserTable(state!, context),
+          child: membership.obx(
+            (state) => _buildMembershipTable(state!, context),
             onLoading: Center(child: CircularProgressIndicator()),
             onError: (error) => Center(
               child: Text(
@@ -30,7 +31,7 @@ class ListUserBody extends StatelessWidget {
         ),
 
         // Pagination Controls
-        user.obx(
+        membership.obx(
           (state) => _buildPagination(state!),
           onLoading: const SizedBox(height: 60),
         ),
@@ -43,7 +44,7 @@ class ListUserBody extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         const Text(
-          "Users",
+          "Membership Plans",
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -51,7 +52,7 @@ class ListUserBody extends StatelessWidget {
           ),
         ),
         BaseButton(
-          onPressed: user.toggleUser,
+          onPressed: () {},
           child: Container(
             decoration: BoxDecoration(
               color: Colors.purple,
@@ -63,7 +64,7 @@ class ListUserBody extends StatelessWidget {
                 Icon(Icons.add, color: Colors.white),
                 SizedBox(width: 10),
                 Text(
-                  "Add Users",
+                  "Add Membership",
                   style: TextStyle(color: Colors.white, fontSize: 15),
                 ),
               ],
@@ -74,7 +75,7 @@ class ListUserBody extends StatelessWidget {
     ).paddingAll(20);
   }
 
-  Widget _buildUserTable(UsersModel state, BuildContext context) {
+  Widget _buildMembershipTable(MembershipModel state, BuildContext context) {
     return Theme(
       data: ThemeData.dark(),
       child: PaginatedDataTable2(
@@ -93,9 +94,9 @@ class ListUserBody extends StatelessWidget {
           DataColumn2(label: Text('Actions'), size: ColumnSize.S),
         ],
         hidePaginator: true,
-        source: UserDataSource(
+        source: MembershipDataSource(
           context,
-          state.users,
+          state.myPlans,
           onEdit: (id) => _editUser(context, id),
           onDelete: (id) => _deleteUser(context, id),
         ),
@@ -103,7 +104,7 @@ class ListUserBody extends StatelessWidget {
     );
   }
 
-  Widget _buildPagination(UsersModel state) {
+  Widget _buildPagination(MembershipModel state) {
     final currentPage = state.meta!.currentPage;
     final lastPage = state.meta!.lastPage;
 
@@ -127,7 +128,7 @@ class ListUserBody extends StatelessWidget {
                 ),
                 const TextSpan(text: ' to '),
                 TextSpan(
-                  text: '${state.users.length}',
+                  text: '${state.myPlans.length}',
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: AppColors.white,
@@ -150,7 +151,7 @@ class ListUserBody extends StatelessWidget {
               IconButton(
                 onPressed: () {
                   if (currentPage > 1) {
-                    user.currentPage.value--;
+                    membership.currenP.value--;
                   }
                 },
                 icon: const Icon(Icons.navigate_before),
@@ -159,7 +160,7 @@ class ListUserBody extends StatelessWidget {
                 final page = index + 1;
                 final isActive = page == currentPage;
                 return GestureDetector(
-                  onTap: () => user.currentPage.value = page,
+                  onTap: () => membership.currenP.value = page,
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 7),
                     margin: const EdgeInsets.symmetric(horizontal: 2),
@@ -179,7 +180,7 @@ class ListUserBody extends StatelessWidget {
               IconButton(
                 onPressed: () {
                   if (currentPage < lastPage) {
-                    user.currentPage.value++;
+                   membership.currenP.value++;
                   }
                 },
                 icon: const Icon(Icons.navigate_next),
