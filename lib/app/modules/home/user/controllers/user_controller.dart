@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:image_picker/image_picker.dart';
@@ -19,12 +20,13 @@ class UserController extends GetxController with StateMixin<UsersModel> {
       userId = TextEditingController(),
       createP = TextEditingController(),
       confirmP = TextEditingController();
-
+ 
   RxInt currentPage = 1.obs;
   @override
   onInit() {
     super.onInit();
     getUsers();
+ 
   }
 
   Rx<bool> toggleUser() => isUser.toggle();

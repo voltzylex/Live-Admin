@@ -225,6 +225,41 @@ class ApiConnect extends GetConnect {
     }
   }
 
+  Future<Response> updateMovie(String id, AddMovie movie) async {
+    {
+      // Provide only that key needs to be updated
+      //'title',
+      //'description',
+      //'director',
+      //'producer',
+      //'release_year',
+      //'rating',
+      //'poster',
+      //'trailer_url',
+      //'movie_url',
+      //'categories',
+      //'tags',
+      //'status'
+    }
+    try {
+      final res = await post(EndPoints.updateMovie(id), movie.toJson(),
+          headers: await authHeader());
+      return res;
+    } catch (e) {
+      return Response(body: e.toString());
+    }
+  }
+
+  Future<Response> deleteMovie(int id) async {
+    try {
+      final res = await delete(EndPoints.deleteMovie(id.toString()),
+          headers: await authHeader());
+      return res;
+    } catch (e) {
+      return Response(body: e.toString());
+    }
+  }
+
   Future<Response> getSeries(int page) async {
     try {
       final res =
@@ -248,6 +283,36 @@ class ApiConnect extends GetConnect {
   Future<Response> getUsers() async {
     try {
       final res = await get(EndPoints.getUser, headers: await authHeader());
+      return res;
+    } catch (e) {
+      return Response(body: e.toString());
+    }
+  }
+
+  Future<Response> updateUsers(
+    String id, {
+    String? name,
+    String? email,
+    String? password,
+  }) async {
+    try {
+      final body = {
+        if (email != null) "email": "anurag@yopmail.com",
+        if (name != null) "name": "anurag",
+        if (password != null) "pasword": "required"
+      };
+      final res = await put(EndPoints.updateUser(id), body,
+          headers: await authHeader());
+      return res;
+    } catch (e) {
+      return Response(body: e.toString());
+    }
+  }
+
+  Future<Response> deleteUser(String id) async {
+    try {
+      final res =
+          await delete(EndPoints.updateUser(id), headers: await authHeader());
       return res;
     } catch (e) {
       return Response(body: e.toString());

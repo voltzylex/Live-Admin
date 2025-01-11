@@ -1,6 +1,5 @@
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/membership/models/membership_model.dart';
-import 'package:live_admin/app/modules/home/user/models/users_model.dart';
 
 class MembershipDataSource extends DataTableSource {
   final BuildContext context;
@@ -8,13 +7,11 @@ class MembershipDataSource extends DataTableSource {
   final void Function(int id) onEdit;
   final void Function(int id) onDelete;
 
-
   MembershipDataSource(
     this.context,
     this.plans, {
     required this.onEdit,
     required this.onDelete,
-
   });
 
   @override
@@ -29,12 +26,12 @@ class MembershipDataSource extends DataTableSource {
         DataCell(Text("#${plan.id}")),
 
         // Name
-        DataCell(Text(plan.name)),
+        DataCell(Text(plan.user!.name)),
 
         // Email
         DataCell(SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          child: Text(plan.user!.name),
+          child: Text(plan.user!.email),
         )),
 
         // Role

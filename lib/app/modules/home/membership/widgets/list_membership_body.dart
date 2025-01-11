@@ -20,7 +20,7 @@ class ListMembershipBody extends StatelessWidget {
         Expanded(
           child: membership.obx(
             (state) => _buildMembershipTable(state!, context),
-            onLoading: Center(child: CircularProgressIndicator()),
+            onLoading: ShimmerTable(),
             onError: (error) => Center(
               child: Text(
                 error.toString(),
@@ -180,7 +180,7 @@ class ListMembershipBody extends StatelessWidget {
               IconButton(
                 onPressed: () {
                   if (currentPage < lastPage) {
-                   membership.currenP.value++;
+                    membership.currenP.value++;
                   }
                 },
                 icon: const Icon(Icons.navigate_next),

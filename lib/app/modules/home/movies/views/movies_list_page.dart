@@ -1,7 +1,9 @@
+import 'dart:developer';
+
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/movies/controllers/movies_controller.dart';
 import 'package:live_admin/app/modules/home/movies/models/movies_model.dart';
-
+import 'package:live_admin/app/modules/home/movies/widgets/add_movie_body.dart';
 import 'package:live_admin/app/modules/home/movies/widgets/movie_data_source.dart';
 import 'package:live_admin/app/themes/app_text_theme.dart';
 
@@ -20,17 +22,34 @@ class _MoviesListPageState extends State<MoviesListPage> {
   }
 
   // Handle edit movie action
-  void _editMovie(int id) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Edit movie with ID: $id')),
+  void _editMovie(Movie movie) {
+    log("Edit movie called ");
+
+    Get.dialog(
+      Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: AppColors.content, // Set a solid background color
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+          child: AddMovieBody(
+            mov: widget.mov,
+            isEdit: true,
+            movies: movie,
+          ),
+        ),
+      ),
     );
   }
 
   // Handle delete movie action
-  void _deleteMovie(int id) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Deleted movie with ID: $id')),
-    );
+  void _deleteMovie(Movie id) {
+    widget.mov.deleteMovie(id.id, context);
   }
 
   // Navigate to the next page

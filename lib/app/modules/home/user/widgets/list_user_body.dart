@@ -19,7 +19,7 @@ class ListUserBody extends StatelessWidget {
         Expanded(
           child: user.obx(
             (state) => _buildUserTable(state!, context),
-            onLoading: Center(child: CircularProgressIndicator()),
+            onLoading: ShimmerTable(),
             onError: (error) => Center(
               child: Text(
                 error.toString(),

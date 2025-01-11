@@ -5,8 +5,8 @@ import 'package:live_admin/app/modules/home/movies/models/movies_model.dart';
 class MovieDataSource extends DataTableSource {
   final BuildContext context;
   final List<Movie> movies;
-  final void Function(int id) onEdit;
-  final void Function(int id) onDelete;
+  final void Function(Movie movie) onEdit;
+  final void Function(Movie movie) onDelete;
   final void Function(int id) onToggleStatus;
 
   MovieDataSource(
@@ -21,8 +21,8 @@ class MovieDataSource extends DataTableSource {
   DataRow getRow(int index) {
     final movie = movies[index];
     return DataRow2(
-      specificRowHeight:
-          movie.categories.length > 2 ? movie.categories.length * 10 : null,
+      specificRowHeight: 50,
+      // movie.categories.length > 2 ? movie.categories.length * 12 : null,
       color: WidgetStateProperty.all(
           movie.id % 2 == 0 ? AppColors.table1 : AppColors.table2),
       cells: [
@@ -43,7 +43,10 @@ class MovieDataSource extends DataTableSource {
           movie.categories.map((category) => category.name).join(', '),
           maxLines: 2,
         )),
-        DataCell(Text(movie.title)),
+        DataCell(Text(
+          movie.tags.map((category) => category.name).join(', '),
+          maxLines: 2,
+        )),
         DataCell(Text(DateFormat('dd/MMM/yyyy')
             .format(movie.createdAt ?? DateTime.now()))),
         DataCell(Text(
@@ -80,13 +83,12 @@ class MovieDataSource extends DataTableSource {
               ),
               IconButton(
                 icon: SvgPicture.asset(Assets.delete),
-                // onPressed: () => onEdit(movie["id"]),
-                onPressed: () {},
+                // onPressed: () => onEdit(movie.id),
+                onPressed: () => onDelete(movie),
               ),
               IconButton(
                 icon: SvgPicture.asset(Assets.edit),
-                // onPressed: () => onDelete(movie["id"]),
-                onPressed: () {},
+                onPressed: () => onEdit(movie),
               ),
             ],
           ),

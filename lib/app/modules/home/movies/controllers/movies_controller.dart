@@ -24,6 +24,8 @@ class MoviesController extends GetxController with StateMixin<MoviesModel> {
   RxBool isSwitchOn = true.obs;
   RxString selectedCategory = ''.obs;
   RxString selectedType = ''.obs;
+  final List<String> selectedCategories = [];
+  final List<String> selectedTypes = []; // Stores selected types
   RxBool isUpload = false.obs;
   // RxList<Movie> movies = <Movie>[].obs;
   final PaginatorController pageController = PaginatorController();
@@ -101,6 +103,7 @@ class MoviesController extends GetxController with StateMixin<MoviesModel> {
         type: ToastType.success,
       );
       clearField();
+      getMovies(currenP.value);
       hideLoading();
     } catch (e) {
       ToastHelper.showToast(
@@ -123,6 +126,31 @@ class MoviesController extends GetxController with StateMixin<MoviesModel> {
     } catch (e) {
       // Set error state
       change(null, status: RxStatus.error('Failed to load data'));
+    }
+  }
+
+  Future<void> deleteMovie(int id, BuildContext context) async {
+    try {
+      final res = await ApiConnect.instance.deleteMovie(id);
+      if (res.statusCode == 200) {
+        state!.movies.removeWhere(
+          (element) => element.id == id,
+        );
+        update();
+        ToastHelper.showToast(
+          context: context,
+          title: 'Deleted Succesfully',
+          description: res.body["message"] ?? 'Movie Deleted Succesfully',
+          type: ToastType.error,
+        );
+      }
+    } catch (e) {
+      ToastHelper.showToast(
+        context: context,
+        title: 'Some error occured',
+        description: e.toString(),
+        type: ToastType.error,
+      );
     }
   }
 }
