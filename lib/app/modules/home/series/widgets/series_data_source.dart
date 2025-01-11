@@ -1,6 +1,5 @@
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/movies/controllers/movies_controller.dart';
-import 'package:live_admin/app/modules/home/movies/models/movies_model.dart';
 import 'package:live_admin/app/modules/home/series/models/series_model.dart';
 
 class SeriesDataSource extends DataTableSource {
@@ -9,6 +8,7 @@ class SeriesDataSource extends DataTableSource {
   final void Function(int id) onEdit;
   final void Function(int id) onDelete;
   final void Function(int id) onToggleStatus;
+  final void Function(Series ser) onTap;
 
   SeriesDataSource(
     this.context,
@@ -16,6 +16,7 @@ class SeriesDataSource extends DataTableSource {
     required this.onEdit,
     required this.onDelete,
     required this.onToggleStatus,
+    required this.onTap,
   });
 
   @override
@@ -24,6 +25,7 @@ class SeriesDataSource extends DataTableSource {
     return DataRow2(
       // specificRowHeight:
       //     movie.categories.length > 2 ? movie.categories.length * 10 : null,
+      onTap: () => onTap(seri),
       color: WidgetStateProperty.all(
           seri.id % 2 == 0 ? AppColors.table1 : AppColors.table2),
       cells: [
@@ -49,8 +51,7 @@ class SeriesDataSource extends DataTableSource {
             .format(seri.createdAt ?? DateTime.now()))),
         DataCell(Text(
           true ? "Visible" : "Hidden",
-          style:
-              TextStyle(color: true ? AppColors.green : AppColors.red),
+          style: TextStyle(color: true ? AppColors.green : AppColors.red),
         )),
         DataCell(FittedBox(
           child: Row(

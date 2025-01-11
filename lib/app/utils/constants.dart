@@ -24,6 +24,8 @@ class EndPoints {
 
 enum LoadDataState { initialize, loading, loaded, error, timeout, unknownerror }
 
+String formatDateTime(DateTime? time) =>
+    DateFormat('dd/MMM/yyyy').format(time ?? DateTime.now());
 showLoading() {
   if (Get.isDialogOpen ?? false) {
     return;

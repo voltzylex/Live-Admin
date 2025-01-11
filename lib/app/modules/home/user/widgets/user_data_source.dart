@@ -1,19 +1,18 @@
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/user/models/users_model.dart';
+import 'package:live_admin/app/utils/constants.dart';
 
 class UserDataSource extends DataTableSource {
   final BuildContext context;
   final List<User> users;
-  final void Function(int id) onEdit;
-  final void Function(int id) onDelete;
-
+  final void Function(User id) onEdit;
+  final void Function(User id) onDelete;
 
   UserDataSource(
     this.context,
     this.users, {
     required this.onEdit,
     required this.onDelete,
-
   });
 
   @override
@@ -36,15 +35,20 @@ class UserDataSource extends DataTableSource {
           child: Text(user.email),
         )),
 
-        // Role
-        DataCell(Text(user.name)),
-
         // Status
+        // DataCell(Text(
+        //   "Inactive",
+        //   style: TextStyle(
+        //       // color: user.status ? AppColors.green : AppColors.red,
+        //       ),
+        // )),
         DataCell(Text(
-          "Inactive",
-          style: TextStyle(
-              // color: user.status ? AppColors.green : AppColors.red,
-              ),
+          formatDateTime(user.createdAt),
+          style: TextStyle(),
+        )),
+        DataCell(Text(
+          formatDateTime(user.updatedAt),
+          style: TextStyle(),
         )),
 
         // Actions
@@ -56,13 +60,13 @@ class UserDataSource extends DataTableSource {
               // Edit Button
               IconButton(
                 icon: SvgPicture.asset(Assets.edit),
-                onPressed: () => onEdit(user.id),
+                onPressed: () => onEdit(user),
               ),
 
               // Delete Button
               IconButton(
                 icon: SvgPicture.asset(Assets.delete),
-                onPressed: () => onDelete(user.id),
+                onPressed: () => onDelete(user),
               ),
             ],
           ),

@@ -4,10 +4,15 @@ import 'package:live_admin/app/modules/home/user/models/users_model.dart';
 import 'package:live_admin/app/modules/home/user/widgets/user_data_source.dart';
 import 'package:live_admin/app/themes/app_text_theme.dart';
 
-class ListUserBody extends StatelessWidget {
+class ListUserBody extends StatefulWidget {
   final UserController user;
   const ListUserBody({super.key, required this.user});
 
+  @override
+  State<ListUserBody> createState() => _ListUserBodyState();
+}
+
+class _ListUserBodyState extends State<ListUserBody> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -17,7 +22,7 @@ class ListUserBody extends StatelessWidget {
 
         // User List Table with Pagination
         Expanded(
-          child: user.obx(
+          child: widget.user.obx(
             (state) => _buildUserTable(state!, context),
             onLoading: ShimmerTable(),
             onError: (error) => Center(
@@ -30,7 +35,7 @@ class ListUserBody extends StatelessWidget {
         ),
 
         // Pagination Controls
-        user.obx(
+        widget.user.obx(
           (state) => _buildPagination(state!),
           onLoading: const SizedBox(height: 60),
         ),
@@ -51,7 +56,7 @@ class ListUserBody extends StatelessWidget {
           ),
         ),
         BaseButton(
-          onPressed: user.toggleUser,
+          onPressed: widget.user.toggleUser,
           child: Container(
             decoration: BoxDecoration(
               color: Colors.purple,
@@ -88,16 +93,17 @@ class ListUserBody extends StatelessWidget {
           DataColumn2(label: Text('ID'), size: ColumnSize.S),
           DataColumn2(label: Text('Name'), size: ColumnSize.L),
           DataColumn2(label: Text('Email'), size: ColumnSize.M),
-          DataColumn2(label: Text('Role'), size: ColumnSize.M),
-          DataColumn2(label: Text('Status'), size: ColumnSize.S),
+          DataColumn2(label: Text('Create Date'), size: ColumnSize.M),
+          DataColumn2(label: Text('End Date'), size: ColumnSize.M),
+          // DataColumn2(label: Text('Status'), size: ColumnSize.S),
           DataColumn2(label: Text('Actions'), size: ColumnSize.S),
         ],
         hidePaginator: true,
         source: UserDataSource(
           context,
           state.users,
-          onEdit: (id) => _editUser(context, id),
-          onDelete: (id) => _deleteUser(context, id),
+          onEdit: _editUser,
+          onDelete: _deleteUser,
         ),
       ),
     );
@@ -150,7 +156,7 @@ class ListUserBody extends StatelessWidget {
               IconButton(
                 onPressed: () {
                   if (currentPage > 1) {
-                    user.currentPage.value--;
+                    widget.user.currentPage.value--;
                   }
                 },
                 icon: const Icon(Icons.navigate_before),
@@ -159,7 +165,7 @@ class ListUserBody extends StatelessWidget {
                 final page = index + 1;
                 final isActive = page == currentPage;
                 return GestureDetector(
-                  onTap: () => user.currentPage.value = page,
+                  onTap: () => widget.user.currentPage.value = page,
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 7),
                     margin: const EdgeInsets.symmetric(horizontal: 2),
@@ -179,7 +185,7 @@ class ListUserBody extends StatelessWidget {
               IconButton(
                 onPressed: () {
                   if (currentPage < lastPage) {
-                    user.currentPage.value++;
+                    widget.user.currentPage.value++;
                   }
                 },
                 icon: const Icon(Icons.navigate_next),
@@ -191,15 +197,8 @@ class ListUserBody extends StatelessWidget {
     );
   }
 
-  void _editUser(BuildContext context, int id) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Edit user with ID: $id')),
-    );
-  }
-
-  void _deleteUser(BuildContext context, int id) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Deleted user with ID: $id')),
-    );
+  void _editUser(User u) {}
+  void _deleteUser(User u) {
+    widget.user.deleteUser(u.id, context);
   }
 }

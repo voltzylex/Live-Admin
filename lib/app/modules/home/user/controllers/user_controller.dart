@@ -20,13 +20,12 @@ class UserController extends GetxController with StateMixin<UsersModel> {
       userId = TextEditingController(),
       createP = TextEditingController(),
       confirmP = TextEditingController();
- 
+
   RxInt currentPage = 1.obs;
   @override
   onInit() {
     super.onInit();
     getUsers();
- 
   }
 
   Rx<bool> toggleUser() => isUser.toggle();
@@ -81,6 +80,31 @@ class UserController extends GetxController with StateMixin<UsersModel> {
     } catch (e) {
       // Set error state
       change(null, status: RxStatus.error('Failed to load data'));
+    }
+  }
+
+  Future<void> deleteUser(int id, BuildContext context) async {
+    try {
+      final res = await ApiConnect.instance.deleteUser(id);
+      if (res.statusCode == 200) {
+        state!.users.removeWhere(
+          (element) => element.id == id,
+        );
+        update();
+        ToastHelper.showToast(
+          context: context,
+          title: 'Deleted Succesfully',
+          description: res.body["message"] ?? 'User Deleted Succesfully',
+          type: ToastType.error,
+        );
+      }
+    } catch (e) {
+      ToastHelper.showToast(
+        context: context,
+        title: 'Some error occured',
+        description: e.toString(),
+        type: ToastType.error,
+      );
     }
   }
 }

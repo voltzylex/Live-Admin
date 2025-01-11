@@ -309,10 +309,10 @@ class ApiConnect extends GetConnect {
     }
   }
 
-  Future<Response> deleteUser(String id) async {
+  Future<Response> deleteUser(int id) async {
     try {
-      final res =
-          await delete(EndPoints.updateUser(id), headers: await authHeader());
+      final res = await delete(EndPoints.updateUser(id.toString()),
+          headers: await authHeader());
       return res;
     } catch (e) {
       return Response(body: e.toString());

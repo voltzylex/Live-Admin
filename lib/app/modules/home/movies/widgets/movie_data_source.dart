@@ -1,6 +1,7 @@
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/movies/controllers/movies_controller.dart';
 import 'package:live_admin/app/modules/home/movies/models/movies_model.dart';
+import 'package:live_admin/app/utils/constants.dart';
 
 class MovieDataSource extends DataTableSource {
   final BuildContext context;
@@ -42,13 +43,12 @@ class MovieDataSource extends DataTableSource {
         DataCell(Text(
           movie.categories.map((category) => category.name).join(', '),
           maxLines: 2,
-        )),
+        )), 
         DataCell(Text(
-          movie.tags.map((category) => category.name).join(', '),
+          movie.tags.map((type) => type.name).join(', '),
           maxLines: 2,
         )),
-        DataCell(Text(DateFormat('dd/MMM/yyyy')
-            .format(movie.createdAt ?? DateTime.now()))),
+        DataCell(Text(formatDateTime(movie.createdAt))),
         DataCell(Text(
           movie.status ? "Visible" : "Hidden",
           style:
