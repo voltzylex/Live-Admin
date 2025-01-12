@@ -14,7 +14,7 @@ class SeriesController extends GetxController with StateMixin<SeriesModel> {
       : Get.put(SeriesController());
   final TextEditingController categoryController = TextEditingController();
   final TextEditingController typeController = TextEditingController();
-  final TextEditingController movieNameController = TextEditingController();
+  final TextEditingController seriesNameController = TextEditingController();
   final TextEditingController uploadLinkController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final Rxn<Uint8List> image = Rxn();
@@ -51,7 +51,7 @@ class SeriesController extends GetxController with StateMixin<SeriesModel> {
   clearField() {
     categoryController.text = "";
     typeController.text = "";
-    movieNameController.clear();
+    seriesNameController.clear();
     uploadLinkController.clear();
     descriptionController.clear();
     image(null);
@@ -123,4 +123,6 @@ class SeriesController extends GetxController with StateMixin<SeriesModel> {
       change(null, status: RxStatus.error('Failed to load data $e'));
     }
   }
+
+  saveSeries() {}
 }
