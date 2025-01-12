@@ -21,7 +21,7 @@ class UserDataSource extends DataTableSource {
     return DataRow2(
       specificRowHeight: null,
       color: WidgetStateProperty.all(
-          user.id % 2 == 0 ? AppColors.table1 : AppColors.table2),
+          index % 2 == 0 ? AppColors.table1 : AppColors.table2),
       cells: [
         // ID
         DataCell(Text("#${user.id}")),

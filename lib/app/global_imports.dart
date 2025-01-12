@@ -10,6 +10,7 @@ export 'package:live_admin/app/modules/home/dashboard/controller/dashboard_contr
 export 'package:live_admin/app/modules/home/dashboard/views/dashboard_page.dart';
 export 'package:live_admin/app/routes/app_pages.dart';
 // Utilities
+export 'package:live_admin/app/themes/app_text_theme.dart';
 export 'package:live_admin/app/themes/app_colors.dart';
 export 'package:live_admin/app/utils/assets.dart';
 export 'package:live_admin/app/utils/helpers/toast_helper.dart';

@@ -24,7 +24,7 @@ class DashboardNavItem extends StatelessWidget {
             : AppColors.backgroundDark, // Change background when selected
         child: InkWell(
           hoverColor: AppColors.primaryLight, // Hover color for the background
-          onTap: () => Get.find<DashboardController>().navigateTo(page),
+          onTap: () => Get.find<DashboardController>().changePage(page),
           child: Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 16.0,

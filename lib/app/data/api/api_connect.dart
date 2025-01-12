@@ -179,9 +179,9 @@ class ApiConnect extends GetConnect {
   }
 
   // auth header
-  Future<Map<String, String>> authHeader() async {
+  Map<String, String> authHeader() {
     return {
-      "Authorization": "Bearer ${await SC.to.getToken()}",
+      "Authorization": "Bearer ${SC.to.getToken()}",
       "Accept": "application/json",
     };
   }
@@ -196,7 +196,7 @@ class ApiConnect extends GetConnect {
     try {
       _reqBody = body;
       final response = await post(EndPoints.login, jsonEncode(body));
-      SC.to.saveUser(LoginModel.fromJson(response.body));
+
       return LoginModel.fromJson(response.body);
     } finally {
       _reqBody = null;
@@ -206,9 +206,22 @@ class ApiConnect extends GetConnect {
   // add movie
   Future<Response> addMovie(AddMovie mov) async {
     try {
-      final res = await post(EndPoints.addMovie, mov.toJson(),
-          headers: await authHeader());
+      final res =
+          await post(EndPoints.addMovie, mov.toJson(), headers: authHeader());
       log("Response ${res.body}");
+      return res;
+    } catch (e) {
+      return Response(body: e.toString());
+    }
+  }
+
+  Future<Response> getDashboard(DateTime? endDate) async {
+    try {
+      final res = await get(EndPoints.dashboard, headers: authHeader(), query: {
+        "start_date": formatToDate(
+            endDate ?? DateTime.now().copyWith(day: DateTime.now().day - 30)),
+        "end_date": formatToDate(DateTime.now()),
+      });
       return res;
     } catch (e) {
       return Response(body: e.toString());
@@ -217,15 +230,14 @@ class ApiConnect extends GetConnect {
 
   Future<Response> getMovies(int page) async {
     try {
-      final res =
-          await get(EndPoints.getMovie(page), headers: await authHeader());
+      final res = await get(EndPoints.getMovie(page), headers: authHeader());
       return res;
     } catch (e) {
       return Response(body: e.toString());
     }
   }
 
-  Future<Response> updateMovie(String id, AddMovie movie) async {
+  Future<Response> updateMovie(int id, AddMovie movie) async {
     {
       // Provide only that key needs to be updated
       //'title',
@@ -242,8 +254,9 @@ class ApiConnect extends GetConnect {
       //'status'
     }
     try {
-      final res = await post(EndPoints.updateMovie(id), movie.toJson(),
-          headers: await authHeader());
+      final res = await post(
+          EndPoints.updateMovie(id.toString()), movie.toJson(),
+          headers: authHeader());
       return res;
     } catch (e) {
       return Response(body: e.toString());
@@ -253,7 +266,7 @@ class ApiConnect extends GetConnect {
   Future<Response> deleteMovie(int id) async {
     try {
       final res = await delete(EndPoints.deleteMovie(id.toString()),
-          headers: await authHeader());
+          headers: authHeader());
       return res;
     } catch (e) {
       return Response(body: e.toString());
@@ -262,8 +275,7 @@ class ApiConnect extends GetConnect {
 
   Future<Response> getSeries(int page) async {
     try {
-      final res =
-          await get(EndPoints.getSeries(page), headers: await authHeader());
+      final res = await get(EndPoints.getSeries(page), headers: authHeader());
       return res;
     } catch (e) {
       return Response(body: e.toString());
@@ -272,8 +284,8 @@ class ApiConnect extends GetConnect {
 
   Future<Response> getMemberships(int page) async {
     try {
-      final res = await get(EndPoints.getMemberships(page),
-          headers: await authHeader());
+      final res =
+          await get(EndPoints.getMemberships(page), headers: authHeader());
       return res;
     } catch (e) {
       return Response(body: e.toString());
@@ -282,7 +294,7 @@ class ApiConnect extends GetConnect {
 
   Future<Response> getUsers() async {
     try {
-      final res = await get(EndPoints.getUser, headers: await authHeader());
+      final res = await get(EndPoints.getUser, headers: authHeader());
       return res;
     } catch (e) {
       return Response(body: e.toString());
@@ -301,8 +313,8 @@ class ApiConnect extends GetConnect {
         if (name != null) "name": "anurag",
         if (password != null) "pasword": "required"
       };
-      final res = await put(EndPoints.updateUser(id), body,
-          headers: await authHeader());
+      final res =
+          await put(EndPoints.updateUser(id), body, headers: authHeader());
       return res;
     } catch (e) {
       return Response(body: e.toString());
@@ -312,7 +324,7 @@ class ApiConnect extends GetConnect {
   Future<Response> deleteUser(int id) async {
     try {
       final res = await delete(EndPoints.updateUser(id.toString()),
-          headers: await authHeader());
+          headers: authHeader());
       return res;
     } catch (e) {
       return Response(body: e.toString());

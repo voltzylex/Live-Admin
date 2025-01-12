@@ -46,7 +46,7 @@ class SC extends GetxController {
   }
 
   // Get user from SharedPreferences
-  Future<LoginModel?> getUser() async {
+  LoginModel? getUser() {
     try {
       final user = _prefs?.getString('user');
       return user != null ? LoginModel.fromJson(jsonDecode(user)) : null;
@@ -57,9 +57,9 @@ class SC extends GetxController {
   }
 
   // Get token from user
-  Future<String?> getToken() async {
+  String? getToken() {
     try {
-      final token = (await getUser())?.accessToken;
+      final token = (getUser())?.accessToken;
       log("Token: $token");
       return token;
     } catch (e) {

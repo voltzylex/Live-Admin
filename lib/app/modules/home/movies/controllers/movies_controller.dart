@@ -153,4 +153,44 @@ class MoviesController extends GetxController with StateMixin<MoviesModel> {
       );
     }
   }
+  // Edit movie
+
+  editMovie(BuildContext context, AddMovie movie, int id) async {
+    final m = movie.toJson();
+
+    m.remove("poster");
+    log("Edit data is $m");
+    return;
+    // if (image.value == null) {
+    //   ToastHelper.showToast(
+    //     context: context,
+    //     title: 'Please Select Image',
+    //     description: 'please select image before proceding!',
+    //     type: ToastType.error,
+    //   );
+    //   return;
+    // }
+
+    try {
+      showLoading();
+      await ApiConnect.instance.updateMovie(id, movie);
+      ToastHelper.showToast(
+        context: context,
+        title: 'Movie Updated Succesfully',
+        description: "",
+        type: ToastType.success,
+      );
+      clearField();
+      getMovies(currenP.value);
+      hideLoading();
+    } catch (e) {
+      ToastHelper.showToast(
+        context: context,
+        title: 'Server Error',
+        description: e.toString(),
+        type: ToastType.error,
+      );
+      hideLoading();
+    }
+  }
 }

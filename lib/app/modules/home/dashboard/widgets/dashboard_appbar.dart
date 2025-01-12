@@ -1,10 +1,12 @@
 import 'package:live_admin/app/global_imports.dart';
+import 'package:live_admin/app/themes/app_text_theme.dart';
 
 class DashboardAppBar extends StatelessWidget {
   const DashboardAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final user = SC.to.getUser();
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 30.0),
       color: AppColors.backgroundDark,
@@ -12,7 +14,8 @@ class DashboardAppBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Spacer(),
+          const Spacer(),
+
           // Search Field
           Expanded(
             child: TextField(
@@ -24,14 +27,6 @@ class DashboardAppBar extends StatelessWidget {
                 filled: true,
                 fillColor: AppColors.content,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(kRadius),
-                  borderSide: BorderSide.none,
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(kRadius),
-                  borderSide: BorderSide.none,
-                ),
-                focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(kRadius),
                   borderSide: BorderSide.none,
                 ),
@@ -65,15 +60,28 @@ class DashboardAppBar extends StatelessWidget {
           ),
           const SizedBox(width: 20),
 
-          // Profile Section
-          InkWell(
-            onTap: () => SC.to.clearUserData(),
-            child: Container(
+          // Profile Section with Dropdown Menu
+          PopupMenuButton<String>(
+            onSelected: (value) {
+              if (value == 'Settings') {
+                // Navigate to settings page
+                Get.to(() => const SettingsPage());
+              } else if (value == 'Logout') {
+                // Clear user data and navigate to login screen
+                SC.to.clearUserData();
+              }
+            },
+            color: AppColors.black,
+            offset: const Offset(0, 50),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            icon: Container(
               decoration: BoxDecoration(
                 color: AppColors.content,
                 borderRadius: BorderRadius.circular(25),
               ),
-              padding: EdgeInsets.all(8),
+              padding: const EdgeInsets.all(8),
               child: Row(
                 children: [
                   CircleAvatar(
@@ -81,17 +89,62 @@ class DashboardAppBar extends StatelessWidget {
                     radius: 20,
                   ),
                   const SizedBox(width: 10),
-                  const Text(
-                    'John Doe',
+                  Text(
+                    user?.admin?.name ?? "John doe",
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                   const SizedBox(width: 10),
-                  Icon(Icons.keyboard_arrow_down_rounded)
+                  const Icon(Icons.keyboard_arrow_down_rounded)
                 ],
               ),
             ),
+            itemBuilder: (context) {
+              return [
+                PopupMenuItem<String>(
+                  value: 'Settings',
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.person,
+                      color: AppColors.white,
+                    ),
+                    title: Text('Edit Profile', style: AppTextStyles.title.s18),
+                  ),
+                ),
+                PopupMenuItem<String>(
+                  value: 'Logout',
+                  child: ListTile(
+                    leading: Icon(Icons.logout, color: Colors.red),
+                    title: Text(
+                      'Logout',
+                      style: AppTextStyles.title.s18,
+                    ),
+                    onTap: () async {
+                      await SC.to
+                          .clearUserData()
+                          .then((value) => Get.offAllNamed(AppRoutes.login));
+                    },
+                  ),
+                ),
+              ];
+            },
           ),
         ],
+      ),
+    );
+  }
+}
+
+class SettingsPage extends StatelessWidget {
+  const SettingsPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Settings'),
+      ),
+      body: const Center(
+        child: Text('Settings Page Content'),
       ),
     );
   }

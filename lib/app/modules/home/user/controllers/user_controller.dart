@@ -79,7 +79,7 @@ class UserController extends GetxController with StateMixin<UsersModel> {
       change(user, status: RxStatus.success());
     } catch (e) {
       // Set error state
-      change(null, status: RxStatus.error('Failed to load data'));
+      change(null, status: RxStatus.error('Failed to load data $e'));
     }
   }
 

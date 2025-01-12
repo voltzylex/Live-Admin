@@ -27,7 +27,7 @@ class SeriesDataSource extends DataTableSource {
       //     movie.categories.length > 2 ? movie.categories.length * 10 : null,
       onTap: () => onTap(seri),
       color: WidgetStateProperty.all(
-          seri.id % 2 == 0 ? AppColors.table1 : AppColors.table2),
+          index % 2 == 0 ? AppColors.table1 : AppColors.table2),
       cells: [
         DataCell(Text("#${seri.id}")),
         DataCell(SingleChildScrollView(

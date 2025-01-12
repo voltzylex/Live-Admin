@@ -23,6 +23,8 @@ class AddMovieBody extends StatefulWidget {
 }
 
 class _AddMovieBodyState extends State<AddMovieBody> {
+  // Form key for validation
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   @override
   void initState() {
     super.initState();
@@ -52,12 +54,54 @@ class _AddMovieBodyState extends State<AddMovieBody> {
     widget.mov.uploadLinkController.clear();
     widget.mov.selectedTypes.clear();
     widget.mov.selectedCategories.clear();
+    widget.mov.image.value = null;
+  }
+
+  addMovies() async {
+    log("Auth header : ${await ApiConnect.instance.authHeader()}");
+    // mov.isSubmitPressed.value = true;
+
+    if ((formKey.currentState?.validate() ?? false)) {
+      final movie = AddMovie(
+          title: widget.mov.movieNameController.text,
+          poster: kDebugMode
+              ? "this is image link"
+              : base64Encode(widget.mov.image.value!),
+          movieUrl: widget.mov.uploadLinkController.text,
+          categories: widget.mov.selectedCategories,
+          tags: widget.mov.selectedTypes);
+      log("Movie ${movie.toJson()}");
+      await widget.mov.uploadMovie(
+        context,
+        movie,
+      );
+    }
+  }
+
+  editMovie() async {
+    if ((formKey.currentState?.validate() ?? false)) {
+      final movie = AddMovie(
+          title: widget.mov.movieNameController.text,
+          poster: kDebugMode
+              ? "this is image link"
+              : base64Encode(widget.mov.image.value!),
+          movieUrl: widget.mov.uploadLinkController.text,
+          categories: widget.mov.selectedCategories,
+          tags: widget.mov.selectedTypes);
+      log("Edit movie ${movie.toJson()}");
+      final m = movie.toJson();
+
+      m.remove("poster");
+      log("Edit data is $m");
+      // await widget.mov.uploadMovie(
+      //   context,
+      //   movie,
+      // );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // Form key for validation
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return Scaffold(
       backgroundColor: AppColors.transparent,
       body: SingleChildScrollView(
@@ -102,6 +146,11 @@ class _AddMovieBodyState extends State<AddMovieBody> {
                     border: Border.all(width: 1, color: AppColors.white),
                   ),
                   child: Obx(() {
+                    if (widget.isEdit &&
+                        widget.mov.image.value == null &&
+                        widget.movies!.poster.isNotEmpty) {
+                      return Image.network(widget.movies!.poster);
+                    }
                     if (widget.mov.image.value != null) {
                       return Image.memory(
                         widget.mov.image.value!,
@@ -236,27 +285,7 @@ class _AddMovieBodyState extends State<AddMovieBody> {
 
                         // Publish Button
                         ElevatedButton(
-                          onPressed: () async {
-                            log("Auth header : ${await ApiConnect.instance.authHeader()}");
-                            // mov.isSubmitPressed.value = true;
-
-                            if ((formKey.currentState?.validate() ?? false)) {
-                              final movie = AddMovie(
-                                  title: widget.mov.movieNameController.text,
-                                  poster: kDebugMode
-                                      ? "this is image link"
-                                      : base64Encode(widget.mov.image.value!),
-                                  movieUrl:
-                                      widget.mov.uploadLinkController.text,
-                                  categories: widget.mov.selectedCategories,
-                                  tags: widget.mov.selectedTypes);
-                              log("Movie ${movie.toJson()}");
-                              await widget.mov.uploadMovie(
-                                context,
-                                movie,
-                              );
-                            }
-                          },
+                          onPressed: widget.isEdit ? editMovie : addMovies,
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(kRadius),

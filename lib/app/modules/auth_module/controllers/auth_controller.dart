@@ -51,18 +51,19 @@ class AuthController extends GetxController {
   }
 
   Future<void> login(
-    String username,
-    String password,
-    BuildContext context
-  ) async {
+      String username, String password, BuildContext context) async {
     try {
       // You can now use user.value to get the current LoginModel
       // Call your API or perform further actions
       // Example:
       isLoading(true);
-      final response = await ApiConnect.instance.login(username, password,);
+      final response = await ApiConnect.instance.login(
+        username,
+        password,
+      );
       isLoading(false);
       user(response);
+      await SC.to.saveUser(response);
       log("User Data: ${user.toJson()}");
       if (user.value != null) {
         Get.offAllNamed(AppRoutes.dashboard);

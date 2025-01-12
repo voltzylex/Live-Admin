@@ -25,7 +25,7 @@ class MovieDataSource extends DataTableSource {
       specificRowHeight: 50,
       // movie.categories.length > 2 ? movie.categories.length * 12 : null,
       color: WidgetStateProperty.all(
-          movie.id % 2 == 0 ? AppColors.table1 : AppColors.table2),
+          index % 2 == 0 ? AppColors.table1 : AppColors.table2),
       cells: [
         DataCell(Text("#${movie.id}")),
         DataCell(SingleChildScrollView(
@@ -43,7 +43,7 @@ class MovieDataSource extends DataTableSource {
         DataCell(Text(
           movie.categories.map((category) => category.name).join(', '),
           maxLines: 2,
-        )), 
+        )),
         DataCell(Text(
           movie.tags.map((type) => type.name).join(', '),
           maxLines: 2,

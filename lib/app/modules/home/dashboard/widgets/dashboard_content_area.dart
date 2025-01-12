@@ -7,12 +7,10 @@ import 'package:live_admin/app/modules/home/settings/setting_page.dart';
 import 'package:live_admin/app/modules/home/user/user_page.dart';
 
 class DashboardContentArea extends StatelessWidget {
-  const DashboardContentArea({super.key});
-
+  DashboardContentArea({super.key});
+  final dashboard = Get.find<DashboardController>();
   @override
   Widget build(BuildContext context) {
-    final dashboard = Get.find<DashboardController>();
-
     return Expanded(
       child: Container(
         color: AppColors.black,
@@ -20,7 +18,7 @@ class DashboardContentArea extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             color: AppColors.content,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(kContentRadius),
           ),
           child: Obx(() {
             // Use AnimatedSwitcher for smooth transitions
@@ -50,7 +48,10 @@ class DashboardContentArea extends StatelessWidget {
   Widget _getPage(String page) {
     switch (page) {
       case '/dashboard':
-        return const DashboardContent(key: ValueKey('/dashboard'));
+        return DashboardContent(
+          key: ValueKey('/dashboard'),
+          das: dashboard,
+        );
       case '/user':
         return const UserPage(key: ValueKey('/user'));
       case '/movies':
@@ -62,7 +63,10 @@ class DashboardContentArea extends StatelessWidget {
       case "/series":
         return const SeriesPage(key: ValueKey("/series"));
       default:
-        return const DashboardContent(key: ValueKey('default'));
+        return DashboardContent(
+          key: ValueKey('default'),
+          das: dashboard,
+        );
     }
   }
 }

@@ -9,6 +9,7 @@ class EndPoints {
   static const String login = "admin/login";
   static const String user = "userdata";
   static const String addMovie = "admin/movies";
+  static const String dashboard = "admin/dashboard";
   static String getMovie(int page) => "movies?page=$page";
   static String updateMovie(String id) => "admin/movies/$id/update";
   static String deleteMovie(String id) => "admin/movies/$id";
@@ -26,6 +27,7 @@ enum LoadDataState { initialize, loading, loaded, error, timeout, unknownerror }
 
 String formatDateTime(DateTime? time) =>
     DateFormat('dd/MMM/yyyy').format(time ?? DateTime.now());
+String formatToDate(DateTime date) => DateFormat("yyyy-MM-dd").format(date);
 showLoading() {
   if (Get.isDialogOpen ?? false) {
     return;

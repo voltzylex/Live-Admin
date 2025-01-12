@@ -33,7 +33,12 @@ class AppColors {
   static const Color backgroundLight = Color(0xFFF5F5F5); // #F5F5F5
   static const Color backgroundDark = Color(0xFF0B0A0F); // #121212
   static const Color content = Color(0xff222126);
-
+  static const Color contentBox = Color(0xff1A191E);
+  // Shimmer
+  static const Color baseColor = Color(0xff3A3A3F);
+  static const Color highlightColor = Color(0xff55555A);
+  // chart color
+  static const Color chart = Color(0xffFD72EF);
   // Transparent
   static const Color transparent = Colors.transparent;
 
@@ -50,3 +55,4 @@ class AppColors {
 }
 
 const double kRadius = 30;
+const double kContentRadius = 12;

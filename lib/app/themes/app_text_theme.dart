@@ -28,6 +28,14 @@ class AppTextStyles {
     fontSize: 22,
     color: AppColors.white,
   );
+  static const TextStyle subtitle = TextStyle(
+    fontSize: 18,
+    color: AppColors.white,
+  );
+  static const TextStyle caption = TextStyle(
+    fontSize: 16,
+    color: AppColors.white,
+  );
 }
 
 extension AppFontWeight on TextStyle {

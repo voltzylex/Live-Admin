@@ -30,7 +30,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 _buildNavigationBar(),
 
                 // Main Content Area
-                const DashboardContentArea(),
+                DashboardContentArea(),
               ],
             ),
           ),

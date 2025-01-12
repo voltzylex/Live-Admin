@@ -1,14 +1,17 @@
+import 'package:live_admin/app/data/api/api_connect.dart';
 import 'package:live_admin/app/global_imports.dart';
-import 'package:live_admin/app/modules/home/dashboard/views/dashboard_content.dart';
-import 'package:live_admin/app/modules/home/membership/views/membership_page.dart';
-import 'package:live_admin/app/modules/home/movies/views/movies_page.dart';
-import 'package:live_admin/app/modules/home/settings/setting_page.dart';
-import 'package:live_admin/app/modules/home/user/user_page.dart';
+import 'package:live_admin/app/modules/home/dashboard/models/dashboard_model.dart';
 
-class DashboardController extends GetxController {
+class DashboardController extends GetxController
+    with StateMixin<DashboardModel> {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   String? currentRoute;
+  @override
+  void onInit() {
+    super.onInit();
+    fetchDashboard();
+  }
 
   final RxString currentPage = '/dashboard'.obs;
   // Update the current page
@@ -16,27 +19,14 @@ class DashboardController extends GetxController {
     currentPage.value = page;
   }
 
-  void navigateTo(String page) {
-    if (currentPage.value != page) {
-      currentPage.value = page;
-      navigatorKey.currentState?.pushReplacementNamed(page);
-    }
-  }
-
-  Route<dynamic>? onGenerateRoute(RouteSettings settings) {
-    switch (settings.name) {
-      case '/dashboard':
-        return MaterialPageRoute(builder: (_) => const DashboardContent());
-      case '/user':
-        return MaterialPageRoute(builder: (_) => const UserPage());
-      case '/movies':
-        return MaterialPageRoute(builder: (_) => const MoviesPage());
-      case '/membership':
-        return MaterialPageRoute(builder: (_) => const MembershipPage());
-      case '/settings':
-        return MaterialPageRoute(builder: (_) => const SettingsPage());
-      default:
-        return MaterialPageRoute(builder: (_) => const DashboardContent());
+  // Fetch dashboard data
+  Future<void> fetchDashboard() async {
+    try {
+      change(null, status: RxStatus.loading());
+      final res = await ApiConnect.instance.getDashboard(null);
+      change(DashboardModel.fromJson(res.body), status: RxStatus.success());
+    } catch (e) {
+      change(null, status: RxStatus.error(e.toString()));
     }
   }
 }
