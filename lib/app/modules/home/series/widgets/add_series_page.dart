@@ -37,7 +37,7 @@ class _AddSeriesPageState extends State<AddSeriesPage> {
             // Image Upload Section and Input Fields
             seriesDetails(ser, context),
             const SizedBox(height: 40),
-            
+
             // Action Buttons
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -83,105 +83,98 @@ class _AddSeriesPageState extends State<AddSeriesPage> {
 
   SizedBox seriesDetails(SeriesController ser, BuildContext context) {
     return SizedBox(
-            height: 260,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Image Upload Container
-                GestureDetector(
-                  onTap: () => ser.pickImage(context),
-                  child: Container(
-                    // height: 250,
-                    width: 200,
-                    decoration: BoxDecoration(
-                      color: AppColors.white.withOpacity(0.1),
+      height: 260,
+      width: Get.width,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Image Upload Container
+          GestureDetector(
+            onTap: () => ser.pickImage(context),
+            child: Container(
+              // height: 250,
+              width: 200,
+              decoration: BoxDecoration(
+                color: AppColors.white.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColors.borderL1),
+              ),
+              child: SizedBox.expand(
+                child: Obx(() {
+                  if (ser.image.value != null) {
+                    return ClipRRect(
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: AppColors.borderL1),
-                    ),
-                    child: SizedBox.expand(
-                      child: Obx(() {
-                        if (ser.image.value != null) {
-                          return ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.memory(
-                              ser.image.value!,
-                              fit: BoxFit.cover,
-                            ),
-                          );
-                        }
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(Icons.image, color: Colors.white, size: 40),
-                            SizedBox(height: 10),
-                            Text(
-                              "Upload Cover",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ],
-                        );
-                      }),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 40),
-
-                // Input Fields
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Series Name Field
+                      child: Image.memory(
+                        ser.image.value!,
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  }
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(Icons.image, color: Colors.white, size: 40),
+                      SizedBox(height: 10),
                       Text(
-                        "Series Name",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      TextField(
-                        controller: ser.seriesNameController,
-                        decoration: InputDecoration(
-                          hintText: "Enter series name",
-                          filled: true,
-                          fillColor: AppColors.white.withOpacity(0.1),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide(color: AppColors.borderL1),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-
-                      // Series Description Field
-                      Text(
-                        "Series Description",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      TextField(
-                        controller: ser.descriptionController,
-                        maxLines: 5,
-                        // minLines: 4,
-                        decoration: InputDecoration(
-                          hintText: "Enter series description",
-                          filled: true,
-                          fillColor: AppColors.white.withOpacity(0.1),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide(color: AppColors.borderL1),
-                          ),
-                        ),
+                        "Upload Cover",
+                        style: TextStyle(color: Colors.white),
                       ),
                     ],
+                  );
+                }),
+              ),
+            ),
+          ),
+          const SizedBox(width: 40),
+
+          // Input Fields
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Series Name Field
+                Text(
+                  "Series Name",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 5),
+                TextField(
+                  controller: ser.seriesNameController,
+                  decoration: InputDecoration(
+                    hintText: "Enter series name",
+                    filled: true,
+                    fillColor: AppColors.white.withOpacity(0.1),
+                  ),
+                ),
+                const SizedBox(height: 10),
+
+                // Series Description Field
+                Text(
+                  "Series Description",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 5),
+                TextField(
+                  controller: ser.descriptionController,
+                  maxLines: 5,
+                  // minLines: 4,
+                  decoration: InputDecoration(
+                    hintText: "Enter series description",
+                    filled: true,
+                    fillColor: AppColors.white.withOpacity(0.1),
                   ),
                 ),
               ],
             ),
-          );
+          ),
+        ],
+      ),
+    );
   }
 }
