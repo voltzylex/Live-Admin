@@ -22,7 +22,8 @@ class NewMembersSection extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("New Members", style: AppTextStyles.title)
-                    .paddingSymmetric(horizontal: 20),
+                    .paddingSymmetric(horizontal: 20)
+                    .paddingOnly(top: 10),
                 const Divider(color: AppColors.white),
                 // Member Rows
                 ListView.builder(
@@ -95,26 +96,43 @@ class NewMembersSection extends StatelessWidget {
 
   // Helper method to build a single column in a row
   Widget _buildMemberColumn(String value, int index, {required int flex}) {
-    return Flexible(
-      flex: flex,
+    // return Flexible(
+    //   flex: flex,
+    //   child: Padding(
+    //     padding: const EdgeInsets.symmetric(vertical: 8.0),
+    //     child: Column(
+    //       crossAxisAlignment:
+    //           CrossAxisAlignment.center, // Align the text in columns
+    //       children: [
+    //         Text(
+    //           value,
+    //           style: index == 0
+    //               ? AppTextStyles.subtitle.copyWith(
+    //                   fontWeight: FontWeight.bold,
+    //                   color: AppColors.hintText,
+    //                 )
+    //               : AppTextStyles.subtitle,
+    //           // textAlign: TextAlign
+    //           //     .center, // Ensure center alignment for both header and data cells
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    // );
+
+    return Expanded(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.center, // Align the text in columns
-          children: [
-            Text(
-              value,
-              style: index == 0
-                  ? AppTextStyles.subtitle.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.hintText,
-                    )
-                  : AppTextStyles.subtitle,
-              textAlign: TextAlign
-                  .center, // Ensure center alignment for both header and data cells
-            ),
-          ],
+        child: Text(
+          value,
+          style: index == 0
+              ? AppTextStyles.subtitle.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.hintText,
+                )
+              : AppTextStyles.subtitle,
+          // textAlign: TextAlign
+          //     .center, // Ensure center alignment for both header and data cells
         ),
       ),
     );

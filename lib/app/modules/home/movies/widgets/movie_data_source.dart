@@ -34,7 +34,8 @@ class MovieDataSource extends DataTableSource {
             spacing: 5,
             children: [
               CircleAvatar(
-                backgroundImage: NetworkImage(movie.poster),
+                backgroundImage:
+                    NetworkImage(Uri.parse(movie.poster).toString()),
               ),
               Text(movie.title),
             ],

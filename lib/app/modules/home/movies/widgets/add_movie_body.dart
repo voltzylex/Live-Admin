@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:flutter/foundation.dart';
 import 'package:live_admin/app/data/api/api_connect.dart';
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/movies/controllers/movies_controller.dart';
@@ -63,9 +62,7 @@ class _AddMovieBodyState extends State<AddMovieBody> {
     if ((formKey.currentState?.validate() ?? false)) {
       final movie = AddMovie(
           title: widget.mov.movieNameController.text,
-          poster: kDebugMode
-              ? "this is image link"
-              : base64Encode(widget.mov.image.value!),
+          poster: base64Encode(widget.mov.image.value!),
           movieUrl: widget.mov.uploadLinkController.text,
           categories: widget.mov.selectedCategories,
           tags: widget.mov.selectedTypes);
@@ -80,15 +77,13 @@ class _AddMovieBodyState extends State<AddMovieBody> {
   editMovie() async {
     if ((formKey.currentState?.validate() ?? false)) {
       final movie = AddMovie(
-        title: widget.mov.movieNameController.text,
-        poster: widget.mov.image.value != null
-            ? base64Encode(widget.mov.image.value!)
-            : null,
-        movieUrl: widget.mov.uploadLinkController.text,
-        categories: widget.mov.selectedCategories,
-        tags: widget.mov.selectedTypes,
-        description: widget.mov.descriptionController.text,
-      );
+          title: widget.mov.movieNameController.text,
+          poster: base64Encode(widget.mov.image.value!),
+          movieUrl: widget.mov.uploadLinkController.text,
+          categories: widget.mov.selectedCategories,
+          tags: widget.mov.selectedTypes);
+      log("Edit movie ${movie.toJson()}");
+      final m = movie.toJson();
 
       log("Edit movie ${movie.toJson()}");
       // return;
