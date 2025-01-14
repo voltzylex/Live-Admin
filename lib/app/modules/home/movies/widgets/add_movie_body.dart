@@ -85,16 +85,6 @@ class _AddMovieBodyState extends State<AddMovieBody> {
           categories: widget.mov.selectedCategories,
           description: widget.mov.descriptionController.text,
           tags: widget.mov.selectedTypes);
-      log("Edit movie ${movie.toJson()}");
-      final m = movie.toJson();
-
-      log("Edit movie ${movie.toJson()}");
-      // return;
-      // Create a mutable copy of the Map and remove the 'poster' key
-      // final movieMap = Map.of(movie.toJson());
-      // movieMap.remove("poster");
-
-      // log("Edit data is $");
 
       await widget.mov.editMovie(context, movie, widget.movies!.id);
     }

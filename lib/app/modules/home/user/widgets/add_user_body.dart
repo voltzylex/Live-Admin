@@ -16,7 +16,7 @@ class _AddUserBodyState extends State<AddUserBody> {
     const String first = "First Name",
         last = "Last Name",
         mobile = "Mobile No.",
-        userId = "User ID",
+        userId = "Email",
         create = "Create Password",
         confirm = "Confirm Password";
 
@@ -84,7 +84,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                         controller: widget.user.userId,
                         title: userId,
                         hint: userId,
-                        validator: _validateUserId,
+                        validator: _validateEmailId,
                       ),
                     ),
                   ],
@@ -277,11 +277,11 @@ class _AddUserBodyState extends State<AddUserBody> {
     return null;
   }
 
-  String? _validateUserId(String? value) {
+  String? _validateEmailId(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return "User ID is required";
+      return "User email is required";
     }
-    if (value.length < 5) {
+    if (value.isEmail == false) {
       return "User ID must be at least 5 characters long";
     }
     return null;
