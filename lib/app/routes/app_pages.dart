@@ -19,6 +19,9 @@ class AppPages {
     GetPage(
       name: AppRoutes.login,
       page: () => const LoginPage(),
+      middlewares: [
+        AuthMiddleware(),
+      ],
     ),
     GetPage(
       name: AppRoutes.forgot,

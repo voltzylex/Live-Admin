@@ -5,7 +5,6 @@ import 'package:live_admin/app/modules/home/movies/controllers/movies_controller
 import 'package:live_admin/app/modules/home/movies/models/movies_model.dart';
 import 'package:live_admin/app/modules/home/movies/widgets/add_movie_body.dart';
 import 'package:live_admin/app/modules/home/movies/widgets/movie_data_source.dart';
-import 'package:live_admin/app/themes/app_text_theme.dart';
 
 class MoviesListPage extends StatefulWidget {
   const MoviesListPage({super.key, required this.mov});
@@ -151,9 +150,10 @@ class _MoviesListPageState extends State<MoviesListPage> {
         columnSpacing: 12,
         horizontalMargin: 12,
         minWidth: 800,
-        availableRowsPerPage: const [5, 10, 15],
+        rowsPerPage: 15,
+        availableRowsPerPage: const [15],
         showCheckboxColumn: true,
-        headingRowColor: MaterialStateProperty.all(AppColors.content),
+        headingRowColor: WidgetStatePropertyAll(AppColors.content),
         columns: const [
           DataColumn2(label: Text('ID'), size: ColumnSize.S),
           DataColumn2(label: Text('Movie Name'), size: ColumnSize.L),

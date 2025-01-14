@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:flutter/foundation.dart';
 import 'package:live_admin/app/data/api/api_connect.dart';
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/movies/controllers/movies_controller.dart';
@@ -9,7 +8,6 @@ import 'package:live_admin/app/modules/home/movies/models/add_movie_model.dart';
 import 'package:live_admin/app/modules/home/movies/models/movies_model.dart';
 import 'package:live_admin/app/modules/home/movies/widgets/category_widget.dart';
 import 'package:live_admin/app/modules/home/movies/widgets/type_widget.dart';
-import 'package:live_admin/app/themes/app_text_theme.dart';
 
 class AddMovieBody extends StatefulWidget {
   const AddMovieBody(
@@ -58,15 +56,13 @@ class _AddMovieBodyState extends State<AddMovieBody> {
   }
 
   addMovies() async {
-    log("Auth header : ${await ApiConnect.instance.authHeader()}");
+    log("Auth header : ${ApiConnect.instance.authHeader()}");
     // mov.isSubmitPressed.value = true;
 
     if ((formKey.currentState?.validate() ?? false)) {
       final movie = AddMovie(
           title: widget.mov.movieNameController.text,
-          poster: kDebugMode
-              ? "this is image link"
-              : base64Encode(widget.mov.image.value!),
+          poster: base64Encode(widget.mov.image.value!),
           movieUrl: widget.mov.uploadLinkController.text,
           categories: widget.mov.selectedCategories,
           tags: widget.mov.selectedTypes);
@@ -82,9 +78,7 @@ class _AddMovieBodyState extends State<AddMovieBody> {
     if ((formKey.currentState?.validate() ?? false)) {
       final movie = AddMovie(
           title: widget.mov.movieNameController.text,
-          poster: kDebugMode
-              ? "this is image link"
-              : base64Encode(widget.mov.image.value!),
+          poster: base64Encode(widget.mov.image.value!),
           movieUrl: widget.mov.uploadLinkController.text,
           categories: widget.mov.selectedCategories,
           tags: widget.mov.selectedTypes);
