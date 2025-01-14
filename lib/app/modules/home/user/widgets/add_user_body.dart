@@ -1,6 +1,5 @@
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/user/controllers/user_controller.dart';
-import 'package:live_admin/app/themes/app_text_theme.dart';
 
 class AddUserBody extends StatefulWidget {
   final UserController user;
@@ -155,7 +154,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                 ),
               ),
               BaseButton(
-                onPressed: ()=> widget.user.addUser(context,key: _key),
+                onPressed: () => widget.user.addUser(context, key: _key),
                 child: Container(
                   padding: EdgeInsets.symmetric(
                       horizontal: Get.width * 0.04, vertical: 10),

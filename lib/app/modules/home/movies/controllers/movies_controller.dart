@@ -156,11 +156,6 @@ class MoviesController extends GetxController with StateMixin<MoviesModel> {
   // Edit movie
 
   editMovie(BuildContext context, AddMovie movie, int id) async {
-    final m = movie.toJson();
-
-    m.remove("poster");
-    log("Edit data is $m");
-    return;
     // if (image.value == null) {
     //   ToastHelper.showToast(
     //     context: context,
@@ -169,6 +164,7 @@ class MoviesController extends GetxController with StateMixin<MoviesModel> {
     //     type: ToastType.error,
     //   );
     //   return;
+
     // }
 
     try {
@@ -181,7 +177,7 @@ class MoviesController extends GetxController with StateMixin<MoviesModel> {
         type: ToastType.success,
       );
       clearField();
-      getMovies(currenP.value);
+      // getMovies(currenP.value);
       hideLoading();
     } catch (e) {
       ToastHelper.showToast(

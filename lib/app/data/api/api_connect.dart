@@ -254,8 +254,13 @@ class ApiConnect extends GetConnect {
       //'status'
     }
     try {
-      final res = await post(
-          EndPoints.updateMovie(id.toString()), movie.toJson(),
+      Map<String, dynamic> updatedData = movie.toJson();
+      if (movie.poster == null) {
+        updatedData = Map.of(movie.toJson());
+        updatedData.remove("poster");
+        log("Updated data is $updatedData");
+      }
+      final res = await post(EndPoints.updateMovie(id.toString()), updatedData,
           headers: authHeader());
       return res;
     } catch (e) {

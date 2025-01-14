@@ -8,7 +8,7 @@ class AddMovie extends Equatable {
     this.producer,
     this.releaseYear,
     this.rating,
-    required this.poster,
+     this.poster,
     this.trailerUrl,
     required this.movieUrl,
     required this.categories,
@@ -21,7 +21,7 @@ class AddMovie extends Equatable {
   final String? producer;
   final num? releaseYear;
   final String? rating;
-  final String poster;
+  final String? poster;
   final String? trailerUrl;
   final String movieUrl;
   final List<String> categories;

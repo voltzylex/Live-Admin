@@ -34,8 +34,12 @@ class _AddSeriesPageState extends State<AddSeriesPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image Upload Section and Input Fields
-            seriesDetails(ser, context),
+            // Series Details (Image and Text Inputs)
+            seriesDetails(ser),
+            const SizedBox(height: 30),
+
+            // Add Seasons
+            seasonsSection(ser),
             const SizedBox(height: 40),
 
             // Action Buttons
@@ -44,9 +48,7 @@ class _AddSeriesPageState extends State<AddSeriesPage> {
               children: [
                 // Cancel Button
                 ElevatedButton(
-                  onPressed: () {
-                    ser.isUpload.toggle();
-                  },
+                  onPressed: () => ser.isUpload.toggle(),
                   style: ElevatedButton.styleFrom(
                     foregroundColor: AppColors.borderL1,
                     backgroundColor: AppColors.content,
@@ -59,9 +61,20 @@ class _AddSeriesPageState extends State<AddSeriesPage> {
                 ),
                 const SizedBox(width: 20),
 
-                // Save Button
+                // Save Button with Validation
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    if (ser.seasons.isEmpty) {
+                      Get.snackbar(
+                        "Validation Error",
+                        "Please add at least one season before saving.",
+                        backgroundColor: Colors.red,
+                        colorText: Colors.white,
+                      );
+                      return;
+                    }
+                    // Save logic here
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
                     shape: RoundedRectangleBorder(
@@ -81,100 +94,201 @@ class _AddSeriesPageState extends State<AddSeriesPage> {
     );
   }
 
-  SizedBox seriesDetails(SeriesController ser, BuildContext context) {
-    return SizedBox(
-      height: 260,
-      width: Get.width,
-      child: Row(
+  Widget seriesDetails(SeriesController ser) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Image Upload
+        GestureDetector(
+          onTap: () => ser.pickImage(context),
+          child: Container(
+            width: 200,
+            height: 260,
+            decoration: BoxDecoration(
+              color: AppColors.white.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: AppColors.borderL1),
+            ),
+            child: SizedBox.expand(
+              child: Obx(() {
+                if (ser.image.value != null) {
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.memory(
+                      ser.image.value!,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                }
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(Icons.image, color: Colors.white, size: 40),
+                    SizedBox(height: 10),
+                    Text(
+                      "Upload Cover",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ],
+                );
+              }),
+            ),
+          ),
+        ),
+        const SizedBox(width: 40),
+
+        // Text Fields for Series Name and Description
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Series Name",
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 5),
+              TextField(
+                controller: ser.seriesNameController,
+                decoration: InputDecoration(
+                  hintText: "Enter series name",
+                  filled: true,
+                  fillColor: AppColors.white.withOpacity(0.1),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: AppColors.borderL1),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                "Series Description",
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 5),
+              TextField(
+                controller: ser.descriptionController,
+                maxLines: 5,
+                decoration: InputDecoration(
+                  hintText: "Enter series description",
+                  filled: true,
+                  fillColor: AppColors.white.withOpacity(0.1),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: AppColors.borderL1),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget seasonsSection(SeriesController ser) {
+    return Obx(() {
+      return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Image Upload Container
-          GestureDetector(
-            onTap: () => ser.pickImage(context),
-            child: Container(
-              // height: 250,
-              width: 200,
-              decoration: BoxDecoration(
-                color: AppColors.white.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: AppColors.borderL1),
-              ),
-              child: SizedBox.expand(
-                child: Obx(() {
-                  if (ser.image.value != null) {
-                    return ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.memory(
-                        ser.image.value!,
-                        fit: BoxFit.cover,
-                      ),
-                    );
-                  }
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.image, color: Colors.white, size: 40),
-                      SizedBox(height: 10),
-                      Text(
-                        "Upload Cover",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ],
-                  );
-                }),
-              ),
+          const Text(
+            "Add Seasons and Episodes",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
             ),
           ),
-          const SizedBox(width: 40),
+          const SizedBox(height: 10),
 
-          // Input Fields
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Series Name Field
-                Text(
-                  "Series Name",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 5),
-                TextField(
-                  controller: ser.seriesNameController,
-                  decoration: InputDecoration(
-                    hintText: "Enter series name",
-                    filled: true,
-                    fillColor: AppColors.white.withOpacity(0.1),
-                  ),
-                ),
-                const SizedBox(height: 10),
+          // Display Seasons
+          for (int seasonIndex = 0;
+              seasonIndex < ser.seasons.length;
+              seasonIndex++)
+            Card(
+              color: AppColors.white.withOpacity(0.1),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            "Season ${seasonIndex + 1}",
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 16),
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.delete, color: Colors.red),
+                          onPressed: () => ser.removeSeason(seasonIndex),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
 
-                // Series Description Field
-                Text(
-                  "Series Description",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
+                    // Episodes Section for Each Season
+                    if (ser.seasons[seasonIndex].episodes.isNotEmpty)
+                      for (int episodeIndex = 0;
+                          episodeIndex <
+                              ser.seasons[seasonIndex].episodes.length;
+                          episodeIndex++)
+                        Card(
+                          margin: const EdgeInsets.symmetric(vertical: 5),
+                          child: ListTile(
+                            leading: GestureDetector(
+                              onTap: () => ser.pickEpisodeImage(
+                                  context, seasonIndex, episodeIndex),
+                              child: Container(
+                                width: 60,
+                                height: 60,
+                                color: AppColors.primary.withOpacity(0.1),
+                                child:
+                                    const Icon(Icons.image, color: Colors.grey),
+                              ),
+                            ),
+                            title: TextField(
+                              // controller: ser.getEpisodeTitleController(
+                              //     seasonIndex, episodeIndex),
+                              decoration: const InputDecoration(
+                                  hintText: "Episode Title"),
+                            ),
+                            subtitle: TextField(
+                              // controller: ser.getEpisodeDescriptionController(
+                              //     seasonIndex, episodeIndex),
+                              decoration: const InputDecoration(
+                                hintText: "Episode Description",
+                              ),
+                              maxLines: 3,
+                            ),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.delete, color: Colors.red),
+                              onPressed: () =>
+                                  ser.removeEpisode(seasonIndex, episodeIndex),
+                            ),
+                          ),
+                        ),
+                    TextButton.icon(
+                      onPressed: () => ser.addEpisode(seasonIndex),
+                      icon: const Icon(Icons.add, color: AppColors.primary),
+                      label: const Text("Add Episode"),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 5),
-                TextField(
-                  controller: ser.descriptionController,
-                  maxLines: 5,
-                  // minLines: 4,
-                  decoration: InputDecoration(
-                    hintText: "Enter series description",
-                    filled: true,
-                    fillColor: AppColors.white.withOpacity(0.1),
-                  ),
-                ),
-              ],
+              ),
             ),
+
+          // Add Season Button
+          TextButton.icon(
+            onPressed: ser.addSeason,
+            icon: const Icon(Icons.add, color: AppColors.primary),
+            label: const Text("Add Season"),
           ),
         ],
-      ),
-    );
+      );
+    });
   }
 }

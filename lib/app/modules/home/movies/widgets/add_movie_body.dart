@@ -9,7 +9,6 @@ import 'package:live_admin/app/modules/home/movies/models/add_movie_model.dart';
 import 'package:live_admin/app/modules/home/movies/models/movies_model.dart';
 import 'package:live_admin/app/modules/home/movies/widgets/category_widget.dart';
 import 'package:live_admin/app/modules/home/movies/widgets/type_widget.dart';
-import 'package:live_admin/app/themes/app_text_theme.dart';
 
 class AddMovieBody extends StatefulWidget {
   const AddMovieBody(
@@ -58,7 +57,7 @@ class _AddMovieBodyState extends State<AddMovieBody> {
   }
 
   addMovies() async {
-    log("Auth header : ${await ApiConnect.instance.authHeader()}");
+    log("Auth header : ${ApiConnect.instance.authHeader()}");
     // mov.isSubmitPressed.value = true;
 
     if ((formKey.currentState?.validate() ?? false)) {
@@ -81,22 +80,25 @@ class _AddMovieBodyState extends State<AddMovieBody> {
   editMovie() async {
     if ((formKey.currentState?.validate() ?? false)) {
       final movie = AddMovie(
-          title: widget.mov.movieNameController.text,
-          poster: kDebugMode
-              ? "this is image link"
-              : base64Encode(widget.mov.image.value!),
-          movieUrl: widget.mov.uploadLinkController.text,
-          categories: widget.mov.selectedCategories,
-          tags: widget.mov.selectedTypes);
-      log("Edit movie ${movie.toJson()}");
-      final m = movie.toJson();
+        title: widget.mov.movieNameController.text,
+        poster: widget.mov.image.value != null
+            ? base64Encode(widget.mov.image.value!)
+            : null,
+        movieUrl: widget.mov.uploadLinkController.text,
+        categories: widget.mov.selectedCategories,
+        tags: widget.mov.selectedTypes,
+        description: widget.mov.descriptionController.text,
+      );
 
-      m.remove("poster");
-      log("Edit data is $m");
-      // await widget.mov.uploadMovie(
-      //   context,
-      //   movie,
-      // );
+      log("Edit movie ${movie.toJson()}");
+      // return;
+      // Create a mutable copy of the Map and remove the 'poster' key
+      // final movieMap = Map.of(movie.toJson());
+      // movieMap.remove("poster");
+
+      // log("Edit data is $");
+
+      await widget.mov.editMovie(context, movie, widget.movies!.id);
     }
   }
 
