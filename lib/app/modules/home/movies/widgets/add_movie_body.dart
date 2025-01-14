@@ -78,9 +78,12 @@ class _AddMovieBodyState extends State<AddMovieBody> {
     if ((formKey.currentState?.validate() ?? false)) {
       final movie = AddMovie(
           title: widget.mov.movieNameController.text,
-          poster: base64Encode(widget.mov.image.value!),
+          poster: widget.mov.image.value == null
+              ? null
+              : base64Encode(widget.mov.image.value!),
           movieUrl: widget.mov.uploadLinkController.text,
           categories: widget.mov.selectedCategories,
+          description: widget.mov.descriptionController.text,
           tags: widget.mov.selectedTypes);
       log("Edit movie ${movie.toJson()}");
       final m = movie.toJson();

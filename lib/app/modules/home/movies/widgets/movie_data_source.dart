@@ -5,25 +5,24 @@ import 'package:live_admin/app/utils/constants.dart';
 
 class MovieDataSource extends DataTableSource {
   final BuildContext context;
-  final List<Movie> movies;
+  final MoviesController mov;
   final void Function(Movie movie) onEdit;
   final void Function(Movie movie) onDelete;
-  final void Function(int id) onToggleStatus;
 
   MovieDataSource(
     this.context,
-    this.movies, {
+    this.mov, {
     required this.onEdit,
     required this.onDelete,
-    required this.onToggleStatus,
   });
 
   @override
   DataRow getRow(int index) {
-    final movie = movies[index];
+    final movie = mov.state?.movies[index];
+    if (movie == null) return DataRow(cells: []);
+
     return DataRow2(
       specificRowHeight: 50,
-      // movie.categories.length > 2 ? movie.categories.length * 12 : null,
       color: WidgetStateProperty.all(
           index % 2 == 0 ? AppColors.table1 : AppColors.table2),
       cells: [
@@ -61,30 +60,27 @@ class MovieDataSource extends DataTableSource {
               SizedBox(
                 height: 30,
                 child: FittedBox(
-                  child: Obx(
-                    () => Switch(
-                      value: MoviesController().to.isSwitchOn.value,
-                      thumbColor: WidgetStateProperty.resolveWith<Color>(
-                          (Set<WidgetState> states) {
-                        if (states.contains(WidgetState.disabled)) {
-                          return AppColors.borderL1;
-                        }
-                        return AppColors.white;
-                      }),
-                      activeColor: AppColors.primary2,
-                      trackOutlineColor:
-                          WidgetStateProperty.all(AppColors.transparent),
-                      inactiveTrackColor: Color(0xff506586),
-                      // onChanged: (_) => onToggleStatus(movie["id"]),
-                      onChanged: (value) =>
-                          MoviesController().to.isSwitchOn(value),
-                    ),
+                  child: Switch(
+                    value: movie.status,
+                    thumbColor: WidgetStateProperty.resolveWith<Color>(
+                        (Set<WidgetState> states) {
+                      if (states.contains(WidgetState.disabled)) {
+                        return AppColors.borderL1;
+                      }
+                      return AppColors.white;
+                    }),
+                    activeColor: AppColors.primary2,
+                    trackOutlineColor:
+                        WidgetStateProperty.all(AppColors.transparent),
+                    inactiveTrackColor: Color(0xff506586),
+                    onChanged: (value) {
+                      mov.toggleMovieStatus(movie.id, value); // Update status
+                    },
                   ),
                 ),
               ),
               IconButton(
                 icon: SvgPicture.asset(Assets.delete),
-                // onPressed: () => onEdit(movie.id),
                 onPressed: () => onDelete(movie),
               ),
               IconButton(
@@ -102,7 +98,7 @@ class MovieDataSource extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => movies.length;
+  int get rowCount => mov.state?.movies.length ?? 0;
 
   @override
   int get selectedRowCount => 0;

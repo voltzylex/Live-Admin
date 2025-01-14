@@ -15,10 +15,7 @@ class MoviesListPage extends StatefulWidget {
 }
 
 class _MoviesListPageState extends State<MoviesListPage> {
-  // Handle toggle status
-  void _toggleStatus(int id) {
-    // Implement status toggle logic here
-  }
+  
 
   // Handle edit movie action
   void _editMovie(Movie movie) {
@@ -166,10 +163,10 @@ class _MoviesListPageState extends State<MoviesListPage> {
         hidePaginator: true,
         source: MovieDataSource(
           context,
-          state.movies,
+          // state.movies,
+          widget.mov,
           onEdit: _editMovie,
           onDelete: _deleteMovie,
-          onToggleStatus: _toggleStatus,
         ),
       ),
     );

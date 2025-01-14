@@ -11,7 +11,7 @@ class EndPoints {
   static const String addMovie = "admin/movies";
   static const String dashboard = "admin/dashboard";
   static String getMovie(int page) => "movies?page=$page";
-  static String updateMovie(String id) => "admin/movies/$id/update";
+  static String updateMovie(String id) => "movies/$id/update";
   static String deleteMovie(String id) => "admin/movies/$id";
   static String getSeries(int page) => "series?page=$page";
   static String getMemberships(int page) => "admin/myplans?page=$page";

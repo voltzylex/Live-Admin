@@ -268,6 +268,18 @@ class ApiConnect extends GetConnect {
     }
   }
 
+  Future<Response> updateMovieStatus(int id, bool value) async {
+    {}
+    try {
+      final body = {"status": value};
+      final res = await post(EndPoints.updateMovie(id.toString()), body,
+          headers: authHeader());
+      return res;
+    } catch (e) {
+      return Response(body: e.toString());
+    }
+  }
+
   Future<Response> deleteMovie(int id) async {
     try {
       final res = await delete(EndPoints.deleteMovie(id.toString()),

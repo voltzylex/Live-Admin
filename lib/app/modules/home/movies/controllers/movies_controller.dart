@@ -64,6 +64,21 @@ class MoviesController extends GetxController with StateMixin<MoviesModel> {
     isUpload(false);
   }
 
+  void toggleMovieStatus(int movieId, bool status) async {
+    final movieIndex = state?.movies.indexWhere((movie) => movie.id == movieId);
+    if (movieIndex != null && movieIndex != -1) {
+      final updatedMovies = List<Movie>.from(state!.movies);
+
+      showLoading();
+      await ApiConnect.instance.updateMovieStatus(movieId, status);
+      hideLoading();
+      updatedMovies[movieIndex] =
+          updatedMovies[movieIndex].copyWith(status: status);
+      change(state!.copyWith(movies: updatedMovies),
+          status: RxStatus.success());
+    }
+  }
+
   // Add movies-specific logic here.
   Future<void> pickImage(BuildContext context) async {
     // For mobile (Android, iOS), use ImagePicker
@@ -131,7 +146,9 @@ class MoviesController extends GetxController with StateMixin<MoviesModel> {
 
   Future<void> deleteMovie(int id, BuildContext context) async {
     try {
+      showLoading();
       final res = await ApiConnect.instance.deleteMovie(id);
+      hideLoading();
       if (res.statusCode == 200) {
         state!.movies.removeWhere(
           (element) => element.id == id,
@@ -145,6 +162,7 @@ class MoviesController extends GetxController with StateMixin<MoviesModel> {
         );
       }
     } catch (e) {
+      hideLoading();
       ToastHelper.showToast(
         context: context,
         title: 'Some error occured',
@@ -156,37 +174,58 @@ class MoviesController extends GetxController with StateMixin<MoviesModel> {
   // Edit movie
 
   editMovie(BuildContext context, AddMovie movie, int id) async {
-    // if (image.value == null) {
-    //   ToastHelper.showToast(
-    //     context: context,
-    //     title: 'Please Select Image',
-    //     description: 'please select image before proceding!',
-    //     type: ToastType.error,
-    //   );
-    //   return;
-
-    // }
-
     try {
-      showLoading();
+      showLoading(); // Show a loading indicator while the update is in progress
+
+      // Call API to update the movie
       await ApiConnect.instance.updateMovie(id, movie);
-      ToastHelper.showToast(
-        context: context,
-        title: 'Movie Updated Succesfully',
-        description: "",
-        type: ToastType.success,
-      );
-      clearField();
-      // getMovies(currenP.value);
-      hideLoading();
+      await getMovies(currenP.value);
+      // Find the index of the movie to be updated in the current state
+      final index = state?.movies.indexWhere((element) => element.id == id);
+
+      if (index != null && index >= 0) {
+        // Create a copy of the movies list and update the specific movie
+        // final updatedMovies = List<Movie>.from(state!.movies);
+        // updatedMovies[index] = updatedMovies[index].copyWith(
+        //   title: movie.title,
+        //   description: movie.description,
+        //   categories: movie.categories,
+        //   tags: movie.tags,
+        //   poster: movie.poster,
+        //   status: movie.status,
+        // );
+
+        // Update the state with the modified movies list
+        // change(state!.copyWith(movies: updatedMovies), status: RxStatus.success());
+
+        // Show success toast
+        ToastHelper.showToast(
+          context: context,
+          title: 'Movie Updated Successfully',
+          description: "",
+          type: ToastType.success,
+        );
+
+        clearField(); // Clear input fields after the operation
+      } else {
+        // Show an error toast if the movie is not found
+        ToastHelper.showToast(
+          context: context,
+          title: 'Movie Not Found',
+          description: "The movie you're trying to update does not exist.",
+          type: ToastType.error,
+        );
+      }
     } catch (e) {
+      // Handle any errors and show a failure toast
       ToastHelper.showToast(
         context: context,
         title: 'Server Error',
         description: e.toString(),
         type: ToastType.error,
       );
-      hideLoading();
+    } finally {
+      hideLoading(); // Ensure loading indicator is hidden after the operation
     }
   }
 }
