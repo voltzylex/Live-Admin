@@ -7,6 +7,7 @@ import 'package:live_admin/app/data/api/api_error.dart';
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/auth_module/controllers/login_model.dart';
 import 'package:live_admin/app/modules/home/movies/models/add_movie_model.dart';
+import 'package:live_admin/app/modules/home/user/models/add_user_model.dart';
 import 'package:live_admin/app/utils/constants.dart';
 
 class ApiConnect extends GetConnect {
@@ -318,6 +319,16 @@ class ApiConnect extends GetConnect {
     }
   }
 
+  Future<Response> addUsers(AddUser user) async {
+    try {
+      final res =
+          await post(EndPoints.addUser, user.toJson(), headers: authHeader());
+      return res;
+    } catch (e) {
+      return Response(body: e.toString(), statusCode: 500);
+    }
+  }
+
   Future<Response> updateUsers(
     String id, {
     String? name,
@@ -340,8 +351,7 @@ class ApiConnect extends GetConnect {
 
   Future<Response> deleteUser(int id) async {
     try {
-      final res = await delete(EndPoints.updateUser(id.toString()),
-          headers: authHeader());
+      final res = await delete(EndPoints.deleteUser(id), headers: authHeader());
       return res;
     } catch (e) {
       return Response(body: e.toString());

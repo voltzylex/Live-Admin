@@ -16,6 +16,8 @@ class EndPoints {
   static String getSeries(int page) => "series?page=$page";
   static String getMemberships(int page) => "admin/myplans?page=$page";
   static String updateUser(String id) => "admin/users/$id";
+  static String addUser = "register/user";
+  static String deleteUser(int id) => "admin/users/$id";
 
   static const String getUser = "admin/users";
   static const Duration timeout = Duration(seconds: 30);

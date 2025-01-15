@@ -2,7 +2,6 @@ import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/user/controllers/user_controller.dart';
 import 'package:live_admin/app/modules/home/user/models/users_model.dart';
 import 'package:live_admin/app/modules/home/user/widgets/user_data_source.dart';
-import 'package:live_admin/app/themes/app_text_theme.dart';
 
 class ListUserBody extends StatefulWidget {
   final UserController user;
@@ -198,7 +197,7 @@ class _ListUserBodyState extends State<ListUserBody> {
   }
 
   void _editUser(User u) {}
-  void _deleteUser(User u) {
-    widget.user.deleteUser(u.id, context);
+  void _deleteUser(User u) async {
+    await widget.user.deleteUser(u.id, context);
   }
 }

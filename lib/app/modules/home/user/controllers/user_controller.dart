@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:live_admin/app/data/api/api_connect.dart';
 import 'package:live_admin/app/global_imports.dart';
+import 'package:live_admin/app/modules/home/user/models/add_user_model.dart';
 import 'package:live_admin/app/modules/home/user/models/users_model.dart';
+import 'package:live_admin/app/utils/constants.dart';
 
 class UserController extends GetxController with StateMixin<UsersModel> {
   UserController get to => Get.isRegistered<UserController>()
@@ -17,7 +20,7 @@ class UserController extends GetxController with StateMixin<UsersModel> {
   TextEditingController firstName = TextEditingController(),
       lastName = TextEditingController(),
       mobileNumber = TextEditingController(),
-      userId = TextEditingController(),
+      email = TextEditingController(),
       createP = TextEditingController(),
       confirmP = TextEditingController();
 
@@ -44,18 +47,51 @@ class UserController extends GetxController with StateMixin<UsersModel> {
     }
   }
 
-  Future<void> addUser(
-    BuildContext context, {
-    required GlobalKey<FormState> key,
-  }) async {
-    if (image.value == null || (key.currentState?.validate() ?? false)) {
+  Future<void> addUser(BuildContext context,
+      {required GlobalKey<FormState> key, required AddUser user}) async {
+    if (key.currentState?.validate() ?? false) {
+      try {
+        // Call the API to add the user
+        showLoading();
+        final res = await ApiConnect.instance.addUsers(user);
+
+        // Check if the response indicates success and display the appropriate toast
+        if (res.body["success"] == true) {
+          await ToastHelper.showToast(
+            context: context,
+            title: 'Success',
+            description: res.body["message"] ?? 'User added successfully!',
+            type: ToastType.success,
+          );
+          getUsers();
+          await onCancel();
+        } else {
+          ToastHelper.showToast(
+            context: context,
+            title: 'Error',
+            description: res.body["message"] ?? 'Something went wrong!',
+            type: ToastType.error,
+          );
+        }
+        hideLoading();
+      } catch (error) {
+        hideLoading();
+        log("Error on add user $error");
+        // Handle any unexpected exceptions
+        ToastHelper.showToast(
+          context: context,
+          title: 'Error',
+          description: 'An unexpected error occurred: ${error.toString()}',
+          type: ToastType.error,
+        );
+      }
+    } else {
       ToastHelper.showToast(
         context: context,
-        title: 'Please Select Image',
-        description: 'please select image before proceding!',
+        title: 'Validation Error',
+        description: 'Please fill all required fields before proceeding!',
         type: ToastType.error,
       );
-      return;
     }
   }
 
@@ -63,7 +99,7 @@ class UserController extends GetxController with StateMixin<UsersModel> {
     firstName.clear();
     lastName.clear();
     mobileNumber.clear();
-    userId.clear();
+    email.clear();
     createP.clear();
     confirmP.clear();
     image.value = null;

@@ -2,13 +2,13 @@ import 'package:live_admin/app/global_imports.dart';
 import 'package:toastification/toastification.dart'; // Add this dependency in pubspec.yaml
 
 class ToastHelper {
-  static void showToast({
+  static Future<   void> showToast({
     required BuildContext context,
     required String title,
     required String description,
     required ToastType type,
     Duration? duration,
-  }) {
+  })async {
     Color primaryColor;
     IconData iconData;
 

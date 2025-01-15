@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/user/controllers/user_controller.dart';
+import 'package:live_admin/app/modules/home/user/models/add_user_model.dart';
 
 class AddUserBody extends StatefulWidget {
   final UserController user;
@@ -81,7 +84,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                     const SizedBox(width: 10),
                     Flexible(
                       child: tField(
-                        controller: widget.user.userId,
+                        controller: widget.user.email,
                         title: userId,
                         hint: userId,
                         validator: _validateEmailId,
@@ -154,7 +157,19 @@ class _AddUserBodyState extends State<AddUserBody> {
                 ),
               ),
               BaseButton(
-                onPressed: () => widget.user.addUser(context, key: _key),
+                onPressed: () async {
+                  final w = widget.user;
+                  final data = AddUser(
+                      name: "${w.firstName.text}${w.lastName.text}",
+                      email: w.email.text,
+                      password: w.createP.text,
+                      passwordConfirmation: w.confirmP.text,
+                      mobile: int.tryParse(w.mobileNumber.text),
+                      photo: w.image.value != null
+                          ? base64Encode(w.image.value!)
+                          : "");
+                  await widget.user.addUser(context, key: _key, user: data);
+                },
                 child: Container(
                   padding: EdgeInsets.symmetric(
                       horizontal: Get.width * 0.04, vertical: 10),
@@ -180,6 +195,7 @@ class _AddUserBodyState extends State<AddUserBody> {
         Obx(
           () => CircleAvatar(
             radius: 30,
+            backgroundColor: AppColors.primary,
             backgroundImage: widget.user.image.value != null
                 ? MemoryImage(widget.user.image.value!)
                 : null,
@@ -189,7 +205,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                   return SizedBox();
                 }
 
-                return Image.asset(Assets.logo);
+                return Icon(Icons.person);
               },
             ),
           ),
