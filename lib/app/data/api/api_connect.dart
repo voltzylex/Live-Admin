@@ -337,12 +337,15 @@ class ApiConnect extends GetConnect {
   }) async {
     try {
       final body = {
-        if (email != null) "email": "anurag@yopmail.com",
-        if (name != null) "name": "anurag",
-        if (password != null) "pasword": "required"
+        if (email != null) "email": email,
+        if (name != null) "name": name,
+        if (password != null) "pasword": password,
       };
-      final res =
-          await put(EndPoints.updateUser(id), body, headers: authHeader());
+      final res = await put(
+        EndPoints.updateUser(id),
+        body,
+        headers: authHeader(),
+      );
       return res;
     } catch (e) {
       return Response(body: e.toString());

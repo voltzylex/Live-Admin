@@ -42,7 +42,7 @@ class AddUser extends Equatable {
       password: json["password"] ?? "",
       passwordConfirmation: json["password_confirmation"] ?? "",
       photo: json["photo"],
-      mobile: json["mobile"],
+      mobile: json["phone"],
     );
   }
 
@@ -52,7 +52,7 @@ class AddUser extends Equatable {
         "password": password,
         "password_confirmation": passwordConfirmation,
         "photo": photo,
-        "mobile": mobile,
+        "phone": mobile,
       };
 
   @override
