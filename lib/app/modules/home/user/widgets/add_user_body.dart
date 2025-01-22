@@ -3,10 +3,14 @@ import 'dart:convert';
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/user/controllers/user_controller.dart';
 import 'package:live_admin/app/modules/home/user/models/add_user_model.dart';
+import 'package:live_admin/app/modules/home/user/models/users_model.dart';
 
 class AddUserBody extends StatefulWidget {
   final UserController user;
-  const AddUserBody({super.key, required this.user});
+  final bool isEdit;
+  final User? cUser;
+  const AddUserBody(
+      {super.key, required this.user, this.isEdit = false, this.cUser});
 
   @override
   State<AddUserBody> createState() => _AddUserBodyState();
@@ -14,6 +18,22 @@ class AddUserBody extends StatefulWidget {
 
 class _AddUserBodyState extends State<AddUserBody> {
   final _key = GlobalKey<FormState>();
+  @override
+  void initState() {
+    super.initState();
+    setEditField();
+  }
+
+  setEditField() {
+    if (mounted && widget.isEdit) {
+      final w = widget;
+      w.user.email.text = w.cUser?.email ?? "";
+      w.user.firstName.text = w.cUser?.name.split(" ")[0] ?? "";
+      w.user.lastName.text = w.cUser?.name.split(" ")[1] ?? "";
+      w.user.mobileNumber.text = w.cUser?.phone ?? "";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     const String first = "First Name",
@@ -56,7 +76,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                         controller: widget.user.firstName,
                         title: first,
                         hint: first,
-                        validator: (value) => _validateName(value, first),
+                        validator: (value) => validateName(value, first),
                       ),
                     ),
                     const SizedBox(width: 10),
@@ -65,7 +85,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                         controller: widget.user.lastName,
                         title: last,
                         hint: last,
-                        validator: (value) => _validateName(value, last),
+                        validator: (value) => validateName(value, last),
                       ),
                     ),
                   ],
@@ -78,7 +98,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                         controller: widget.user.mobileNumber,
                         title: mobile,
                         hint: mobile,
-                        validator: _validateMobile,
+                        validator: validateMobile,
                       ),
                     ),
                     const SizedBox(width: 10),
@@ -87,7 +107,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                         controller: widget.user.email,
                         title: userId,
                         hint: userId,
-                        validator: _validateEmailId,
+                        validator: validateEmailId,
                       ),
                     ),
                   ],
@@ -102,7 +122,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                           title: create,
                           hint: create,
                           isObscure: widget.user.createObs.value,
-                          validator: _validatePassword,
+                          validator: validatePassword,
                           prefix: IconButton(
                               onPressed: widget.user.createObs.toggle,
                               padding: EdgeInsets.symmetric(horizontal: 10),
@@ -120,7 +140,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                           title: confirm,
                           hint: confirm,
                           isObscure: widget.user.confirmObs.value,
-                          validator: (value) => _validateConfirmPassword(
+                          validator: (value) => validateConfirmPassword(
                               value, widget.user.createP.text),
                           prefix: IconButton(
                               padding: EdgeInsets.symmetric(horizontal: 10),
@@ -273,7 +293,7 @@ class _AddUserBodyState extends State<AddUserBody> {
   }
 
   // Validation functions
-  String? _validateName(String? value, String fieldName) {
+  String? validateName(String? value, String fieldName) {
     if (value == null || value.trim().isEmpty) {
       return "$fieldName is required";
     }
@@ -283,7 +303,7 @@ class _AddUserBodyState extends State<AddUserBody> {
     return null;
   }
 
-  String? _validateMobile(String? value) {
+  String? validateMobile(String? value) {
     if (value == null || value.trim().isEmpty) {
       return "Mobile Number is required";
     }
@@ -293,7 +313,7 @@ class _AddUserBodyState extends State<AddUserBody> {
     return null;
   }
 
-  String? _validateEmailId(String? value) {
+  String? validateEmailId(String? value) {
     if (value == null || value.trim().isEmpty) {
       return "User email is required";
     }
@@ -303,7 +323,7 @@ class _AddUserBodyState extends State<AddUserBody> {
     return null;
   }
 
-  String? _validatePassword(String? value) {
+  String? validatePassword(String? value) {
     if (value == null || value.trim().isEmpty) {
       return "Password is required";
     }
@@ -313,7 +333,7 @@ class _AddUserBodyState extends State<AddUserBody> {
     return null;
   }
 
-  String? _validateConfirmPassword(String? value, String originalPassword) {
+  String? validateConfirmPassword(String? value, String originalPassword) {
     if (value == null || value.trim().isEmpty) {
       return "Confirm Password is required";
     }
