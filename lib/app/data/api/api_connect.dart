@@ -329,21 +329,19 @@ class ApiConnect extends GetConnect {
     }
   }
 
-  Future<Response> updateUsers(
-    String id, {
-    String? name,
-    String? email,
-    String? password,
-  }) async {
+  Future<Response> updateUsers(String id, {required AddUser user}) async {
     try {
-      final body = {
-        if (email != null) "email": email,
-        if (name != null) "name": name,
-        if (password != null) "pasword": password,
-      };
+      Map<String, dynamic> updatedData = user.toJson();
+
+      updatedData = Map.of(user.toJson());
+      if (user.photo.isEmpty) updatedData.remove("photo");
+      updatedData.remove("password_confirmation");
+      updatedData.remove("password");
+      log("Updated User data is $updatedData");
+
       final res = await put(
         EndPoints.updateUser(id),
-        body,
+        updatedData,
         headers: authHeader(),
       );
       return res;

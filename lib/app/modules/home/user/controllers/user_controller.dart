@@ -95,6 +95,46 @@ class UserController extends GetxController with StateMixin<UsersModel> {
     }
   }
 
+  Future<void> editUser(BuildContext context,
+      {required int id, required AddUser user}) async {
+    try {
+      // Call the API to add the user
+      showLoading();
+      final res =
+          await ApiConnect.instance.updateUsers(id.toString(), user: user);
+
+      // Check if the response indicates success and display the appropriate toast
+      if (res.body["success"] == true) {
+        await ToastHelper.showToast(
+          context: context,
+          title: 'Success',
+          description: res.body["message"] ?? 'User added successfully!',
+          type: ToastType.success,
+        );
+        getUsers();
+        await onCancel();
+      } else {
+        ToastHelper.showToast(
+          context: context,
+          title: 'Error',
+          description: res.body["message"] ?? 'Something went wrong!',
+          type: ToastType.error,
+        );
+      }
+      hideLoading();
+    } catch (error) {
+      hideLoading();
+      log("Error on add user $error");
+      // Handle any unexpected exceptions
+      ToastHelper.showToast(
+        context: context,
+        title: 'Error',
+        description: 'An unexpected error occurred: ${error.toString()}',
+        type: ToastType.error,
+      );
+    }
+  }
+
   Future<void> onCancel() async {
     firstName.clear();
     lastName.clear();
@@ -104,6 +144,7 @@ class UserController extends GetxController with StateMixin<UsersModel> {
     confirmP.clear();
     image.value = null;
     isUser(true);
+    
   }
 
   Future<void> getUsers() async {

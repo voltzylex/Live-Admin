@@ -102,7 +102,7 @@ class User {
 
     final int id;
     final String name;
-    final String photo;
+    final String? photo;
     final String phone;
     final String email;
     final dynamic emailVerifiedAt;
@@ -147,7 +147,7 @@ class User {
     Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
-        "photo": photo,
+        "photo": photo ?? null,
         "phone": phone,
         "email": email,
         "email_verified_at": emailVerifiedAt,

@@ -43,192 +43,232 @@ class _AddUserBodyState extends State<AddUserBody> {
         create = "Create Password",
         confirm = "Confirm Password";
 
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Add New User",
-            style: AppTextStyles.title,
-          ).paddingAll(20),
-          SizedBox(
-            width: Get.width,
-            child: ColoredBox(
-              color: AppColors.white.withOpacity(.08),
-              child: Text(
-                "Profile Details",
-                style: TextStyle().whiteColor,
-              ).paddingOnly(left: 20, top: 5, bottom: 5),
+    return WillPopScope(
+      onWillPop: () async {
+        Get.back();
+        return true;
+      },
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              widget.isEdit ? "Edit user" : "Add New User",
+              style: AppTextStyles.title,
+            ).paddingAll(20),
+            SizedBox(
+              width: Get.width,
+              child: ColoredBox(
+                color: AppColors.white.withOpacity(.08),
+                child: Text(
+                  "Profile Details",
+                  style: TextStyle().whiteColor,
+                ).paddingOnly(left: 20, top: 5, bottom: 5),
+              ),
             ),
-          ),
-          const SizedBox(height: 16),
-          Form(
-            key: _key,
-            child: Column(
-              spacing: 10,
-              children: [
-                profilePicker(),
-                const SizedBox(height: 16),
-                Row(
-                  children: [
-                    Flexible(
-                      child: tField(
-                        controller: widget.user.firstName,
-                        title: first,
-                        hint: first,
-                        validator: (value) => validateName(value, first),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Flexible(
-                      child: tField(
-                        controller: widget.user.lastName,
-                        title: last,
-                        hint: last,
-                        validator: (value) => validateName(value, last),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
-                    Flexible(
-                      child: tField(
-                        controller: widget.user.mobileNumber,
-                        title: mobile,
-                        hint: mobile,
-                        validator: validateMobile,
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Flexible(
-                      child: tField(
-                        controller: widget.user.email,
-                        title: userId,
-                        hint: userId,
-                        validator: validateEmailId,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
-                    Flexible(
-                      child: Obx(
-                        () => tField(
-                          controller: widget.user.createP,
-                          title: create,
-                          hint: create,
-                          isObscure: widget.user.createObs.value,
-                          validator: validatePassword,
-                          prefix: IconButton(
-                              onPressed: widget.user.createObs.toggle,
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              icon: Icon(!widget.user.createObs.value
-                                  ? Icons.visibility
-                                  : Icons.visibility_off)),
+            const SizedBox(height: 16),
+            Form(
+              key: _key,
+              child: Column(
+                spacing: 10,
+                children: [
+                  profilePicker(),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Flexible(
+                        child: tField(
+                          controller: widget.user.firstName,
+                          title: first,
+                          hint: first,
+                          validator: (value) => validateName(value, first),
                         ),
                       ),
+                      const SizedBox(width: 10),
+                      Flexible(
+                        child: tField(
+                          controller: widget.user.lastName,
+                          title: last,
+                          hint: last,
+                          validator: (value) => validateName(value, last),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Flexible(
+                        child: tField(
+                          controller: widget.user.mobileNumber,
+                          title: mobile,
+                          hint: mobile,
+                          validator: validateMobile,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Flexible(
+                        child: tField(
+                          controller: widget.user.email,
+                          title: userId,
+                          hint: userId,
+                          validator: validateEmailId,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  if (!widget.isEdit)
+                    Row(
+                      children: [
+                        Flexible(
+                          child: Obx(
+                            () => tField(
+                              controller: widget.user.createP,
+                              title: create,
+                              hint: create,
+                              isObscure: widget.user.createObs.value,
+                              validator: validatePassword,
+                              prefix: IconButton(
+                                  onPressed: widget.user.createObs.toggle,
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  icon: Icon(!widget.user.createObs.value
+                                      ? Icons.visibility
+                                      : Icons.visibility_off)),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Flexible(
+                          child: Obx(() {
+                            return tField(
+                              controller: widget.user.confirmP,
+                              title: confirm,
+                              hint: confirm,
+                              isObscure: widget.user.confirmObs.value,
+                              validator: (value) => validateConfirmPassword(
+                                  value, widget.user.createP.text),
+                              prefix: IconButton(
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
+                                  onPressed: widget.user.confirmObs.toggle,
+                                  icon: Icon(!widget.user.confirmObs.value
+                                      ? Icons.visibility
+                                      : Icons.visibility_off)),
+                            );
+                          }),
+                        ),
+                      ],
                     ),
-                    const SizedBox(width: 10),
-                    Flexible(
-                      child: Obx(() {
-                        return tField(
-                          controller: widget.user.confirmP,
-                          title: confirm,
-                          hint: confirm,
-                          isObscure: widget.user.confirmObs.value,
-                          validator: (value) => validateConfirmPassword(
-                              value, widget.user.createP.text),
-                          prefix: IconButton(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              onPressed: widget.user.confirmObs.toggle,
-                              icon: Icon(!widget.user.confirmObs.value
-                                  ? Icons.visibility
-                                  : Icons.visibility_off)),
-                        );
-                      }),
+                  const SizedBox(height: 20),
+                ],
+              ).paddingSymmetric(horizontal: 20),
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              spacing: 10,
+              children: [
+                BaseButton(
+                  onPressed: () {
+                    widget.user.onCancel();
+                    if (widget.isEdit) {
+                      Get.back();
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: Get.width * 0.04, vertical: 10),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: AppColors.borderL1),
+                        borderRadius: BorderRadius.circular(kRadius)),
+                    child: Text(
+                      "Cancel",
+                      style: TextStyle(color: AppColors.borderL1),
                     ),
-                  ],
+                  ),
                 ),
-                const SizedBox(height: 20),
+                BaseButton(
+                  onPressed: () async {
+                    final w = widget.user;
+                    final data = AddUser(
+                        name: "${w.firstName.text}${w.lastName.text}",
+                        email: w.email.text,
+                        password: w.createP.text,
+                        passwordConfirmation: w.confirmP.text,
+                        phone: int.tryParse(w.mobileNumber.text),
+                        photo: w.image.value != null
+                            ? base64Encode(w.image.value!)
+                            : "");
+                    if (widget.isEdit) {
+                      await widget.user
+                          .editUser(context, user: data, id: widget.cUser!.id);
+                    } else {
+                      await widget.user.addUser(context, key: _key, user: data);
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: Get.width * 0.04, vertical: 10),
+                    decoration: BoxDecoration(
+                        color: AppColors.primary,
+                        borderRadius: BorderRadius.circular(kRadius)),
+                    child: Text(
+                      "Save",
+                      style: TextStyle(color: AppColors.white),
+                    ),
+                  ),
+                ),
               ],
-            ).paddingSymmetric(horizontal: 20),
-          ),
-          SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            spacing: 10,
-            children: [
-              BaseButton(
-                onPressed: widget.user.onCancel,
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: Get.width * 0.04, vertical: 10),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: AppColors.borderL1),
-                      borderRadius: BorderRadius.circular(kRadius)),
-                  child: Text(
-                    "Cancel",
-                    style: TextStyle(color: AppColors.borderL1),
-                  ),
-                ),
-              ),
-              BaseButton(
-                onPressed: () async {
-                  final w = widget.user;
-                  final data = AddUser(
-                      name: "${w.firstName.text}${w.lastName.text}",
-                      email: w.email.text,
-                      password: w.createP.text,
-                      passwordConfirmation: w.confirmP.text,
-                      mobile: int.tryParse(w.mobileNumber.text),
-                      photo: w.image.value != null
-                          ? base64Encode(w.image.value!)
-                          : "");
-                  await widget.user.addUser(context, key: _key, user: data);
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: Get.width * 0.04, vertical: 10),
-                  decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      borderRadius: BorderRadius.circular(kRadius)),
-                  child: Text(
-                    "Save",
-                    style: TextStyle(color: AppColors.white),
-                  ),
-                ),
-              ),
-            ],
-          ).paddingSymmetric(horizontal: 20)
-        ],
+            ).paddingSymmetric(horizontal: 20)
+          ],
+        ),
       ),
     );
+  }
+
+  ImageProvider? checkImageType() {
+    if (widget.isEdit && (widget.cUser?.photo?.isNotEmpty ?? false)) {
+      return NetworkImage(widget.cUser!.photo!);
+    } else {
+      return widget.user.image.value != null
+          ? MemoryImage(widget.user.image.value!)
+          : null;
+    }
+  }
+
+  bool isImagePresented() {
+    if (widget.isEdit && (widget.cUser?.photo?.isNotEmpty ?? false)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   Row profilePicker() {
     return Row(
       children: [
         Obx(
-          () => CircleAvatar(
-            radius: 30,
-            backgroundColor: AppColors.primary,
-            backgroundImage: widget.user.image.value != null
-                ? MemoryImage(widget.user.image.value!)
-                : null,
-            child: Obx(
-              () {
-                if (widget.user.image.value != null) {
-                  return SizedBox();
-                }
+          () {
+            widget.user.image.value;
+            return CircleAvatar(
+              radius: 30,
+              backgroundColor: AppColors.primary,
+              backgroundImage: checkImageType(),
+              child: Obx(
+                () {
+                  widget.user.image.value;
+                  if (isImagePresented()) {
+                    return SizedBox();
+                  }
+                  if (widget.user.image.value != null) {
+                    return SizedBox();
+                  }
 
-                return Icon(Icons.person);
-              },
-            ),
-          ),
+                  return Icon(Icons.person);
+                },
+              ),
+            );
+          },
         ),
         const SizedBox(width: 20),
         Flexible(

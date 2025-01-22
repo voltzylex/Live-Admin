@@ -7,15 +7,15 @@ class AddUser extends Equatable {
     required this.password,
     required this.passwordConfirmation,
     required this.photo,
-    required this.mobile,
+    required this.phone,
   });
 
   final String name;
   final String email;
   final String password;
   final String passwordConfirmation;
-  final String? photo;
-  final int? mobile;
+  final String photo;
+  final int? phone;
 
   AddUser copyWith({
     String? name,
@@ -31,7 +31,7 @@ class AddUser extends Equatable {
       password: password ?? this.password,
       passwordConfirmation: passwordConfirmation ?? this.passwordConfirmation,
       photo: photo ?? this.photo,
-      mobile: mobile ?? this.mobile,
+      phone: mobile ?? this.phone,
     );
   }
 
@@ -42,7 +42,7 @@ class AddUser extends Equatable {
       password: json["password"] ?? "",
       passwordConfirmation: json["password_confirmation"] ?? "",
       photo: json["photo"],
-      mobile: json["phone"],
+      phone: json["phone"],
     );
   }
 
@@ -52,10 +52,10 @@ class AddUser extends Equatable {
         "password": password,
         "password_confirmation": passwordConfirmation,
         "photo": photo,
-        "phone": mobile,
+        "phone": phone,
       };
 
   @override
   List<Object?> get props =>
-      [name, email, password, passwordConfirmation, photo, mobile];
+      [name, email, password, passwordConfirmation, photo, phone];
 }

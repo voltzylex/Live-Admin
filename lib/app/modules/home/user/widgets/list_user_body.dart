@@ -1,6 +1,7 @@
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/user/controllers/user_controller.dart';
 import 'package:live_admin/app/modules/home/user/models/users_model.dart';
+import 'package:live_admin/app/modules/home/user/widgets/add_user_body.dart';
 import 'package:live_admin/app/modules/home/user/widgets/user_data_source.dart';
 
 class ListUserBody extends StatefulWidget {
@@ -196,7 +197,29 @@ class _ListUserBodyState extends State<ListUserBody> {
     );
   }
 
-  void _editUser(User u) {}
+  void _editUser(User u) {
+    Get.dialog(
+      Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: AppColors.content, // Set a solid background color
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+          child: AddUserBody(
+            user: widget.user,
+            isEdit: true,
+            cUser: u,
+          ),
+        ),
+      ),
+    );
+  }
+
   void _deleteUser(User u) async {
     await widget.user.deleteUser(u.id, context);
   }
