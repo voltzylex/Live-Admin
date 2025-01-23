@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/user/controllers/user_controller.dart';
@@ -30,10 +31,21 @@ class _AddUserBodyState extends State<AddUserBody> {
       w.user.email.text = w.cUser?.email ?? "";
       w.user.firstName.text = w.cUser?.name.split(" ")[0] ?? "";
       w.user.lastName.text = w.cUser?.name.split(" ")[1] ?? "";
-      w.user.mobileNumber.text = w.cUser?.phone ?? "";
+      w.user.phone.text = w.cUser?.phone ?? "";
     }
   }
 
+  bool isEmailMatch() {
+    final match =
+        widget.user.email.text.trim() == (widget.cUser?.email).toString().trim()
+            ? true
+            : false;
+    log("match email is ${widget.user.email.text.trim()} == ${(widget.cUser?.email).toString().trim()} is email matched $match");
+    return match;
+  }
+
+  bool isMobileMatch() =>
+      widget.user.phone.text == (widget.cUser?.phone ?? "") ? true : false;
   @override
   Widget build(BuildContext context) {
     const String first = "First Name",
@@ -100,7 +112,7 @@ class _AddUserBodyState extends State<AddUserBody> {
                     children: [
                       Flexible(
                         child: tField(
-                          controller: widget.user.mobileNumber,
+                          controller: widget.user.phone,
                           title: mobile,
                           hint: mobile,
                           validator: validateMobile,
@@ -195,13 +207,19 @@ class _AddUserBodyState extends State<AddUserBody> {
                         email: w.email.text,
                         password: w.createP.text,
                         passwordConfirmation: w.confirmP.text,
-                        phone: int.tryParse(w.mobileNumber.text),
+                        phone: int.tryParse(w.phone.text),
                         photo: w.image.value != null
                             ? base64Encode(w.image.value!)
                             : "");
                     if (widget.isEdit) {
-                      await widget.user
-                          .editUser(context, user: data, id: widget.cUser!.id);
+                      log("New email data ${isEmailMatch() ? null : w.email.text}");
+                      final editData = data.copyWith(
+                        email: isEmailMatch() ? null : w.email.text,
+                        photo: isMobileMatch() ? null : w.phone.text,
+                      );
+                      log("Edit data ${editData.toJson()}");
+                      await widget.user.editUser(context,
+                          user: editData, id: widget.cUser!.id);
                     } else {
                       await widget.user.addUser(context, key: _key, user: data);
                     }

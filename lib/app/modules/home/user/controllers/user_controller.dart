@@ -19,7 +19,7 @@ class UserController extends GetxController with StateMixin<UsersModel> {
   final RxBool createObs = true.obs, confirmObs = true.obs;
   TextEditingController firstName = TextEditingController(),
       lastName = TextEditingController(),
-      mobileNumber = TextEditingController(),
+      phone = TextEditingController(),
       email = TextEditingController(),
       createP = TextEditingController(),
       confirmP = TextEditingController();
@@ -138,13 +138,12 @@ class UserController extends GetxController with StateMixin<UsersModel> {
   Future<void> onCancel() async {
     firstName.clear();
     lastName.clear();
-    mobileNumber.clear();
+    phone.clear();
     email.clear();
     createP.clear();
     confirmP.clear();
     image.value = null;
     isUser(true);
-    
   }
 
   Future<void> getUsers() async {

@@ -334,9 +334,12 @@ class ApiConnect extends GetConnect {
       Map<String, dynamic> updatedData = user.toJson();
 
       updatedData = Map.of(user.toJson());
-      if (user.photo.isEmpty) updatedData.remove("photo");
+      if (user.photo?.isEmpty ?? false) updatedData.remove("photo");
       updatedData.remove("password_confirmation");
       updatedData.remove("password");
+      user.phone == null ? updatedData.remove("phone") : null;
+      user.email == null ? updatedData.remove("email") : null;
+      log("Email data is ${user.email}");
       log("Updated User data is $updatedData");
 
       final res = await put(

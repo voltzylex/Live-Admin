@@ -11,11 +11,11 @@ class AddUser extends Equatable {
   });
 
   final String name;
-  final String email;
+  final String? email; // Make nullable
   final String password;
   final String passwordConfirmation;
-  final String photo;
-  final int? phone;
+  final String? photo; // Make nullable
+  final int? phone; // Already nullable
 
   AddUser copyWith({
     String? name,
@@ -23,26 +23,26 @@ class AddUser extends Equatable {
     String? password,
     String? passwordConfirmation,
     String? photo,
-    int? mobile,
+    int? phone, // Renamed for consistency
   }) {
     return AddUser(
       name: name ?? this.name,
-      email: email ?? this.email,
+      email: email,
       password: password ?? this.password,
       passwordConfirmation: passwordConfirmation ?? this.passwordConfirmation,
       photo: photo ?? this.photo,
-      phone: mobile ?? this.phone,
+      phone: phone ?? this.phone,
     );
   }
 
   factory AddUser.fromJson(Map<String, dynamic> json) {
     return AddUser(
       name: json["name"] ?? "",
-      email: json["email"] ?? "",
+      email: json["email"],
       password: json["password"] ?? "",
       passwordConfirmation: json["password_confirmation"] ?? "",
-      photo: json["photo"],
-      phone: json["phone"],
+      photo: json["photo"], // Matches nullable type
+      phone: json["phone"], // Matches nullable type
     );
   }
 

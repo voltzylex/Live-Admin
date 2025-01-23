@@ -126,7 +126,7 @@ class UserDataChart extends StatelessWidget {
   List<PieChartSectionData> showingSections(DashboardModel? state) {
     final double activeUsersPercentage = 20.0;
     final double inactiveUsersPercentage =
-        state!.userData!.inactiveUsersPercentage.toDouble();
+        state!.userData?.inactiveUsersPercentage.toDouble() ?? 0.0;
 
     return [
       PieChartSectionData(
