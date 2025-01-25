@@ -61,7 +61,7 @@ class RevenueReportWidget extends StatelessWidget {
                           getTitlesWidget: (value, meta) {
                             if (value.toInt() >= 0 &&
                                 value.toInt() <
-                                    state.revenueReport!.labels.length) {
+                                    (state.revenueReport?.labels.length ?? 0)) {
                               return Padding(
                                 padding: const EdgeInsets.only(top: 8.0),
                                 child: Text(
