@@ -17,20 +17,22 @@ class _AddSeriesPageState extends State<AddSeriesPage> {
 
     return Scaffold(
       backgroundColor: AppColors.content,
-      appBar: AppBar(
-        backgroundColor: AppColors.primary,
-        leading: IconButton(
-          onPressed: () => ser.isUpload.toggle(),
-          icon: const Icon(Icons.navigate_before, color: Colors.white),
-        ),
-        title: const Text(
-          "Add Series",
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: AppColors.primary,
+      //   leading: IconButton(
+      //     onPressed: () => ser.isUpload.toggle(),
+      //     icon: const Icon(Icons.navigate_before, color: Colors.white),
+      //   ),
+      //   title: const Text(
+      //     "Add Series",
+      //     style: TextStyle(color: Colors.white),
+      //   ),
+      // ),
       body: SingleChildScrollView(
-        padding:
-            EdgeInsets.symmetric(horizontal: screenWidth * 0.1, vertical: 20),
+        padding: EdgeInsets.symmetric(
+            // horizontal: screenWidth * 0.1,
+            horizontal: kContentRadius,
+            vertical: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -237,6 +239,7 @@ class _AddSeriesPageState extends State<AddSeriesPage> {
                               ser.seasons[seasonIndex].episodes.length;
                           episodeIndex++)
                         Card(
+                          color: AppColors.white.withOpacity(.2),
                           margin: const EdgeInsets.symmetric(vertical: 5),
                           child: ListTile(
                             leading: GestureDetector(
@@ -250,12 +253,13 @@ class _AddSeriesPageState extends State<AddSeriesPage> {
                                     const Icon(Icons.image, color: Colors.grey),
                               ),
                             ),
+                            contentPadding: EdgeInsets.all(5),
                             title: TextField(
                               // controller: ser.getEpisodeTitleController(
                               //     seasonIndex, episodeIndex),
                               decoration: const InputDecoration(
                                   hintText: "Episode Title"),
-                            ),
+                            ).paddingAll(5),
                             subtitle: TextField(
                               // controller: ser.getEpisodeDescriptionController(
                               //     seasonIndex, episodeIndex),
@@ -263,7 +267,7 @@ class _AddSeriesPageState extends State<AddSeriesPage> {
                                 hintText: "Episode Description",
                               ),
                               maxLines: 3,
-                            ),
+                            ).paddingAll(5),
                             trailing: IconButton(
                               icon: const Icon(Icons.delete, color: Colors.red),
                               onPressed: () =>
