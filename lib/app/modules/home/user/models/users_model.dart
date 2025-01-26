@@ -37,7 +37,7 @@ class UsersModel {
     Map<String, dynamic> toJson() => {
         "success": success,
         "message": message,
-        "users": users.map((x) => x?.toJson()).toList(),
+        "users": users.map((x) => x.toJson()).toList(),
         "meta": meta?.toJson(),
     };
 
@@ -115,7 +115,7 @@ class User {
         String? photo,
         String? phone,
         String? email,
-        dynamic? emailVerifiedAt,
+        dynamic emailVerifiedAt,
         DateTime? createdAt,
         DateTime? updatedAt,
     }) {
@@ -147,7 +147,7 @@ class User {
     Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
-        "photo": photo ?? null,
+        "photo": photo,
         "phone": phone,
         "email": email,
         "email_verified_at": emailVerifiedAt,

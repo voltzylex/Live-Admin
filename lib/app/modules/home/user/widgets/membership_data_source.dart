@@ -1,5 +1,6 @@
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/membership/models/membership_model.dart';
+import 'package:live_admin/app/utils/constants.dart';
 
 class MembershipDataSource extends DataTableSource {
   final BuildContext context;
@@ -36,7 +37,8 @@ class MembershipDataSource extends DataTableSource {
 
         // Role
         DataCell(Text(plan.name)),
-
+        DataCell(Text(formatDateTime(plan.startDate ?? DateTime.now()))),
+        DataCell(Text(formatDateTime(plan.endDate ?? DateTime.now()))),
         // Status
         DataCell(Text(
           "Inactive",

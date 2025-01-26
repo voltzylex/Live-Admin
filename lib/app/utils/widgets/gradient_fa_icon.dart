@@ -4,15 +4,14 @@ import 'package:live_admin/app/themes/app_colors.dart';
 class GradientIcon extends StatelessWidget {
   const GradientIcon(
     this.icon, {
-    Key? key,
+    super.key,
     this.size,
     this.color,
     this.gradient,
     this.colors,
     this.semanticLabel,
     this.textDirection,
-  })  : assert(icon != null),
-        super(key: key);
+  })  : assert(icon != null);
 
   /// The icon to display. The available icons are described in
   /// [FontAwesomeIcons].

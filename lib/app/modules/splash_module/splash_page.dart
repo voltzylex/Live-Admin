@@ -5,7 +5,7 @@ import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/utils/widgets/app_bar/custom_app_bar.dart';
 
 class SplashPage extends GetWidget {
-  const SplashPage({Key? key}) : super(key: key);
+  const SplashPage({super.key});
   void _navigateAfterSplash() {
     Timer(const Duration(seconds: 2), () async {
       // Load login status from SharedPreferences

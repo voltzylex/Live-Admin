@@ -103,6 +103,8 @@ class ListMembershipBody extends StatelessWidget {
           DataColumn2(label: Text('Name'), size: ColumnSize.L),
           DataColumn2(label: Text('Email'), size: ColumnSize.M),
           DataColumn2(label: Text('Role'), size: ColumnSize.M),
+          DataColumn2(label: Text('Start Date'), size: ColumnSize.M),
+          DataColumn2(label: Text('End Date'), size: ColumnSize.M),
           DataColumn2(label: Text('Status'), size: ColumnSize.S),
           DataColumn2(label: Text('Actions'), size: ColumnSize.S),
         ],

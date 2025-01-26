@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/auth_module/controllers/auth_controller.dart';
@@ -6,7 +8,7 @@ class RightPanel extends StatefulWidget {
   const RightPanel({super.key});
 
   @override
-  _RightPanelState createState() => _RightPanelState();
+  State<RightPanel> createState() => _RightPanelState();
 }
 
 class _RightPanelState extends State<RightPanel> {
@@ -18,7 +20,6 @@ class _RightPanelState extends State<RightPanel> {
   @override
   void initState() {
     super.initState();
-   
   }
 
   @override
@@ -176,12 +177,12 @@ class _RightPanelState extends State<RightPanel> {
                 child: ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState?.validate() ?? false) {
-                      print("Validation passed");
+                      log("Validation passed");
                       // Handle successful login
                       await _auth.login(email.text, password.text, context);
                       // Get.toNamed(AppRoutes.dashboard);
                     } else {
-                      print("Validation failed");
+                      log("Validation failed");
                     }
                   },
                   style: ElevatedButton.styleFrom(

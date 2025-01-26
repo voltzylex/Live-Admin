@@ -32,7 +32,7 @@ class AuthController extends GetxController {
   // Call your logic for forgot password (sending reset link)
   void sendResetLink(String email) {
     // Implement your forgot password logic here
-    print("Sending reset link to $email");
+
     startTimer(); // Start the timer once the link is sent
   }
 
@@ -76,7 +76,7 @@ class AuthController extends GetxController {
         description: '',
         type: ToastType.error,
       );
-      print('Login error: $e');
+      log('Login error: $e');
     }
   }
 }

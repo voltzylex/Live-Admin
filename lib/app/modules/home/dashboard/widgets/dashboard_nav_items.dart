@@ -1,4 +1,3 @@
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:live_admin/app/global_imports.dart';
 
 class DashboardNavItem extends StatelessWidget {

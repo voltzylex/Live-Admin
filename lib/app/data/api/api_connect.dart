@@ -6,6 +6,7 @@ import 'package:get/get_connect/http/src/status/http_status.dart';
 import 'package:live_admin/app/data/api/api_error.dart';
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/auth_module/controllers/login_model.dart';
+import 'package:live_admin/app/modules/home/membership/models/add_subscribe_model.dart';
 import 'package:live_admin/app/modules/home/movies/models/add_movie_model.dart';
 import 'package:live_admin/app/modules/home/user/models/add_user_model.dart';
 import 'package:live_admin/app/utils/constants.dart';
@@ -368,6 +369,16 @@ class ApiConnect extends GetConnect {
       return res;
     } catch (e) {
       return Response(body: e.toString());
+    }
+  }
+
+  Future<Response> subscribeToPlan(AddSubscribeModel subscribe) async {
+    try {
+      final res = await post(EndPoints.subscribe, subscribe.toJson(),
+          headers: authHeader());
+      return res;
+    } catch (e) {
+      return Response(body: e.toString(), statusCode: 500);
     }
   }
 }

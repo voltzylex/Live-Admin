@@ -4,9 +4,12 @@ import 'dart:typed_data';
 import 'package:image_picker/image_picker.dart';
 import 'package:live_admin/app/data/api/api_connect.dart';
 import 'package:live_admin/app/global_imports.dart';
+import 'package:live_admin/app/modules/home/membership/models/add_subscribe_model.dart';
 import 'package:live_admin/app/modules/home/membership/models/membership_model.dart';
 import 'package:live_admin/app/modules/home/membership/models/plans_model.dart';
+import 'package:live_admin/app/modules/home/membership/models/subscribe_model.dart';
 import 'package:live_admin/app/modules/home/user/controllers/user_controller.dart';
+import 'package:live_admin/app/utils/constants.dart';
 
 class MembershipController extends GetxController
     with StateMixin<MembershipModel> {
@@ -61,10 +64,44 @@ class MembershipController extends GetxController
   }
 
   Future<PlansModel?> fetchPlans() async {
-    isPlanL.value = true;
-    final plan = await ApiConnect.instance.getPlans();
-    isPlanL.value = false;
+    try {
+      isPlanL.value = true;
+      final plan = await ApiConnect.instance.getPlans();
+      isPlanL.value = false;
 
-    return PlansModel.fromJson(plan.body);
+      return PlansModel.fromJson(plan.body);
+    } on Exception catch (e) {
+      ToastHelper.showToast(
+          context: Get.context!,
+          title: e.toString(),
+          description: "",
+          type: ToastType.error);
+      return null;
+    }
+  }
+
+  Future<void> subscribeToPlan(
+      AddSubscribeModel subscribe, BuildContext context) async {
+    try {
+      showLoading();
+      final res = await ApiConnect.instance.subscribeToPlan(subscribe);
+
+      final data = SubscribeModel.fromJson(res.body);
+      hideLoading();
+      ToastHelper.showToast(
+        context: context,
+        title: data.message,
+        description: "",
+        type: res.statusCode! <= 202 ? ToastType.success : ToastType.error,
+      );
+    } catch (e) {
+      hideLoading();
+      ToastHelper.showToast(
+        context: context,
+        title: "Something Went wrong",
+        description: e.toString(),
+        type: ToastType.error,
+      );
+    }
   }
 }

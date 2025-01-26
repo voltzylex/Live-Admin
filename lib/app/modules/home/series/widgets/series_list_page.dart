@@ -4,7 +4,6 @@ import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/Series/widgets/Series_data_source.dart';
 import 'package:live_admin/app/modules/home/series/controllers/series_controller.dart';
 import 'package:live_admin/app/modules/home/series/views/series_detail_page.dart';
-import 'package:live_admin/app/themes/app_text_theme.dart';
 
 import '../models/series_model.dart';
 

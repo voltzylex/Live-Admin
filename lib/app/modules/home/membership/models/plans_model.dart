@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class PlansModel extends Equatable {
-    PlansModel({
+    const PlansModel({
         required this.success,
         required this.message,
         required this.plans,
@@ -34,7 +34,7 @@ class PlansModel extends Equatable {
     Map<String, dynamic> toJson() => {
         "success": success,
         "message": message,
-        "plans": plans.map((x) => x?.toJson()).toList(),
+        "plans": plans.map((x) => x.toJson()).toList(),
     };
 
     @override
@@ -43,7 +43,7 @@ class PlansModel extends Equatable {
 }
 
 class Plan extends Equatable {
-    Plan({
+    const Plan({
         required this.id,
         required this.name,
         required this.price,
@@ -78,9 +78,9 @@ class Plan extends Equatable {
         String? name,
         num? price,
         num? duration,
-        dynamic? maxQuality,
+        dynamic maxQuality,
         num? maxDevice,
-        dynamic? resolution,
+        dynamic resolution,
         bool? support,
         num? trialPeriod,
         bool? status,

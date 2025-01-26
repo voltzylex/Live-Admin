@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class DashboardModel extends Equatable {
-    DashboardModel({
+    const DashboardModel({
         required this.success,
         required this.message,
         required this.overview,
@@ -52,7 +52,7 @@ class DashboardModel extends Equatable {
         "overview": overview?.toJson(),
         "revenue_report": revenueReport?.toJson(),
         "user_data": userData?.toJson(),
-        "new_members": newMembers.map((x) => x?.toJson()).toList(),
+        "new_members": newMembers.map((x) => x.toJson()).toList(),
     };
 
     @override
@@ -61,7 +61,7 @@ class DashboardModel extends Equatable {
 }
 
 class NewMember extends Equatable {
-    NewMember({
+    const NewMember({
         required this.id,
         required this.name,
         required this.email,
@@ -81,7 +81,7 @@ class NewMember extends Equatable {
         int? id,
         String? name,
         String? email,
-        dynamic? emailVerifiedAt,
+        dynamic emailVerifiedAt,
         DateTime? createdAt,
         DateTime? updatedAt,
     }) {
@@ -121,7 +121,7 @@ class NewMember extends Equatable {
 }
 
 class Overview extends Equatable {
-    Overview({
+    const Overview({
         required this.totalUsers,
         required this.usersThisMonth,
         required this.totalMovies,
@@ -181,7 +181,7 @@ class Overview extends Equatable {
 }
 
 class RevenueReport extends Equatable {
-    RevenueReport({
+    const RevenueReport({
         required this.labels,
         required this.data,
     });
@@ -217,7 +217,7 @@ class RevenueReport extends Equatable {
 }
 
 class UserData extends Equatable {
-    UserData({
+    const UserData({
         required this.activeUsers,
         required this.inactiveUsers,
         required this.activeUsersPercentage,

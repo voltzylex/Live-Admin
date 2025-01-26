@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/membership/controllers/membership_controller.dart';
+import 'package:live_admin/app/modules/home/membership/models/add_subscribe_model.dart';
 import 'package:live_admin/app/modules/home/membership/models/plans_model.dart';
 import 'package:live_admin/app/modules/home/user/models/users_model.dart';
 import 'package:live_admin/app/utils/loading.dart';
@@ -16,8 +17,6 @@ class AddMembershipBody extends StatefulWidget {
 }
 
 class _AddMembershipBodyState extends State<AddMembershipBody> {
-  final _key = GlobalKey<FormState>();
-
   Plan? _selectedPlan;
   User? _selectedUser; // Selected user for membership
   final TextEditingController _userController =
@@ -426,7 +425,7 @@ class _AddMembershipBodyState extends State<AddMembershipBody> {
   /// Builds the save button with validations
   Widget _buildSaveButton() {
     return ElevatedButton(
-      onPressed: () {
+      onPressed: () async {
         if (_selectedUser == null) {
           ToastHelper.showToast(
             context: context,
@@ -457,13 +456,17 @@ class _AddMembershipBodyState extends State<AddMembershipBody> {
         }
 
         // Save logic here
-        // widget.membership.addMembership(
-        //   context,
-        //   user: _selectedUser,
-        //   plan: _selectedPlan,
-        //   startDate: _startDate.value,
-        //   endDate: _endDate.value,
-        // );
+        await widget.membership.subscribeToPlan(
+            AddSubscribeModel(
+                userId: _selectedUser!.id,
+                planId: _selectedPlan!.id,
+                startDate: _startDate.value),
+            context
+            // user: _selectedUser,
+            // plan: _selectedPlan,
+            // startDate: _startDate.value,
+            // endDate: _endDate.value,
+            );
       },
       style: ElevatedButton.styleFrom(
         maximumSize: Size(Get.width, 50),

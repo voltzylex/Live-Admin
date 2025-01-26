@@ -12,7 +12,7 @@ class CategoryWidget extends StatefulWidget {
   final MoviesController mov;
 
   @override
-  _CategoryWidgetState createState() => _CategoryWidgetState();
+ State< CategoryWidget> createState() => _CategoryWidgetState();
 }
 
 class _CategoryWidgetState extends State<CategoryWidget> {

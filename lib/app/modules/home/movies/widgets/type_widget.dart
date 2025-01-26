@@ -12,7 +12,7 @@ class TypeWidget extends StatefulWidget {
   final MoviesController mov;
 
   @override
-  _TypeWidgetState createState() => _TypeWidgetState();
+  State<TypeWidget> createState() => _TypeWidgetState();
 }
 
 class _TypeWidgetState extends State<TypeWidget> {

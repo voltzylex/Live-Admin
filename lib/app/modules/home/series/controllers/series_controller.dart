@@ -4,7 +4,6 @@ import 'dart:typed_data';
 import 'package:image_picker/image_picker.dart';
 import 'package:live_admin/app/data/api/api_connect.dart';
 import 'package:live_admin/app/global_imports.dart';
-import 'package:live_admin/app/modules/home/movies/models/add_movie_model.dart';
 import 'package:live_admin/app/modules/home/series/models/series_model.dart';
 import 'package:live_admin/app/utils/constants.dart';
 class SeriesController extends GetxController with StateMixin<SeriesModel> {

@@ -78,7 +78,7 @@ class NewMembersSection extends StatelessWidget {
             children: [
               _buildMemberColumn(member.id.toString(), flex: 2, index),
               _buildMemberColumn(member.name, flex: 4, index),
-              _buildMemberColumn((member.email ?? 'N/A'), flex: 4, index),
+              _buildMemberColumn((member.email ), flex: 4, index),
               _buildMemberColumn(
                   formatDateTime(member.createdAt), flex: 4, index),
               _buildMemberColumn(

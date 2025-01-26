@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class LoginModel extends Equatable {
-    LoginModel({
+    const LoginModel({
         required this.success,
         required this.message,
         required this.admin,
@@ -49,7 +49,7 @@ class LoginModel extends Equatable {
 }
 
 class Admin extends Equatable {
-    Admin({
+    const Admin({
         required this.id,
         required this.name,
         required this.email,
@@ -69,7 +69,7 @@ class Admin extends Equatable {
         int? id,
         String? name,
         String? email,
-        dynamic? emailVerifiedAt,
+        dynamic emailVerifiedAt,
         DateTime? createdAt,
         DateTime? updatedAt,
     }) {

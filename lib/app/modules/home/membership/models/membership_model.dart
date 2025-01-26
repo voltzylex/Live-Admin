@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class MembershipModel extends Equatable {
-    MembershipModel({
+    const MembershipModel({
         required this.success,
         required this.message,
         required this.myPlans,
@@ -39,7 +39,7 @@ class MembershipModel extends Equatable {
     Map<String, dynamic> toJson() => {
         "success": success,
         "message": message,
-        "my_plans": myPlans.map((x) => x?.toJson()).toList(),
+        "my_plans": myPlans.map((x) => x.toJson()).toList(),
         "meta": meta?.toJson(),
     };
 
@@ -49,7 +49,7 @@ class MembershipModel extends Equatable {
 }
 
 class Meta extends Equatable {
-    Meta({
+    const Meta({
         required this.total,
         required this.currentPage,
         required this.perPage,
@@ -97,7 +97,7 @@ class Meta extends Equatable {
 }
 
 class MyPlan extends Equatable {
-    MyPlan({
+    const MyPlan({
         required this.id,
         required this.userId,
         required this.planId,
@@ -187,7 +187,7 @@ class MyPlan extends Equatable {
 }
 
 class User extends Equatable {
-    User({
+    const User({
         required this.id,
         required this.name,
         required this.email,
@@ -207,7 +207,7 @@ class User extends Equatable {
         int? id,
         String? name,
         String? email,
-        dynamic? emailVerifiedAt,
+        dynamic emailVerifiedAt,
         DateTime? createdAt,
         DateTime? updatedAt,
     }) {

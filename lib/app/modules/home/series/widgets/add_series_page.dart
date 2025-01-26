@@ -13,7 +13,7 @@ class _AddSeriesPageState extends State<AddSeriesPage> {
   @override
   Widget build(BuildContext context) {
     final ser = widget.ser;
-    final double screenWidth = Get.width;
+
 
     return Scaffold(
       backgroundColor: AppColors.content,
