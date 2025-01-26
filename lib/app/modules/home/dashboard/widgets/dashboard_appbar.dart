@@ -1,5 +1,4 @@
 import 'package:live_admin/app/global_imports.dart';
-import 'package:live_admin/app/themes/app_text_theme.dart';
 
 class DashboardAppBar extends StatelessWidget {
   const DashboardAppBar({super.key});
@@ -17,22 +16,22 @@ class DashboardAppBar extends StatelessWidget {
           const Spacer(),
 
           // Search Field
-          Expanded(
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Search for anything...',
-                hintStyle: TextStyle(color: Colors.grey[400]),
-                prefixIcon: Icon(Icons.search, color: Colors.grey[400])
-                    .paddingOnly(left: 10),
-                filled: true,
-                fillColor: AppColors.content,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(kRadius),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
-          ),
+          // Expanded(
+          //   child: TextField(
+          //     decoration: InputDecoration(
+          //       hintText: 'Search for anything...',
+          //       hintStyle: TextStyle(color: Colors.grey[400]),
+          //       prefixIcon: Icon(Icons.search, color: Colors.grey[400])
+          //           .paddingOnly(left: 10),
+          //       filled: true,
+          //       fillColor: AppColors.content,
+          //       border: OutlineInputBorder(
+          //         borderRadius: BorderRadius.circular(kRadius),
+          //         borderSide: BorderSide.none,
+          //       ),
+          //     ),
+          //   ),
+          // ),
           const SizedBox(width: 20),
 
           // Notification Icon

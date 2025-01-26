@@ -5,6 +5,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:live_admin/app/data/api/api_connect.dart';
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/membership/models/membership_model.dart';
+import 'package:live_admin/app/modules/home/membership/models/plans_model.dart';
+import 'package:live_admin/app/modules/home/user/controllers/user_controller.dart';
 
 class MembershipController extends GetxController
     with StateMixin<MembershipModel> {
@@ -17,19 +19,23 @@ class MembershipController extends GetxController
   final TextEditingController features = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final Rxn<Uint8List> image = Rxn();
+  final Rxn<PlansModel?> plans = Rxn<PlansModel?>();
   final picker = ImagePicker();
-
+  late UserController users;
   RxBool isSwitchOn = true.obs;
   RxString selectedCategory = ''.obs;
   RxString selectedType = ''.obs;
   RxBool isMembership = false.obs;
+  RxBool isPlanL = false.obs;
   // RxList<Movie> movies = <Movie>[].obs;
   final PaginatorController pageController = PaginatorController();
   RxInt currenP = 1.obs;
   @override
   onInit() {
     super.onInit();
+    users = UserController.to;
     getMembers(1);
+    fetchPlans();
     ever(
       currenP,
       (callback) {
@@ -52,5 +58,13 @@ class MembershipController extends GetxController
       // Set error state
       change(null, status: RxStatus.error('Failed to load data'));
     }
+  }
+
+  Future<PlansModel?> fetchPlans() async {
+    isPlanL.value = true;
+    final plan = await ApiConnect.instance.getPlans();
+    isPlanL.value = false;
+
+    return PlansModel.fromJson(plan.body);
   }
 }

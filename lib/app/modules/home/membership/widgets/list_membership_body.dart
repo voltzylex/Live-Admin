@@ -2,8 +2,8 @@
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/membership/controllers/membership_controller.dart';
 import 'package:live_admin/app/modules/home/membership/models/membership_model.dart';
+import 'package:live_admin/app/modules/home/membership/widgets/add_membership.dart';
 import 'package:live_admin/app/modules/home/user/widgets/membership_data_source.dart';
-import 'package:live_admin/app/themes/app_text_theme.dart';
 
 class ListMembershipBody extends StatelessWidget {
   final MembershipController membership;
@@ -52,10 +52,23 @@ class ListMembershipBody extends StatelessWidget {
           ),
         ),
         BaseButton(
-          onPressed: () {},
+          onPressed: () {
+            Get.dialog(Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16.0),
+                ),
+                child: Container(
+               
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: AppColors.content, // Set a solid background color
+                      borderRadius: BorderRadius.circular(16.0),
+                    ),
+                    child: AddMembershipBody(membership: membership))));
+          },
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.purple,
+              color: AppColors.primary,
               borderRadius: BorderRadius.circular(kRadius),
             ),
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),

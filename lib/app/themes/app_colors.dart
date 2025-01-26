@@ -25,7 +25,7 @@ class AppColors {
   // Neutral Colors
   static const Color lightGrey = Color(0xFFD3D3D3); // #D3D3D3
   static const Color darkGrey = Color(0xFF595959); // #595959
-  static Color borderL1 = Colors.white.withOpacity(.5);
+  static  Color borderL1 = Colors.white.withOpacity(.5);
   static const Color mediumGrey = Color(0xFFB0B0B0); // #B0B0B0
   static const Color hintText = Color(0xffDADEE3);
 
@@ -52,6 +52,7 @@ class AppColors {
       Color(0xFFC79E00); // Darker shade of secondary
   static const Color table1 = Color(0xff2C2B2F);
   static const Color table2 = Color(0xff1A1A1C);
+  static const Color green1 = Color(0xFF00973C);
 }
 
 const double kRadius = 30;

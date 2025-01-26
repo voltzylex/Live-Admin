@@ -18,6 +18,7 @@ class EndPoints {
   static String updateUser(String id) => "admin/users/$id";
   static String addUser = "register/user";
   static String deleteUser(int id) => "admin/users/$id";
+  static String getPlans = "plans";
 
   static const String getUser = "admin/users";
   static const Duration timeout = Duration(seconds: 30);

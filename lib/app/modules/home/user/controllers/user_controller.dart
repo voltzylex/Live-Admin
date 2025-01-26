@@ -10,7 +10,7 @@ import 'package:live_admin/app/modules/home/user/models/users_model.dart';
 import 'package:live_admin/app/utils/constants.dart';
 
 class UserController extends GetxController with StateMixin<UsersModel> {
-  UserController get to => Get.isRegistered<UserController>()
+ static UserController get to => Get.isRegistered<UserController>()
       ? Get.find<UserController>()
       : Get.put(UserController());
   RxBool isUser = true.obs;

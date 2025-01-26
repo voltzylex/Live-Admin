@@ -8,7 +8,7 @@ class UserPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = UserController().to;
+    final user = UserController.to;
     return Scaffold(
       backgroundColor: AppColors.transparent,
       body: Obx(
