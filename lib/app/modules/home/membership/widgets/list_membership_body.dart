@@ -58,7 +58,6 @@ class ListMembershipBody extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16.0),
                 ),
                 child: Container(
-               
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       color: AppColors.content, // Set a solid background color
@@ -112,6 +111,7 @@ class ListMembershipBody extends StatelessWidget {
         source: MembershipDataSource(
           context,
           state.myPlans,
+          membership,
           onEdit: (id) => _editUser(context, id),
           onDelete: (id) => _deleteUser(context, id),
         ),

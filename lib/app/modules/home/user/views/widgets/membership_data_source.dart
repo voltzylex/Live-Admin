@@ -1,7 +1,9 @@
 import 'dart:developer';
 
 import 'package:live_admin/app/global_imports.dart';
+import 'package:live_admin/app/modules/home/membership/controllers/membership_controller.dart';
 import 'package:live_admin/app/modules/home/membership/models/membership_model.dart';
+import 'package:live_admin/app/modules/home/user/views/user_history_page.dart';
 import 'package:live_admin/app/utils/constants.dart';
 
 class MembershipDataSource extends DataTableSource {
@@ -9,10 +11,11 @@ class MembershipDataSource extends DataTableSource {
   final List<MyPlan> plans;
   final void Function(int id) onEdit;
   final void Function(int id) onDelete;
-
+  final MembershipController cont;
   MembershipDataSource(
     this.context,
-    this.plans, {
+    this.plans,
+    this.cont, {
     required this.onEdit,
     required this.onDelete,
   });
@@ -23,9 +26,10 @@ class MembershipDataSource extends DataTableSource {
     return DataRow2(
       specificRowHeight: null,
       onTap: () {
-        log("Member is ${plan.user?.toJson()}");
         // Get.to(() => UserHistoryPage());
-        Get.find<DashboardController>().changePage("/history");
+        cont.user = plan.user;
+        log("Member is ${cont.user?.toJson()}");
+        Get.find<DashboardController>().changePage(UserHistoryPage.name);
       },
       color: WidgetStateProperty.all(
           index % 2 == 0 ? AppColors.table1 : AppColors.table2),

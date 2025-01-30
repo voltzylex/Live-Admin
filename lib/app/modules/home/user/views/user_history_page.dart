@@ -1,14 +1,22 @@
+import 'dart:developer';
+
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/membership/controllers/membership_controller.dart';
 
 class UserHistoryPage extends StatefulWidget {
   const UserHistoryPage({super.key});
-
+  static const name = "/history";
   @override
   State<UserHistoryPage> createState() => _UserHistoryPageState();
 }
 
 class _UserHistoryPageState extends State<UserHistoryPage> {
+  @override
+  void initState() {
+    log("User History Page Initiated");
+    super.initState();
+  }
+
   final membership = MembershipController().to;
   @override
   Widget build(BuildContext context) {
@@ -42,11 +50,11 @@ class _UserHistoryPageState extends State<UserHistoryPage> {
               child: CircleAvatar(
                 radius: 40, // Control the image size
                 backgroundColor: AppColors.borderL1,
-                backgroundImage: NetworkImage(""),
+                backgroundImage: NetworkImage(membership.user?.photo ?? ""),
               ),
             ),
             title: Text(
-              "User",
+              membership.user?.name ?? "",
               style: AppTextStyles.title,
             ),
             subtitle: Row(
@@ -54,8 +62,8 @@ class _UserHistoryPageState extends State<UserHistoryPage> {
                 Icon(Icons.phone, color: AppColors.borderL1),
                 const SizedBox(width: 5), // Add spacing between icon and text
                 Text(
-                  membership.user?.phone ?? "",
-                  style: AppTextStyles.caption,
+                  membership.user?.phone ?? "0000000",
+                  style: AppTextStyles.caption.whiteColor,
                 ),
               ],
             ),
@@ -72,38 +80,40 @@ class _UserHistoryPageState extends State<UserHistoryPage> {
 
           // Table UI
           Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: DataTable(
-                columnSpacing: 20,
-                columns: const [
-                  DataColumn(
-                      label: Text("Date",
-                          style: TextStyle(fontWeight: FontWeight.bold))),
-                  DataColumn(
-                      label: Text("Activity",
-                          style: TextStyle(fontWeight: FontWeight.bold))),
-                  DataColumn(
-                      label: Text("Status",
-                          style: TextStyle(fontWeight: FontWeight.bold))),
-                ],
-                rows: [
-                  DataRow(cells: [
-                    DataCell(Text("2024-01-28")),
-                    DataCell(Text("Joined Membership")),
-                    DataCell(Text("Active")),
-                  ]),
-                  DataRow(cells: [
-                    DataCell(Text("2024-02-10")),
-                    DataCell(Text("Updated Profile")),
-                    DataCell(Text("Completed")),
-                  ]),
-                  DataRow(cells: [
-                    DataCell(Text("2024-02-15")),
-                    DataCell(Text("Renewed Subscription")),
-                    DataCell(Text("Pending")),
-                  ]),
-                ],
+            child: FittedBox(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: DataTable(
+                  columnSpacing: 20,
+                  columns: const [
+                    DataColumn(
+                        label: Text("Date",
+                            style: TextStyle(fontWeight: FontWeight.bold))),
+                    DataColumn(
+                        label: Text("Activity",
+                            style: TextStyle(fontWeight: FontWeight.bold))),
+                    DataColumn(
+                        label: Text("Status",
+                            style: TextStyle(fontWeight: FontWeight.bold))),
+                  ],
+                  rows: [
+                    DataRow(cells: [
+                      DataCell(Text("2024-01-28")),
+                      DataCell(Text("Joined Membership")),
+                      DataCell(Text("Active")),
+                    ]),
+                    DataRow(cells: [
+                      DataCell(Text("2024-02-10")),
+                      DataCell(Text("Updated Profile")),
+                      DataCell(Text("Completed")),
+                    ]),
+                    DataRow(cells: [
+                      DataCell(Text("2024-02-15")),
+                      DataCell(Text("Renewed Subscription")),
+                      DataCell(Text("Pending")),
+                    ]),
+                  ],
+                ),
               ),
             ),
           ),
