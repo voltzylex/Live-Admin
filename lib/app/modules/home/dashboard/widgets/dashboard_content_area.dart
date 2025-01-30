@@ -4,7 +4,8 @@ import 'package:live_admin/app/modules/home/membership/views/membership_page.dar
 import 'package:live_admin/app/modules/home/movies/views/movies_page.dart';
 import 'package:live_admin/app/modules/home/series/views/series_page.dart';
 import 'package:live_admin/app/modules/home/settings/setting_page.dart';
-import 'package:live_admin/app/modules/home/user/user_page.dart';
+import 'package:live_admin/app/modules/home/user/views/user_history_page.dart';
+import 'package:live_admin/app/modules/home/user/views/user_page.dart';
 
 class DashboardContentArea extends StatelessWidget {
   DashboardContentArea({super.key});
@@ -62,6 +63,8 @@ class DashboardContentArea extends StatelessWidget {
         return const SettingsPage(key: ValueKey('/settings'));
       case "/series":
         return const SeriesPage(key: ValueKey("/series"));
+      case "/history":
+        return const UserHistoryPage();
       default:
         return DashboardContent(
           key: ValueKey('default'),

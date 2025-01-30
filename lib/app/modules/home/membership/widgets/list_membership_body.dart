@@ -3,7 +3,7 @@ import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/membership/controllers/membership_controller.dart';
 import 'package:live_admin/app/modules/home/membership/models/membership_model.dart';
 import 'package:live_admin/app/modules/home/membership/widgets/add_membership.dart';
-import 'package:live_admin/app/modules/home/user/widgets/membership_data_source.dart';
+import 'package:live_admin/app/modules/home/user/views/widgets/membership_data_source.dart';
 
 class ListMembershipBody extends StatelessWidget {
   final MembershipController membership;

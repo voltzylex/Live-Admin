@@ -19,6 +19,7 @@ class EndPoints {
   static String addUser = "register/user";
   static String deleteUser(int id) => "admin/users/$id";
   static String getPlans = "plans";
+  static String getPlanHistory(int id) => "planhistory/$id";
   static String subscribe = "subscribe";
 
   static const String getUser = "admin/users";

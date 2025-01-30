@@ -24,6 +24,8 @@ class MembershipController extends GetxController
   final Rxn<Uint8List> image = Rxn();
   final Rxn<PlansModel?> plans = Rxn<PlansModel?>();
   final picker = ImagePicker();
+
+  User? user;
   late UserController users;
   RxBool isSwitchOn = true.obs;
   RxString selectedCategory = ''.obs;

@@ -11,6 +11,45 @@ import 'package:live_admin/app/modules/home/movies/models/add_movie_model.dart';
 import 'package:live_admin/app/modules/home/user/models/add_user_model.dart';
 import 'package:live_admin/app/utils/constants.dart';
 
+extension ResErr<T> on Response<T> {
+  T getBody() {
+    if (status.connectionError) {
+      throw NoConnectionError();
+    }
+
+    if (status.isUnauthorized) {
+      throw UnauthorizedError();
+    }
+
+    if (status.code == HttpStatus.badRequest) {
+      final res = jsonDecode(bodyString!);
+      throw ServerResError(res.toString());
+    }
+
+    if (status.code == HttpStatus.requestTimeout) {
+      throw TimeoutError();
+    }
+
+    if (!status.isOk) {
+      throw UnknownError();
+    }
+
+    try {
+      final res = jsonDecode(bodyString!);
+
+      if (res is Map && res['valid'] != null && !res['valid']) {
+        throw ServerResError(res['message']);
+      }
+
+      return body!;
+    } on TimeoutException catch (_) {
+      throw TimeoutError();
+    } catch (_) {
+      throw UnknownError();
+    }
+  }
+}
+
 class ApiConnect extends GetConnect {
   static final ApiConnect instance = ApiConnect._();
   dynamic _reqBody;
@@ -381,43 +420,14 @@ class ApiConnect extends GetConnect {
       return Response(body: e.toString(), statusCode: 500);
     }
   }
-}
 
-extension ResErr<T> on Response<T> {
-  T getBody() {
-    if (status.connectionError) {
-      throw NoConnectionError();
-    }
-
-    if (status.isUnauthorized) {
-      throw UnauthorizedError();
-    }
-
-    if (status.code == HttpStatus.badRequest) {
-      final res = jsonDecode(bodyString!);
-      throw ServerResError(res.toString());
-    }
-
-    if (status.code == HttpStatus.requestTimeout) {
-      throw TimeoutError();
-    }
-
-    if (!status.isOk) {
-      throw UnknownError();
-    }
-
+  Future<Response> getMemberHistory(int id) async {
     try {
-      final res = jsonDecode(bodyString!);
-
-      if (res is Map && res['valid'] != null && !res['valid']) {
-        throw ServerResError(res['message']);
-      }
-
-      return body!;
-    } on TimeoutException catch (_) {
-      throw TimeoutError();
-    } catch (_) {
-      throw UnknownError();
+      final res =
+          await get(EndPoints.getPlanHistory(id), headers: authHeader());
+      return res;
+    } catch (e) {
+      return Response(body: e.toString(), statusCode: 500);
     }
   }
 }

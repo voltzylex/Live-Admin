@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/membership/models/membership_model.dart';
 import 'package:live_admin/app/utils/constants.dart';
@@ -20,6 +22,11 @@ class MembershipDataSource extends DataTableSource {
     final plan = plans[index];
     return DataRow2(
       specificRowHeight: null,
+      onTap: () {
+        log("Member is ${plan.user?.toJson()}");
+        // Get.to(() => UserHistoryPage());
+        Get.find<DashboardController>().changePage("/history");
+      },
       color: WidgetStateProperty.all(
           index % 2 == 0 ? AppColors.table1 : AppColors.table2),
       cells: [

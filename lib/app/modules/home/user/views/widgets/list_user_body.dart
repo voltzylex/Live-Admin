@@ -1,8 +1,8 @@
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/user/controllers/user_controller.dart';
 import 'package:live_admin/app/modules/home/user/models/users_model.dart';
-import 'package:live_admin/app/modules/home/user/widgets/add_user_body.dart';
-import 'package:live_admin/app/modules/home/user/widgets/user_data_source.dart';
+import 'package:live_admin/app/modules/home/user/views/widgets/add_user_body.dart';
+import 'package:live_admin/app/modules/home/user/views/widgets/user_data_source.dart';
 
 class ListUserBody extends StatefulWidget {
   final UserController user;
