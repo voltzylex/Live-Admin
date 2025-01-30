@@ -80,11 +80,12 @@ class _UserHistoryPageState extends State<UserHistoryPage> {
 
           // Table UI
           Expanded(
-            child: FittedBox(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: DataTable(
-                  columnSpacing: 20,
+            child: SingleChildScrollView(
+              child: Theme(
+                data: ThemeData.dark(),
+                child: PaginatedDataTable(
+                  columnSpacing: 40,
+                  horizontalMargin: 20,
                   columns: const [
                     DataColumn(
                         label: Text("Date",
@@ -96,23 +97,8 @@ class _UserHistoryPageState extends State<UserHistoryPage> {
                         label: Text("Status",
                             style: TextStyle(fontWeight: FontWeight.bold))),
                   ],
-                  rows: [
-                    DataRow(cells: [
-                      DataCell(Text("2024-01-28")),
-                      DataCell(Text("Joined Membership")),
-                      DataCell(Text("Active")),
-                    ]),
-                    DataRow(cells: [
-                      DataCell(Text("2024-02-10")),
-                      DataCell(Text("Updated Profile")),
-                      DataCell(Text("Completed")),
-                    ]),
-                    DataRow(cells: [
-                      DataCell(Text("2024-02-15")),
-                      DataCell(Text("Renewed Subscription")),
-                      DataCell(Text("Pending")),
-                    ]),
-                  ],
+                  source: _UserHistoryDataSource(), // Custom data source
+                  rowsPerPage: 5, // Adjust based on need
                 ),
               ),
             ),
@@ -121,4 +107,36 @@ class _UserHistoryPageState extends State<UserHistoryPage> {
       ),
     );
   }
+}
+
+class _UserHistoryDataSource extends DataTableSource {
+  final List<Map<String, String>> _data = [
+    {"date": "2024-01-28", "activity": "Joined Membership", "status": "Active"},
+    {
+      "date": "2024-02-10",
+      "activity": "Updated Profile",
+      "status": "Completed"
+    },
+    {
+      "date": "2024-02-15",
+      "activity": "Renewed Subscription",
+      "status": "Pending"
+    },
+  ];
+
+  @override
+  DataRow getRow(int index) {
+    return DataRow2(cells: [
+      DataCell(Text(_data[index]["date"]!)),
+      DataCell(Text(_data[index]["activity"]!)),
+      DataCell(Text(_data[index]["status"]!)),
+    ]);
+  }
+
+  @override
+  int get rowCount => _data.length;
+  @override
+  bool get isRowCountApproximate => false;
+  @override
+  int get selectedRowCount => 0;
 }
