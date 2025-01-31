@@ -1,7 +1,12 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/membership/controllers/membership_controller.dart';
+import 'package:live_admin/app/modules/home/membership/models/history_model.dart';
+import 'package:live_admin/app/modules/home/membership/models/membership_model.dart';
+import 'package:live_admin/app/utils/constants.dart';
+import 'package:live_admin/app/utils/loading.dart';
 
 class UserHistoryPage extends StatefulWidget {
   const UserHistoryPage({super.key});
@@ -11,13 +16,20 @@ class UserHistoryPage extends StatefulWidget {
 }
 
 class _UserHistoryPageState extends State<UserHistoryPage> {
+  MembershipHistoryModel? mem;
   @override
   void initState() {
     log("User History Page Initiated");
     super.initState();
+    if (mounted) fetchHistory();
   }
 
-  final membership = MembershipController().to;
+  final cont = MembershipController().to;
+  fetchHistory() async {
+    log("User History ${cont.user?.toJson()}");
+    mem = await cont.getMembershipHistory(cont.user?.id ?? 1);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,11 +62,11 @@ class _UserHistoryPageState extends State<UserHistoryPage> {
               child: CircleAvatar(
                 radius: 40, // Control the image size
                 backgroundColor: AppColors.borderL1,
-                backgroundImage: NetworkImage(membership.user?.photo ?? ""),
+                backgroundImage: NetworkImage(cont.user?.photo ?? ""),
               ),
             ),
             title: Text(
-              membership.user?.name ?? "",
+              cont.user?.name ?? "",
               style: AppTextStyles.title,
             ),
             subtitle: Row(
@@ -62,7 +74,7 @@ class _UserHistoryPageState extends State<UserHistoryPage> {
                 Icon(Icons.phone, color: AppColors.borderL1),
                 const SizedBox(width: 5), // Add spacing between icon and text
                 Text(
-                  membership.user?.phone ?? "0000000",
+                  cont.user?.phone ?? "0000000",
                   style: AppTextStyles.caption.whiteColor,
                 ),
               ],
@@ -75,32 +87,81 @@ class _UserHistoryPageState extends State<UserHistoryPage> {
           const Text(
             "Member History",
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
+          ).paddingOnly(left: 20, top: 5, bottom: 5),
           const SizedBox(height: 12),
 
           // Table UI
           Expanded(
-            child: SingleChildScrollView(
-              child: Theme(
-                data: ThemeData.dark(),
-                child: PaginatedDataTable(
-                  columnSpacing: 40,
-                  horizontalMargin: 20,
-                  columns: const [
-                    DataColumn(
-                        label: Text("Date",
-                            style: TextStyle(fontWeight: FontWeight.bold))),
-                    DataColumn(
-                        label: Text("Activity",
-                            style: TextStyle(fontWeight: FontWeight.bold))),
-                    DataColumn(
-                        label: Text("Status",
-                            style: TextStyle(fontWeight: FontWeight.bold))),
-                  ],
-                  source: _UserHistoryDataSource(), // Custom data source
-                  rowsPerPage: 5, // Adjust based on need
-                ),
-              ),
+            child: Obx(
+              () {
+                if (cont.isHistoryL.value) {
+                  return Center(
+                    child: Loading(
+                      opacity: 0,
+                      loadingColor: AppColors.white.withOpacity(.8),
+                      loadingType: LoadingType.dualRing,
+                    ),
+                  );
+                }
+                if (mem == null) {
+                  return Center(
+                    child: Column(
+                      children: [
+                        Text(
+                          "User History Not Found ",
+                          style: AppTextStyles.title,
+                        ),
+                        IconButton(
+                            onPressed: () => fetchHistory(),
+                            icon: Icon(Icons.restart_alt_rounded))
+                      ],
+                    ),
+                  );
+                }
+                return Theme(
+                  data: ThemeData.dark().copyWith(
+                    scaffoldBackgroundColor: AppColors.red,
+                  ),
+                  child: PaginatedDataTable2(
+                    columnSpacing: 40,
+                    horizontalMargin: 20,
+                    columns: const [
+                      DataColumn(
+                          label: Text("ID",
+                              style: TextStyle(fontWeight: FontWeight.bold))),
+                      DataColumn(
+                          label: Text("User",
+                              style: TextStyle(fontWeight: FontWeight.bold))),
+                      DataColumn(
+                          label: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            Text("Create Date",
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      )),
+                      DataColumn(
+                          label: Text("End Date",
+                              style: TextStyle(fontWeight: FontWeight.bold))),
+                      DataColumn(
+                          label: Text("Amount",
+                              style: TextStyle(fontWeight: FontWeight.bold))),
+                      DataColumn(
+                          label: Text("Status",
+                              style: TextStyle(fontWeight: FontWeight.bold))),
+                    ],
+                    source: _UserHistoryDataSource(
+                        plan: mem!.plans), // Custom data source
+                    // rowsPerPage: 5, // Adjust based on need
+                    hidePaginator: true,
+
+                    headingRowColor: MaterialStateProperty.all(
+                        Colors.transparent), // Transparent header background
+                  ),
+                );
+              },
             ),
           ),
         ],
@@ -110,31 +171,49 @@ class _UserHistoryPageState extends State<UserHistoryPage> {
 }
 
 class _UserHistoryDataSource extends DataTableSource {
-  final List<Map<String, String>> _data = [
-    {"date": "2024-01-28", "activity": "Joined Membership", "status": "Active"},
-    {
-      "date": "2024-02-10",
-      "activity": "Updated Profile",
-      "status": "Completed"
-    },
-    {
-      "date": "2024-02-15",
-      "activity": "Renewed Subscription",
-      "status": "Pending"
-    },
-  ];
+  List<MyPlan> plan;
+  _UserHistoryDataSource({
+    required this.plan,
+  });
+  bool checkActiveStatus(DateTime startTime, DateTime endTime) {
+    DateTime now = DateTime.now();
 
-  @override
-  DataRow getRow(int index) {
-    return DataRow2(cells: [
-      DataCell(Text(_data[index]["date"]!)),
-      DataCell(Text(_data[index]["activity"]!)),
-      DataCell(Text(_data[index]["status"]!)),
-    ]);
+    // Check if the current time is between the start and end time
+    if (now.isAfter(startTime) && now.isBefore(endTime)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @override
-  int get rowCount => _data.length;
+  DataRow getRow(int index) {
+    final p = plan[index];
+    return DataRow2(
+        color: WidgetStateProperty.all(
+            index % 2 == 0 ? AppColors.table1 : AppColors.table2),
+        cells: [
+          DataCell(Text(p.userId.toString())),
+          DataCell(Text(p.name)),
+          DataCell(Text(formatDateTime(p.startDate ?? DateTime.now()))),
+          DataCell(Text(formatDateTime(p.endDate ?? DateTime.now()))),
+          DataCell(Text(p.price)),
+          DataCell(
+            Text(
+              checkActiveStatus(p.startDate!, p.endDate!)
+                  ? "Active"
+                  : "Inactive",
+              style: AppTextStyles.base.copyWith(
+                  color: checkActiveStatus(p.startDate!, p.endDate!)
+                      ? AppColors.green
+                      : AppColors.red),
+            ),
+          ),
+        ]);
+  }
+
+  @override
+  int get rowCount => plan.length;
   @override
   bool get isRowCountApproximate => false;
   @override

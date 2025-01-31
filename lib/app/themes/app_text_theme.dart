@@ -149,6 +149,7 @@ extension AppFontColor on TextStyle {
 
   /// color: AppColors.neutral3,
   TextStyle get redColor => copyWith(color: AppColors.red);
+  TextStyle get green => copyWith(color: AppColors.green);
 }
 
 extension AppFontStyle on TextStyle {

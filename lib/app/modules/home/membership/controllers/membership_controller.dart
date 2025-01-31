@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:live_admin/app/data/api/api_connect.dart';
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/membership/models/add_subscribe_model.dart';
+import 'package:live_admin/app/modules/home/membership/models/history_model.dart';
 import 'package:live_admin/app/modules/home/membership/models/membership_model.dart';
 import 'package:live_admin/app/modules/home/membership/models/plans_model.dart';
 import 'package:live_admin/app/modules/home/membership/models/subscribe_model.dart';
@@ -31,7 +32,7 @@ class MembershipController extends GetxController
   RxString selectedCategory = ''.obs;
   RxString selectedType = ''.obs;
   RxBool isMembership = false.obs;
-  RxBool isPlanL = false.obs;
+  RxBool isPlanL = false.obs, isHistoryL = false.obs;
   // RxList<Movie> movies = <Movie>[].obs;
   final PaginatorController pageController = PaginatorController();
   RxInt currenP = 1.obs;
@@ -104,6 +105,22 @@ class MembershipController extends GetxController
         description: e.toString(),
         type: ToastType.error,
       );
+    }
+  }
+
+  Future<MembershipHistoryModel?> getMembershipHistory(int id) async {
+    try {
+      isHistoryL.value = true;
+      final res = await ApiConnect.instance.getMemberHistory(id);
+      isHistoryL.value = false;
+      if (res.statusCode == 200) {
+        return MembershipHistoryModel.fromJson(res.body);
+      }
+      return null;
+    } catch (e) {
+      isHistoryL.value = false;
+      log("Couldn't get membership history for $e");
+      return null;
     }
   }
 }

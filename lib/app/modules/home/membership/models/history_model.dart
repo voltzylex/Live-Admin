@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:live_admin/app/modules/home/membership/models/membership_model.dart';
 
-class MembershipModel extends Equatable {
-  const MembershipModel({
+class MembershipHistoryModel extends Equatable {
+  const MembershipHistoryModel({
     required this.success,
     required this.message,
     required this.plans,
@@ -14,13 +14,13 @@ class MembershipModel extends Equatable {
   final List<MyPlan> plans;
   final User? user;
 
-  MembershipModel copyWith({
+  MembershipHistoryModel copyWith({
     bool? success,
     String? message,
     List<MyPlan>? plans,
     User? user,
   }) {
-    return MembershipModel(
+    return MembershipHistoryModel(
       success: success ?? this.success,
       message: message ?? this.message,
       plans: plans ?? this.plans,
@@ -28,8 +28,8 @@ class MembershipModel extends Equatable {
     );
   }
 
-  factory MembershipModel.fromJson(Map<String, dynamic> json) {
-    return MembershipModel(
+  factory MembershipHistoryModel.fromJson(Map<String, dynamic> json) {
+    return MembershipHistoryModel(
       success: json["success"] ?? false,
       message: json["message"] ?? "",
       plans: json["plans"] == null
