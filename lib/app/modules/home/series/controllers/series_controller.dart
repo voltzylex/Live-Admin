@@ -4,26 +4,43 @@ import 'dart:typed_data';
 import 'package:image_picker/image_picker.dart';
 import 'package:live_admin/app/data/api/api_connect.dart';
 import 'package:live_admin/app/global_imports.dart';
+import 'package:live_admin/app/modules/home/series/models/add_series_model.dart'; // Your new models
 import 'package:live_admin/app/modules/home/series/models/series_model.dart';
 import 'package:live_admin/app/utils/constants.dart';
+
 class SeriesController extends GetxController with StateMixin<SeriesModel> {
   SeriesController get to => Get.isRegistered<SeriesController>()
       ? Get.find<SeriesController>()
       : Get.put(SeriesController());
 
   // Controllers for series input
-  final TextEditingController categoryController = TextEditingController();
-  final TextEditingController typeController = TextEditingController();
   final TextEditingController seriesNameController = TextEditingController();
-  final TextEditingController uploadLinkController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
-
-  final Rxn<Uint8List> image = Rxn(); // Series cover image
-  final picker = ImagePicker();
+  // Map to hold controllers for episode title and description dynamically
+  final Map<int, Map<int, TextEditingController>> episodeTitleControllers = {};
+  final Map<int, Map<int, TextEditingController>>
+      episodeDescriptionControllers = {};
   RxBool isSwitchOn = true.obs;
   RxString selectedCategory = ''.obs;
   RxString selectedType = ''.obs;
+  final Rxn<Uint8List> image = Rxn(); // Series cover image
+  final picker = ImagePicker();
   RxBool isUpload = false.obs;
+
+  // Seasons and Episodes
+  final RxList<AddSeason> addSeasons = <AddSeason>[].obs;
+  // Get the controller for a specific episode's title
+  TextEditingController getEpisodeTitleController(
+      int seasonIndex, int episodeIndex) {
+    if (!episodeTitleControllers.containsKey(seasonIndex)) {
+      episodeTitleControllers[seasonIndex] = {};
+    }
+    if (!episodeTitleControllers[seasonIndex]!.containsKey(episodeIndex)) {
+      episodeTitleControllers[seasonIndex]![episodeIndex] =
+          TextEditingController();
+    }
+    return episodeTitleControllers[seasonIndex]![episodeIndex]!;
+  }
 
   // Pagination
   final PaginatorController pageController = PaginatorController();
@@ -50,23 +67,27 @@ class SeriesController extends GetxController with StateMixin<SeriesModel> {
     });
   }
 
-  // Clear all input fields
-  void clearField() {
-    categoryController.text = "";
-    typeController.text = "";
-    seriesNameController.clear();
-    uploadLinkController.clear();
-    descriptionController.clear();
-    image(null);
-    selectedCategory("");
-    selectedType("");
-    isUpload(false);
-    seasons.clear();
+  // Get the controller for a specific episode's description
+  TextEditingController getEpisodeDescriptionController(
+      int seasonIndex, int episodeIndex) {
+    if (!episodeDescriptionControllers.containsKey(seasonIndex)) {
+      episodeDescriptionControllers[seasonIndex] = {};
+    }
+    if (!episodeDescriptionControllers[seasonIndex]!
+        .containsKey(episodeIndex)) {
+      episodeDescriptionControllers[seasonIndex]![episodeIndex] =
+          TextEditingController();
+    }
+    return episodeDescriptionControllers[seasonIndex]![episodeIndex]!;
   }
 
   // Add Season
   void addSeason() {
-    seasons.add(Season(episodes: <Episode>[].obs));
+    addSeasons.add(AddSeason(
+        seasonNumber: seasons.length + 1,
+        episodes: [],
+        description: "",
+        image: ""));
   }
 
   // Remove Season
@@ -79,7 +100,12 @@ class SeriesController extends GetxController with StateMixin<SeriesModel> {
   // Add Episode to a specific season
   void addEpisode(int seasonIndex) {
     if (seasonIndex < seasons.length) {
-      seasons[seasonIndex].episodes.add(Episode());
+      addSeasons[seasonIndex].episodes.add(AddEpisode(
+            episodeNumber: seasons[seasonIndex].episodes.length + 1,
+            title: '',
+            description: '',
+            thumbnail: '',
+          ));
     }
   }
 
@@ -111,8 +137,10 @@ class SeriesController extends GetxController with StateMixin<SeriesModel> {
       BuildContext context, int seasonIndex, int episodeIndex) async {
     final img = await picker.pickImage(source: ImageSource.gallery);
     if (img != null && seasonIndex < seasons.length) {
-      final episode = seasons[seasonIndex].episodes[episodeIndex];
-      episode.image = Uint8List.fromList(await img.readAsBytes());
+      final episode = addSeasons[seasonIndex]
+          .episodes[episodeIndex]
+          .copyWith(thumbnail: img.path);
+// Use image path for simplicity
       seasons.refresh(); // Trigger UI update
     } else {
       ToastHelper.showToast(
@@ -154,6 +182,18 @@ class SeriesController extends GetxController with StateMixin<SeriesModel> {
       log("Description: ${descriptionController.text}");
       log("Seasons: ${seasons.map((s) => s.toJson()).toList()}");
 
+      // Here you would send the AddSeriesModel to your backend
+      final series = AddSeries(
+        name: seriesNameController.text,
+        description: descriptionController.text,
+        coverImage: image.value != null ? 'image path or base64 data' : '',
+        seasons: addSeasons,
+      );
+
+      final addSeriesModel = AddSeriesModel(series: series);
+
+      // Send your addSeriesModel to your API to save the series
+
       ToastHelper.showToast(
         context: context,
         title: 'Series Saved Successfully',
@@ -173,7 +213,21 @@ class SeriesController extends GetxController with StateMixin<SeriesModel> {
     }
   }
 
-  // Fetch series data (pagination)
+  void clearField() {
+    seriesNameController.clear();
+    descriptionController.clear();
+    image(null);
+    seasons.clear();
+    seriesNameController.clear();
+
+    descriptionController.clear();
+    image(null);
+    selectedCategory("");
+    selectedType("");
+    isUpload(false);
+    seasons.clear();
+  }
+
   Future<void> getSeries(int? page) async {
     try {
       change(null, status: RxStatus.loading());
@@ -184,32 +238,5 @@ class SeriesController extends GetxController with StateMixin<SeriesModel> {
     } catch (e) {
       change(null, status: RxStatus.error('Failed to load data $e'));
     }
-  }
-}
-
-// Models for Season and Episode
-class Season {
-  RxList<Episode> episodes;
-
-  Season({required this.episodes});
-
-  Map<String, dynamic> toJson() {
-    return {
-      'episodes': episodes.map((e) => e.toJson()).toList(),
-    };
-  }
-}
-
-class Episode {
-  Uint8List? image;
-  String title = '';
-  String description = '';
-
-  Map<String, dynamic> toJson() {
-    return {
-      'image': image,
-      'title': title,
-      'description': description,
-    };
   }
 }
