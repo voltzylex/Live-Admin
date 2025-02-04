@@ -30,18 +30,6 @@ class SeriesController extends GetxController with StateMixin<SeriesModel> {
 
   // Seasons and Episodes
   final RxList<AddSeason> addSeasons = <AddSeason>[].obs;
-  // Get the controller for a specific episode's title
-  TextEditingController getEpisodeTitleController(
-      int seasonIndex, int episodeIndex) {
-    if (!episodeTitleControllers.containsKey(seasonIndex)) {
-      episodeTitleControllers[seasonIndex] = {};
-    }
-    if (!episodeTitleControllers[seasonIndex]!.containsKey(episodeIndex)) {
-      episodeTitleControllers[seasonIndex]![episodeIndex] =
-          TextEditingController();
-    }
-    return episodeTitleControllers[seasonIndex]![episodeIndex]!;
-  }
 
   // Pagination
   final PaginatorController pageController = PaginatorController();
@@ -73,30 +61,34 @@ class SeriesController extends GetxController with StateMixin<SeriesModel> {
             )}"));
   }
 
-  // Get the controller for a specific episode's description
-  TextEditingController getEpisodeDescriptionController(
-      int seasonIndex, int episodeIndex) {
-    if (!episodeDescriptionControllers.containsKey(seasonIndex)) {
-      episodeDescriptionControllers[seasonIndex] = {};
-    }
-    if (!episodeDescriptionControllers[seasonIndex]!
-        .containsKey(episodeIndex)) {
-      episodeDescriptionControllers[seasonIndex]![episodeIndex] =
-          TextEditingController();
-    }
-    return episodeDescriptionControllers[seasonIndex]![episodeIndex]!;
-  }
-
   // Add Season
-  // Add Season
-  void addSeason() {
+  void addSeason(BuildContext context) {
     for (var se in addSeasons) {
-      if (se.key?.currentState?.validate() ?? false) {
-        continue;
-      } else {
+      if (!se.key!.currentState!.validate()) {
         return;
       }
+      if (se.image == null) {
+        ToastHelper.showToast(
+          context: context,
+          title: 'Please Select Season Image',
+          description: 'Please select an image before proceeding!',
+          type: ToastType.error,
+        );
+        return;
+      }
+      for (var im in se.episodes) {
+        if (im.thumbnail == null) {
+          ToastHelper.showToast(
+            context: context,
+            title: 'Please Select Episode Image',
+            description: 'Please select an image before proceeding!',
+            type: ToastType.error,
+          );
+          return;
+        }
+      }
     }
+
     addSeasons.add(
       AddSeason(
         seasonNumber: addSeasons.length + 1,
@@ -105,6 +97,7 @@ class SeriesController extends GetxController with StateMixin<SeriesModel> {
         description: "",
 
         key: GlobalKey<FormState>(),
+        descriptionController: TextEditingController(),
         // Set image to null initially (or use your preferred default value)
         image: null,
       ),
@@ -119,16 +112,38 @@ class SeriesController extends GetxController with StateMixin<SeriesModel> {
   }
 
   // Add Episode to a specific season
-  void addEpisode(int seasonIndex) {
+  void addEpisode(int seasonIndex, BuildContext context) {
+    for (var ep in addSeasons[seasonIndex].episodes) {
+      log("Episode ${addSeasons[seasonIndex].episodes.map((element) => element.toJson())}");
+      if (!ep.key!.currentState!.validate()) {
+        return;
+      }
+      if (ep.thumbnail == null) {
+        ToastHelper.showToast(
+          context: context,
+          title: 'Please Select Episode Image',
+          description: 'Please select an image before proceeding!',
+          type: ToastType.error,
+        );
+        return;
+      }
+    }
+
     if (seasonIndex < addSeasons.length) {
       addSeasons[seasonIndex].episodes.add(AddEpisode(
+            key:
+                GlobalKey<FormState>(), // Ensure a unique key is used each time
             episodeUrl: "",
             episodeNumber: addSeasons[seasonIndex].episodes.length + 1,
             title: '',
             description: '',
-            thumbnail: '',
+            thumbnail: null,
+            descriptionController: TextEditingController(),
+            titleController: TextEditingController(),
+            episodeUrlController: TextEditingController(),
           ));
-      addSeasons.refresh();
+
+      addSeasons.refresh(); // Ensure the state is properly refreshed
     }
   }
 

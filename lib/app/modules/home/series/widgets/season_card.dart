@@ -13,13 +13,12 @@ class SeasonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final season = ser.addSeasons[seasonIndex];
     return Card(
       color: AppColors.white.withOpacity(0.1),
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Form(
-          key: season.key,
+          key: ser.addSeasons[seasonIndex].key,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -53,14 +52,15 @@ class SeasonCard extends StatelessWidget {
                         color: AppColors.white.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(color: AppColors.borderL1),
-                        image: season.image != null
+                        image: ser.addSeasons[seasonIndex].image != null
                             ? DecorationImage(
-                                image: MemoryImage(base64Decode(season.image!)),
+                                image: MemoryImage(base64Decode(
+                                    ser.addSeasons[seasonIndex].image!)),
                                 fit: BoxFit.cover,
                               )
                             : null,
                       ),
-                      child: season.image == null
+                      child: ser.addSeasons[seasonIndex].image == null
                           ? Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: const [
@@ -80,7 +80,8 @@ class SeasonCard extends StatelessWidget {
                   // Season Description Text Field
                   Expanded(
                     child: TextFormField(
-                      controller: TextEditingController(),
+                      controller:
+                          ser.addSeasons[seasonIndex].descriptionController,
                       maxLines: 4,
                       style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
@@ -106,19 +107,19 @@ class SeasonCard extends StatelessWidget {
                 ],
               ),
               // If image is not provided, show an error message below the image field
-              if (season.image == null)
-                Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 5),
-                  child: Text(
-                    "Please upload a season image",
-                    style: TextStyle(color: Colors.red[300], fontSize: 12),
-                  ),
-                ),
+              // if (season.image == null)
+              //   Padding(
+              //     padding: const EdgeInsets.only(left: 10, top: 5),
+              //     child: Text(
+              //       "Please upload a season image",
+              //       style: TextStyle(color: Colors.red[300], fontSize: 12),
+              //     ),
+              //   ),
               const SizedBox(height: 10),
               // Episodes List
-              if (season.episodes.isNotEmpty)
+              if (ser.addSeasons[seasonIndex].episodes.isNotEmpty)
                 for (int episodeIndex = 0;
-                    episodeIndex < season.episodes.length;
+                    episodeIndex < ser.addSeasons[seasonIndex].episodes.length;
                     episodeIndex++)
                   EpisodeCard(
                     ser: ser,
@@ -127,7 +128,7 @@ class SeasonCard extends StatelessWidget {
                   ),
               // Button to add a new Episode
               TextButton.icon(
-                onPressed: () => ser.addEpisode(seasonIndex),
+                onPressed: () => ser.addEpisode(seasonIndex, context),
                 icon: const Icon(Icons.add, color: AppColors.primary),
                 label: const Text("Add Episode"),
               ),

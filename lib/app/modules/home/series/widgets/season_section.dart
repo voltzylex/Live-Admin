@@ -1,11 +1,11 @@
 // widgets/seasons_section.dart
-import 'package:flutter/material.dart';
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/series/controllers/series_controller.dart';
+
 import 'season_card.dart';
 
 class SeasonsSection extends StatelessWidget {
-  const SeasonsSection({Key? key, required this.ser}) : super(key: key);
+  const SeasonsSection({super.key, required this.ser});
   final SeriesController ser;
 
   @override
@@ -25,7 +25,7 @@ class SeasonsSection extends StatelessWidget {
               seasonIndex++)
             SeasonCard(ser: ser, seasonIndex: seasonIndex),
           TextButton.icon(
-            onPressed: ser.addSeason,
+            onPressed: () => ser.addSeason(context),
             icon: const Icon(Icons.add, color: AppColors.primary),
             label: const Text("Add Season"),
           ),

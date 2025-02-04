@@ -95,7 +95,7 @@ class AddSeason extends Equatable {
     required this.image,
     required this.episodes,
     this.key,
-
+    this.descriptionController,
   });
 
   final num seasonNumber;
@@ -103,7 +103,7 @@ class AddSeason extends Equatable {
   final String? image;
   final List<AddEpisode> episodes;
   GlobalKey<FormState>? key;
-
+  TextEditingController? descriptionController;
 
   AddSeason copyWith({
     num? seasonNumber,
@@ -132,10 +132,10 @@ class AddSeason extends Equatable {
     );
   }
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson({bool showImage = false}) => {
         "seasonNumber": seasonNumber,
         "description": description,
-        "image": image,
+        if (showImage) "image": image,
         "episodes": episodes.map((x) => x.toJson()).toList(),
       };
 
@@ -149,19 +149,27 @@ class AddSeason extends Equatable {
 }
 
 class AddEpisode extends Equatable {
-  const AddEpisode({
+  AddEpisode({
     required this.episodeNumber,
     required this.title,
     required this.description,
     required this.thumbnail,
     required this.episodeUrl,
+    required this.key,
+    this.titleController,
+    this.descriptionController,
+    this.episodeUrlController,
   });
 
   final num episodeNumber;
   final String title;
   final String description;
-  final String thumbnail;
+  final String? thumbnail;
   final String episodeUrl;
+  GlobalKey<FormState> key;
+  TextEditingController? titleController;
+  TextEditingController? descriptionController;
+  TextEditingController? episodeUrlController;
 
   AddEpisode copyWith({
     num? episodeNumber,
@@ -171,30 +179,31 @@ class AddEpisode extends Equatable {
     String? episodeUrl,
   }) {
     return AddEpisode(
-      episodeNumber: episodeNumber ?? this.episodeNumber,
-      title: title ?? this.title,
-      description: description ?? this.description,
-      thumbnail: thumbnail ?? this.thumbnail,
-      episodeUrl: episodeUrl ?? this.episodeUrl,
-    );
+        episodeNumber: episodeNumber ?? this.episodeNumber,
+        title: title ?? this.title,
+        description: description ?? this.description,
+        thumbnail: thumbnail ?? this.thumbnail,
+        episodeUrl: episodeUrl ?? this.episodeUrl,
+        key: key);
   }
 
   factory AddEpisode.fromJson(Map<String, dynamic> json) {
     return AddEpisode(
+      key: json["key"],
       episodeNumber: json["episodeNumber"] ?? 0,
       title: json["title"] ?? "",
       description: json["description"] ?? "",
-      thumbnail: json["thumbnail"] ?? "",
-      episodeUrl: json["episode_url"] ?? "",
+      thumbnail: json["thumbnail"],
+      episodeUrl: json["url"] ?? "",
     );
   }
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson({bool showImage = false}) => {
         "episodeNumber": episodeNumber,
         "title": title,
         "description": description,
-        "thumbnail": thumbnail,
-        "episode_url": episodeUrl,
+        if (showImage) "thumbnail": thumbnail,
+        "url": episodeUrl,
       };
 
   @override

@@ -21,9 +21,6 @@ class EpisodeCard extends StatefulWidget {
 }
 
 class _EpisodeCardState extends State<EpisodeCard> {
-  // Each episode card has its own form key
-  final _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     final ser = widget.ser;
@@ -34,7 +31,7 @@ class _EpisodeCardState extends State<EpisodeCard> {
       color: AppColors.white.withOpacity(0.2),
       margin: const EdgeInsets.symmetric(vertical: 5),
       child: Form(
-        key: _formKey,
+        key: ser.addSeasons[seasonIndex].episodes[episodeIndex].key,
         child: ListTile(
           leading: GestureDetector(
             onTap: () =>
@@ -63,8 +60,8 @@ class _EpisodeCardState extends State<EpisodeCard> {
           title: Padding(
             padding: const EdgeInsets.all(5),
             child: TextFormField(
-              controller:
-                  ser.getEpisodeTitleController(seasonIndex, episodeIndex),
+              controller: ser.addSeasons[seasonIndex].episodes[episodeIndex]
+                  .titleController,
               decoration: const InputDecoration(
                 hintText: "Episode Title",
               ),
@@ -79,8 +76,8 @@ class _EpisodeCardState extends State<EpisodeCard> {
           subtitle: Padding(
             padding: const EdgeInsets.all(5),
             child: TextFormField(
-              controller: ser.getEpisodeDescriptionController(
-                  seasonIndex, episodeIndex),
+              controller: ser.addSeasons[seasonIndex].episodes[episodeIndex]
+                  .descriptionController,
               decoration: const InputDecoration(
                 hintText: "Episode Description",
               ),
