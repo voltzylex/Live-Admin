@@ -8,6 +8,7 @@ import 'package:live_admin/app/modules/home/movies/models/add_movie_model.dart';
 import 'package:live_admin/app/modules/home/movies/models/movies_model.dart';
 import 'package:live_admin/app/modules/home/movies/widgets/category_widget.dart';
 import 'package:live_admin/app/modules/home/movies/widgets/type_widget.dart';
+import 'package:live_admin/main.dart';
 
 class AddMovieBody extends StatefulWidget {
   const AddMovieBody(
@@ -220,7 +221,7 @@ class _AddMovieBodyState extends State<AddMovieBody> {
                         if (value == null || value.isEmpty) {
                           return "Movie link cannot be empty";
                         }
-                        if (value.isEmpty || (!value.isURL)) {
+                        if (value.isEmpty || (!isCheckURL(value))) {
                           return 'Please enter a valid link';
                         }
                         return null;

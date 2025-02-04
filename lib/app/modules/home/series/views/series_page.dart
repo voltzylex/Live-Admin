@@ -1,7 +1,7 @@
 
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/series/controllers/series_controller.dart';
-import 'package:live_admin/app/modules/home/series/widgets/add_series_page.dart';
+import 'package:live_admin/app/modules/home/series/views/add_series_page.dart';
 import 'package:live_admin/app/modules/home/series/widgets/series_list_page.dart';
 
 class SeriesPage extends StatelessWidget {

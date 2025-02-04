@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:live_admin/app/global_imports.dart';
 
 class AddSeriesModel extends Equatable {
   const AddSeriesModel({
@@ -17,7 +18,8 @@ class AddSeriesModel extends Equatable {
 
   factory AddSeriesModel.fromJson(Map<String, dynamic> json) {
     return AddSeriesModel(
-      series: json["series"] == null ? null : AddSeries.fromJson(json["series"]),
+      series:
+          json["series"] == null ? null : AddSeries.fromJson(json["series"]),
     );
   }
 
@@ -39,9 +41,9 @@ class AddSeries extends Equatable {
     required this.seasons,
   });
 
-  final String? name;
-  final String? description;
-  final String? coverImage;
+  final String name;
+  final String description;
+  final String coverImage;
   final List<AddSeason> seasons;
 
   AddSeries copyWith({
@@ -60,9 +62,9 @@ class AddSeries extends Equatable {
 
   factory AddSeries.fromJson(Map<String, dynamic> json) {
     return AddSeries(
-      name: json["name"],
-      description: json["description"],
-      coverImage: json["coverImage"],
+      name: json["name"] ?? "",
+      description: json["description"] ?? "",
+      coverImage: json["coverImage"] ?? "",
       seasons: json["seasons"] == null
           ? []
           : List<AddSeason>.from(
@@ -87,17 +89,21 @@ class AddSeries extends Equatable {
 }
 
 class AddSeason extends Equatable {
-  const AddSeason({
+  AddSeason({
     required this.seasonNumber,
     required this.description,
     required this.image,
     required this.episodes,
+    this.key,
+
   });
 
-  final num? seasonNumber;
-  final String? description;
+  final num seasonNumber;
+  final String description;
   final String? image;
   final List<AddEpisode> episodes;
+  GlobalKey<FormState>? key;
+
 
   AddSeason copyWith({
     num? seasonNumber,
@@ -106,6 +112,7 @@ class AddSeason extends Equatable {
     List<AddEpisode>? episodes,
   }) {
     return AddSeason(
+      key: key,
       seasonNumber: seasonNumber ?? this.seasonNumber,
       description: description ?? this.description,
       image: image ?? this.image,
@@ -115,9 +122,9 @@ class AddSeason extends Equatable {
 
   factory AddSeason.fromJson(Map<String, dynamic> json) {
     return AddSeason(
-      seasonNumber: json["seasonNumber"],
-      description: json["description"],
-      image: json["image"],
+      seasonNumber: json["seasonNumber"] ?? 0,
+      description: json["description"] ?? "",
+      image: json["image"] ?? "",
       episodes: json["episodes"] == null
           ? []
           : List<AddEpisode>.from(
@@ -147,33 +154,38 @@ class AddEpisode extends Equatable {
     required this.title,
     required this.description,
     required this.thumbnail,
+    required this.episodeUrl,
   });
 
-  final num? episodeNumber;
-  final String? title;
-  final String? description;
-  final String? thumbnail;
+  final num episodeNumber;
+  final String title;
+  final String description;
+  final String thumbnail;
+  final String episodeUrl;
 
   AddEpisode copyWith({
     num? episodeNumber,
     String? title,
     String? description,
     String? thumbnail,
+    String? episodeUrl,
   }) {
     return AddEpisode(
       episodeNumber: episodeNumber ?? this.episodeNumber,
       title: title ?? this.title,
       description: description ?? this.description,
       thumbnail: thumbnail ?? this.thumbnail,
+      episodeUrl: episodeUrl ?? this.episodeUrl,
     );
   }
 
   factory AddEpisode.fromJson(Map<String, dynamic> json) {
     return AddEpisode(
-      episodeNumber: json["episodeNumber"],
-      title: json["title"],
-      description: json["description"],
-      thumbnail: json["thumbnail"],
+      episodeNumber: json["episodeNumber"] ?? 0,
+      title: json["title"] ?? "",
+      description: json["description"] ?? "",
+      thumbnail: json["thumbnail"] ?? "",
+      episodeUrl: json["episode_url"] ?? "",
     );
   }
 
@@ -182,6 +194,7 @@ class AddEpisode extends Equatable {
         "title": title,
         "description": description,
         "thumbnail": thumbnail,
+        "episode_url": episodeUrl,
       };
 
   @override
@@ -190,5 +203,6 @@ class AddEpisode extends Equatable {
         title,
         description,
         thumbnail,
+        episodeUrl,
       ];
 }

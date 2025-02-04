@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:typed_data';
 
@@ -65,6 +66,11 @@ class SeriesController extends GetxController with StateMixin<SeriesModel> {
         getSeries(callback);
       }
     });
+    ever(
+        addSeasons,
+        (callback) => log("Add season ${addSeasons.map(
+              (element) => element.toJson(),
+            )}"));
   }
 
   // Get the controller for a specific episode's description
@@ -82,38 +88,56 @@ class SeriesController extends GetxController with StateMixin<SeriesModel> {
   }
 
   // Add Season
+  // Add Season
   void addSeason() {
-    addSeasons.add(AddSeason(
-        seasonNumber: seasons.length + 1,
+    for (var se in addSeasons) {
+      if (se.key?.currentState?.validate() ?? false) {
+        continue;
+      } else {
+        return;
+      }
+    }
+    addSeasons.add(
+      AddSeason(
+        seasonNumber: addSeasons.length + 1,
         episodes: [],
+        // Use a TextEditingController for the description so that the UI can bind to it
         description: "",
-        image: ""));
+
+        key: GlobalKey<FormState>(),
+        // Set image to null initially (or use your preferred default value)
+        image: null,
+      ),
+    );
   }
 
   // Remove Season
   void removeSeason(int seasonIndex) {
-    if (seasonIndex < seasons.length) {
-      seasons.removeAt(seasonIndex);
+    if (seasonIndex < addSeasons.length) {
+      addSeasons.removeAt(seasonIndex);
     }
   }
 
   // Add Episode to a specific season
   void addEpisode(int seasonIndex) {
-    if (seasonIndex < seasons.length) {
+    if (seasonIndex < addSeasons.length) {
       addSeasons[seasonIndex].episodes.add(AddEpisode(
-            episodeNumber: seasons[seasonIndex].episodes.length + 1,
+            episodeUrl: "",
+            episodeNumber: addSeasons[seasonIndex].episodes.length + 1,
             title: '',
             description: '',
             thumbnail: '',
           ));
+      addSeasons.refresh();
     }
   }
 
   // Remove Episode from a specific season
   void removeEpisode(int seasonIndex, int episodeIndex) {
-    if (seasonIndex < seasons.length &&
-        episodeIndex < seasons[seasonIndex].episodes.length) {
-      seasons[seasonIndex].episodes.removeAt(episodeIndex);
+    if (seasonIndex < addSeasons.length &&
+        episodeIndex < addSeasons[seasonIndex].episodes.length) {
+      addSeasons[seasonIndex].episodes.removeAt(episodeIndex);
+      addSeasons.refresh();
     }
   }
 
@@ -136,12 +160,31 @@ class SeriesController extends GetxController with StateMixin<SeriesModel> {
   Future<void> pickEpisodeImage(
       BuildContext context, int seasonIndex, int episodeIndex) async {
     final img = await picker.pickImage(source: ImageSource.gallery);
-    if (img != null && seasonIndex < seasons.length) {
-      final episode = addSeasons[seasonIndex]
-          .episodes[episodeIndex]
-          .copyWith(thumbnail: img.path);
+    if (img != null && seasonIndex < addSeasons.length) {
+      final episode = addSeasons[seasonIndex].episodes[episodeIndex].copyWith(
+          thumbnail: base64Encode(Uint8List.fromList(await img.readAsBytes())));
+      addSeasons[seasonIndex].episodes[episodeIndex] = episode;
 // Use image path for simplicity
-      seasons.refresh(); // Trigger UI update
+      addSeasons.refresh(); // Trigger UI update
+    } else {
+      ToastHelper.showToast(
+        context: context,
+        title: 'Please Select Image',
+        description: 'Please select an image before proceeding!',
+        type: ToastType.error,
+      );
+    }
+  }
+
+  // Image picking for an episode
+  Future<void> pickSeasonImage(BuildContext context, int seasonIndex) async {
+    final img = await picker.pickImage(source: ImageSource.gallery);
+    if (img != null && seasonIndex < addSeasons.length) {
+      final season = addSeasons[seasonIndex].copyWith(
+          image: base64Encode(Uint8List.fromList(await img.readAsBytes())));
+      addSeasons[seasonIndex] = season;
+// Use image path for simplicity
+      addSeasons.refresh(); // Trigger UI update
     } else {
       ToastHelper.showToast(
         context: context,
@@ -163,7 +206,7 @@ class SeriesController extends GetxController with StateMixin<SeriesModel> {
       );
       return;
     }
-    if (seasons.isEmpty) {
+    if (addSeasons.isEmpty) {
       ToastHelper.showToast(
         context: context,
         title: 'Validation Error',

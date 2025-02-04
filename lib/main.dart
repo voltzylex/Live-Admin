@@ -4,6 +4,10 @@ import 'package:live_admin/app/themes/app_theme.dart';
 import 'package:live_admin/app/utils/common.dart';
 import 'package:live_admin/app/utils/extensions.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+ bool isCheckURL(String s) {
+  final pattern = r"^(https?:\/\/)?([\w\-]+\.)+[\w]{2,}(\/\S*)?$";
+  return RegExp(pattern, caseSensitive: false).hasMatch(s);
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
