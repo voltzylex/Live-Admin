@@ -30,6 +30,7 @@ class ActionButtons extends StatelessWidget {
           onPressed: () {
             log("Is Season empty ${ser.addSeasons.length} : is empty ${ser.addSeasons.isEmpty}");
             // First, check if there are any seasons added.
+            // ignore: invalid_use_of_protected_member
             if (ser.addSeasons.value.isEmpty) {
               ToastHelper.showToast(
                 context: context,

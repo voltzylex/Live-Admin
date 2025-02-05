@@ -115,7 +115,7 @@ class SeriesController extends GetxController with StateMixin<SeriesModel> {
   void addEpisode(int seasonIndex, BuildContext context) {
     for (var ep in addSeasons[seasonIndex].episodes) {
       log("Episode ${addSeasons[seasonIndex].episodes.map((element) => element.toJson())}");
-      if (!ep.key!.currentState!.validate()) {
+      if (!ep.key.currentState!.validate()) {
         return;
       }
       if (ep.thumbnail == null) {
@@ -231,14 +231,15 @@ class SeriesController extends GetxController with StateMixin<SeriesModel> {
       return;
     }
 
+    // Mock saving data
+    log("Saving series with ${addSeasons.length} seasons...");
+    log("Series Name: ${seriesNameController.text}");
+    log("Description: ${descriptionController.text}");
+    log("Seasons: ${addSeasons.map((s) => s.toJson()).toList()}");
+
+    return;
     try {
       showLoading();
-
-      // Mock saving data
-      log("Saving series with ${seasons.length} seasons...");
-      log("Series Name: ${seriesNameController.text}");
-      log("Description: ${descriptionController.text}");
-      log("Seasons: ${seasons.map((s) => s.toJson()).toList()}");
 
       // Here you would send the AddSeriesModel to your backend
       final series = AddSeries(

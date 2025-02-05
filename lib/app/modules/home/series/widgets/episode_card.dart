@@ -1,8 +1,10 @@
 // widgets/episode_card.dart
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/series/controllers/series_controller.dart';
+import 'package:live_admin/main.dart';
 
 class EpisodeCard extends StatefulWidget {
   const EpisodeCard({
@@ -26,7 +28,7 @@ class _EpisodeCardState extends State<EpisodeCard> {
     final ser = widget.ser;
     final seasonIndex = widget.seasonIndex;
     final episodeIndex = widget.episodeIndex;
-
+    var episode = ser.addSeasons[seasonIndex].episodes[episodeIndex];
     return Card(
       color: AppColors.white.withOpacity(0.2),
       margin: const EdgeInsets.symmetric(vertical: 5),
@@ -62,6 +64,12 @@ class _EpisodeCardState extends State<EpisodeCard> {
             child: TextFormField(
               controller: ser.addSeasons[seasonIndex].episodes[episodeIndex]
                   .titleController,
+              onChanged: (value) {
+                ser.addSeasons[seasonIndex].episodes[episodeIndex] = ser
+                    .addSeasons[seasonIndex].episodes[episodeIndex]
+                    .copyWith(title: value);
+                log("Episode ${episode.toJson()}");
+              },
               decoration: const InputDecoration(
                 hintText: "Episode Title",
               ),
@@ -75,19 +83,47 @@ class _EpisodeCardState extends State<EpisodeCard> {
           ),
           subtitle: Padding(
             padding: const EdgeInsets.all(5),
-            child: TextFormField(
-              controller: ser.addSeasons[seasonIndex].episodes[episodeIndex]
-                  .descriptionController,
-              decoration: const InputDecoration(
-                hintText: "Episode Description",
-              ),
-              maxLines: 3,
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return "Episode description is required";
-                }
-                return null;
-              },
+            child: Column(
+              spacing: 10,
+              children: [
+                TextFormField(
+                  controller: ser.addSeasons[seasonIndex].episodes[episodeIndex]
+                      .episodeUrlController,
+                  decoration: const InputDecoration(
+                    hintText: "Episode Episode url",
+                  ),
+                  onChanged: (value) => ser
+                      .addSeasons[seasonIndex].episodes[episodeIndex]
+                      .copyWith(episodeUrl: value),
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return "Episode url is required";
+                    }
+                    if (value.isEmpty || (!isCheckURL(value))) {
+                      return 'Please enter a valid link';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: ser.addSeasons[seasonIndex].episodes[episodeIndex]
+                      .descriptionController,
+                  onChanged: (value) => ser
+                      .addSeasons[seasonIndex].episodes[episodeIndex]
+                      .copyWith(description: value),
+                  decoration: const InputDecoration(
+                    hintText: "Episode Description",
+                  ),
+                  // minLines: 1,
+                  maxLines: 2,
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return "Episode description is required";
+                    }
+                    return null;
+                  },
+                ),
+              ],
             ),
           ),
           trailing: IconButton(
