@@ -230,36 +230,58 @@ class SeriesController extends GetxController with StateMixin<SeriesModel> {
       );
       return;
     }
-
+    for (var adS in addSeasons) {
+      for (var ep in adS.episodes) {
+        if (!ep.key.currentState!.validate()) {
+          return;
+        }
+        if (ep.thumbnail == null) {
+          ToastHelper.showToast(
+            context: context,
+            title: 'Please Select Episode Image',
+            description: 'Please select an image before proceeding!',
+            type: ToastType.error,
+          );
+          return;
+        }
+      }
+    }
     // Mock saving data
-    log("Saving series with ${addSeasons.length} seasons...");
-    log("Series Name: ${seriesNameController.text}");
-    log("Description: ${descriptionController.text}");
-    log("Seasons: ${addSeasons.map((s) => s.toJson()).toList()}");
-
-    return;
+    // log("Saving series with ${addSeasons.length} seasons...");
+    // log("Series Name: ${seriesNameController.text}");
+    // log("Description: ${descriptionController.text}");
+    // log("Seasons: ${addSeasons.map((s) => s.toJson(showImage: false)).toList()}");
+    final newSeries = AddSeriesModel(
+        series: AddSeries(
+            name: seriesNameController.text,
+            description: descriptionController.text,
+            coverImage: "",
+            //  base64Encode(image.value!),
+            seasons: addSeasons));
+    // log("Final season: ${newSeries.toJson()}");
+    // return;
     try {
       showLoading();
-
-      // Here you would send the AddSeriesModel to your backend
-      final series = AddSeries(
-        name: seriesNameController.text,
-        description: descriptionController.text,
-        coverImage: image.value != null ? 'image path or base64 data' : '',
-        seasons: addSeasons,
-      );
-
-      final addSeriesModel = AddSeriesModel(series: series);
-
+      final res = await ApiConnect.instance.addSeries(newSeries);
+      // hideLoading();
       // Send your addSeriesModel to your API to save the series
-
-      ToastHelper.showToast(
-        context: context,
-        title: 'Series Saved Successfully',
-        description: '',
-        type: ToastType.success,
-      );
-      clearField();
+      if (res.statusCode == 200) {
+        ToastHelper.showToast(
+          context: context,
+          title: 'Series Saved Successfully',
+          description: '',
+          type: ToastType.success,
+        );
+        getSeries(1);
+        clearField();
+      } else {
+        ToastHelper.showToast(
+          context: context,
+          title: 'Server Error',
+          description: res.body.toString(),
+          type: ToastType.error,
+        );
+      }
     } catch (e) {
       ToastHelper.showToast(
         context: context,

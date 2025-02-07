@@ -21,6 +21,7 @@ class EndPoints {
   static String getPlans = "plans";
   static String getPlanHistory(int id) => "planhistory/$id";
   static String subscribe = "subscribe";
+  static String addSeries = "store/series";
 
   static const String getUser = "admin/users";
   static const Duration timeout = Duration(seconds: 30);

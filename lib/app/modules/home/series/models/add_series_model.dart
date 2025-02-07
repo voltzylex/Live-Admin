@@ -132,7 +132,7 @@ class AddSeason extends Equatable {
     );
   }
 
-  Map<String, dynamic> toJson({bool showImage = false}) => {
+  Map<String, dynamic> toJson({bool showImage = true}) => {
         "seasonNumber": seasonNumber,
         "description": description,
         if (showImage) "image": image,
@@ -198,7 +198,7 @@ class AddEpisode extends Equatable {
     );
   }
 
-  Map<String, dynamic> toJson({bool showImage = false}) => {
+  Map<String, dynamic> toJson({bool showImage = true}) => {
         "episodeNumber": episodeNumber,
         "title": title,
         "description": description,

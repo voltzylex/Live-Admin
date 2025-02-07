@@ -92,9 +92,10 @@ class _EpisodeCardState extends State<EpisodeCard> {
                   decoration: const InputDecoration(
                     hintText: "Episode Episode url",
                   ),
-                  onChanged: (value) => ser
-                      .addSeasons[seasonIndex].episodes[episodeIndex]
-                      .copyWith(episodeUrl: value),
+                  onChanged: (value) =>
+                      ser.addSeasons[seasonIndex].episodes[episodeIndex] = ser
+                          .addSeasons[seasonIndex].episodes[episodeIndex]
+                          .copyWith(episodeUrl: value),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return "Episode url is required";
@@ -108,9 +109,10 @@ class _EpisodeCardState extends State<EpisodeCard> {
                 TextFormField(
                   controller: ser.addSeasons[seasonIndex].episodes[episodeIndex]
                       .descriptionController,
-                  onChanged: (value) => ser
-                      .addSeasons[seasonIndex].episodes[episodeIndex]
-                      .copyWith(description: value),
+                  onChanged: (value) =>
+                      ser.addSeasons[seasonIndex].episodes[episodeIndex] = ser
+                          .addSeasons[seasonIndex].episodes[episodeIndex]
+                          .copyWith(description: value),
                   decoration: const InputDecoration(
                     hintText: "Episode Description",
                   ),
