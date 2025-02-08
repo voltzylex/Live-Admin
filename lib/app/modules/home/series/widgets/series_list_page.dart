@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/Series/widgets/Series_data_source.dart';
 import 'package:live_admin/app/modules/home/series/controllers/series_controller.dart';
-import 'package:live_admin/app/modules/home/series/views/series_detail_page.dart';
+import 'package:live_admin/app/modules/home/series/views/edit_series_page.dart';
 
 import '../models/series_model.dart';
 
@@ -26,12 +26,13 @@ class _SeriesListPageState extends State<SeriesListPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Edit Series with ID: $id')),
     );
+    Get.to(() => EditSeriesPage(ser: widget.series), arguments: id);
   }
 
   // Handle on Tap
   void _onTap(Series ser) {
     log("On Tap Called");
-    Get.to(SeriesDetailPage(series: ser));
+    // Get.to(SeriesDetailPage(series: ser));
   }
 
   // Handle delete Series action

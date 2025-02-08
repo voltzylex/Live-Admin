@@ -14,6 +14,7 @@ class EndPoints {
   static String updateMovie(String id) => "movies/$id/update";
   static String deleteMovie(String id) => "admin/movies/$id";
   static String getSeries(int page) => "series?page=$page";
+  static String getSeiresById(int id) => "series/$id";
   static String getMemberships(int page) => "admin/myplans?page=$page";
   static String updateUser(String id) => "admin/users/$id";
   static String addUser = "register/user";

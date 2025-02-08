@@ -441,4 +441,13 @@ class ApiConnect extends GetConnect {
       return Response(body: e.toString(), statusCode: 500);
     }
   }
+
+  Future<Response> getSeriesById(int id) async {
+    try {
+      final res = await get(EndPoints.getSeiresById(id), headers: authHeader());
+      return res;
+    } catch (e) {
+      return Response(body: e.toString());
+    }
+  }
 }

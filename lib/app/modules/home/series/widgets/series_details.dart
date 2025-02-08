@@ -6,15 +6,19 @@ import 'package:live_admin/app/modules/home/series/widgets/series_text_field.dar
 import 'series_cover_image.dart';
 
 class SeriesDetails extends StatelessWidget {
-  const SeriesDetails({super.key, required this.ser});
+  const SeriesDetails({super.key, required this.ser, this.isEditing = false});
   final SeriesController ser;
+  final bool isEditing;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SeriesCoverImage(ser: ser),
+        SeriesCoverImage(
+          ser: ser,
+          isEdit: isEditing,
+        ),
         const SizedBox(width: 40),
         SeriesTextFields(ser: ser),
       ],

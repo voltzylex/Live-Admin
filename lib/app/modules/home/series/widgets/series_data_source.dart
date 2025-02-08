@@ -82,13 +82,16 @@ class SeriesDataSource extends DataTableSource {
               ),
               IconButton(
                 icon: SvgPicture.asset(Assets.delete),
-                // onPressed: () => onEdit(movie["id"]),
+                // onPressed: () {
+                //   onEdit(seri.id);
+                //   log("on edit called");
+                // },
                 onPressed: () {},
               ),
               IconButton(
                 icon: SvgPicture.asset(Assets.edit),
                 // onPressed: () => onDelete(movie["id"]),
-                onPressed: () {},
+                onPressed: () => onEdit(seri.id),
               ),
             ],
           ),

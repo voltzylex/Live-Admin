@@ -7,6 +7,7 @@ import 'package:live_admin/app/data/api/api_connect.dart';
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/series/models/add_series_model.dart'; // Your new models
 import 'package:live_admin/app/modules/home/series/models/series_model.dart';
+import 'package:live_admin/app/modules/home/series/models/single_series_model..dart';
 import 'package:live_admin/app/utils/constants.dart';
 
 class SeriesController extends GetxController with StateMixin<SeriesModel> {
@@ -318,6 +319,16 @@ class SeriesController extends GetxController with StateMixin<SeriesModel> {
       change(ser, status: RxStatus.success());
     } catch (e) {
       change(null, status: RxStatus.error('Failed to load data $e'));
+    }
+  }
+
+  Rxn<SingleSeriesModel?> editSeries = Rxn<SingleSeriesModel?>();
+  Future<SingleSeriesModel?> getSeriesById(int id) async {
+    try {
+      final res = await ApiConnect.instance.getSeriesById(id);
+      return SingleSeriesModel.fromJson(res.body);
+    } catch (e) {
+      return null;
     }
   }
 }

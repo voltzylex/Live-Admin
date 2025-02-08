@@ -1,11 +1,11 @@
 // widgets/series_cover_image.dart
-import 'package:flutter/material.dart';
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/series/controllers/series_controller.dart';
 
 class SeriesCoverImage extends StatelessWidget {
-  const SeriesCoverImage({Key? key, required this.ser}) : super(key: key);
+  const SeriesCoverImage({super.key, required this.ser, this.isEdit = false});
   final SeriesController ser;
+  final bool isEdit;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,19 @@ class SeriesCoverImage extends StatelessWidget {
         ),
         child: SizedBox.expand(
           child: Obx(() {
+            if ((ser.image.value == null) && isEdit) {
+              // If it's in edit mode, and the image is not null, show the NetworkImage
+              return ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                  // Replace with the actual network URL of the image
+                  ser.editSeries.value!.series!.poster, // Update the URL here
+                  fit: BoxFit.cover,
+                ),
+              );
+            }
             if (ser.image.value != null) {
+              // If not in edit mode, show MemoryImage
               return ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.memory(
@@ -30,6 +42,7 @@ class SeriesCoverImage extends StatelessWidget {
                 ),
               );
             }
+
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: const [
