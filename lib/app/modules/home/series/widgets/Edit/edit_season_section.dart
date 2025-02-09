@@ -3,12 +3,10 @@ import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/series/controllers/series_controller.dart';
 import 'package:live_admin/app/modules/home/series/widgets/season_card.dart';
 
-
-
 class EditSeasonsSection extends StatelessWidget {
-  const EditSeasonsSection({super.key, required this.ser});
+  const EditSeasonsSection({super.key, required this.ser,this.isEdit = false});
   final SeriesController ser;
-
+final  bool isEdit;
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -24,7 +22,7 @@ class EditSeasonsSection extends StatelessWidget {
           for (int seasonIndex = 0;
               seasonIndex < ser.addSeasons.length;
               seasonIndex++)
-            SeasonCard(ser: ser, seasonIndex: seasonIndex),
+            SeasonCard(ser: ser, seasonIndex: seasonIndex,isEdit: isEdit,),
           TextButton.icon(
             onPressed: () => ser.addSeason(context),
             icon: const Icon(Icons.add, color: AppColors.primary),

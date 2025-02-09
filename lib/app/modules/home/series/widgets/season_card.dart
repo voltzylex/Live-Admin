@@ -7,9 +7,14 @@ import 'package:live_admin/app/modules/home/series/controllers/series_controller
 import 'episode_card.dart';
 
 class SeasonCard extends StatelessWidget {
-  const SeasonCard({super.key, required this.ser, required this.seasonIndex});
+  const SeasonCard(
+      {super.key,
+      required this.ser,
+      required this.seasonIndex,
+      this.isEdit = false});
   final SeriesController ser;
   final int seasonIndex;
+  final bool isEdit;
 
   @override
   Widget build(BuildContext context) {

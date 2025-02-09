@@ -12,11 +12,13 @@ class EpisodeCard extends StatefulWidget {
     required this.ser,
     required this.seasonIndex,
     required this.episodeIndex,
+    this.isEdit = false,
   });
 
   final SeriesController ser;
   final int seasonIndex;
   final int episodeIndex;
+  final bool isEdit;
 
   @override
   State<EpisodeCard> createState() => _EpisodeCardState();
@@ -53,7 +55,16 @@ class _EpisodeCardState extends State<EpisodeCard> {
                         ),
                         fit: BoxFit.cover,
                       )
-                    : null,
+                    : (ser.addSeasons[seasonIndex].episodes[episodeIndex]
+                                    .thumbnail !=
+                                null &&
+                            widget.isEdit)
+                        ? DecorationImage(
+                            image: NetworkImage(ser.addSeasons[seasonIndex]
+                                .episodes[episodeIndex].thumbnail!),
+                            fit: BoxFit.cover,
+                          )
+                        : null,
               ),
               child: const Icon(Icons.image, color: Colors.grey),
             ),

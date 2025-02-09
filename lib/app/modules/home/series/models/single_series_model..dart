@@ -136,6 +136,7 @@ class SSeason extends Equatable {
     required this.createdAt,
     required this.updatedAt,
     required this.episodes,
+    required this.description,
   });
 
   final int id;
@@ -143,16 +144,17 @@ class SSeason extends Equatable {
   final num seasonNumber;
   final DateTime? createdAt;
   final DateTime? updatedAt;
+  final String? description;
   final List<Episode> episodes;
 
-  SSeason copyWith({
-    int? id,
-    int? seriesId,
-    num? seasonNumber,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    List<Episode>? episodes,
-  }) {
+  SSeason copyWith(
+      {int? id,
+      int? seriesId,
+      num? seasonNumber,
+      DateTime? createdAt,
+      DateTime? updatedAt,
+      List<Episode>? episodes,
+      String? description}) {
     return SSeason(
       id: id ?? this.id,
       seriesId: seriesId ?? this.seriesId,
@@ -160,6 +162,7 @@ class SSeason extends Equatable {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       episodes: episodes ?? this.episodes,
+      description: description ?? this.description,
     );
   }
 
@@ -170,6 +173,7 @@ class SSeason extends Equatable {
       seasonNumber: json["season_number"] ?? 0,
       createdAt: DateTime.tryParse(json["created_at"] ?? ""),
       updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
+      description: json["description"],
       episodes: json["episodes"] == null
           ? []
           : List<Episode>.from(
@@ -183,6 +187,7 @@ class SSeason extends Equatable {
         "season_number": seasonNumber,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
+        "description": description,
         "episodes": episodes.map((x) => x.toJson()).toList(),
       };
 

@@ -32,15 +32,24 @@ class _EditSeriesPageState extends State<EditSeriesPage> {
       ser.descriptionController.text = series?.series?.description ?? '';
       final d = series!.series!.seasons
           .map((s) => AddSeason(
+              key: GlobalKey<FormState>(),
               seasonNumber: s.seasonNumber,
-              description: "",
+              description: s.description ?? "",
               image: null,
               episodes: s.episodes
                   .map((e) => AddEpisode(
-                        key: GlobalKey(),
+                        key: GlobalKey<FormState>(),
+                        episodeUrlController:
+                            TextEditingController(text: e.episodeUrl ?? ""),
+                        descriptionController: TextEditingController(
+                          text: e.description ,
+                        ),
+                        titleController: TextEditingController(
+                          text: e.title ,
+                        ),
                         description: e.description,
                         episodeNumber: e.episodeNumber,
-                        episodeUrl: e.episodeUrl,
+                        episodeUrl: e.episodeUrl ?? "",
                         title: e.title,
                         thumbnail: e.imageUrl,
                       ))

@@ -148,6 +148,7 @@ class AddSeason extends Equatable {
       ];
 }
 
+// ignore: must_be_immutable
 class AddEpisode extends Equatable {
   AddEpisode({
     required this.episodeNumber,
@@ -200,7 +201,7 @@ class AddEpisode extends Equatable {
 
   Map<String, dynamic> toJson({bool showImage = true}) => {
         "episodeNumber": episodeNumber,
-        "title": title,
+        "title": title, 
         "description": description,
         if (showImage) "thumbnail": thumbnail,
         "url": episodeUrl,

@@ -256,8 +256,8 @@ class SeriesController extends GetxController with StateMixin<SeriesModel> {
         series: AddSeries(
             name: seriesNameController.text,
             description: descriptionController.text,
-            coverImage: "",
-            //  base64Encode(image.value!),
+            coverImage: 
+             base64Encode(image.value!),
             seasons: addSeasons));
     // log("Final season: ${newSeries.toJson()}");
     // return;

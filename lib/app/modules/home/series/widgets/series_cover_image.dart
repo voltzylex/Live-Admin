@@ -21,7 +21,10 @@ class SeriesCoverImage extends StatelessWidget {
         ),
         child: SizedBox.expand(
           child: Obx(() {
-            if ((ser.image.value == null) && isEdit) {
+            if ((ser.image.value == null) &&
+                (isEdit == true &&
+                    ser.editSeries.value != null &&
+                    ser.editSeries.value!.series!.poster != null)) {
               // If it's in edit mode, and the image is not null, show the NetworkImage
               return ClipRRect(
                 borderRadius: BorderRadius.circular(8),
