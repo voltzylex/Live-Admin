@@ -450,4 +450,33 @@ class ApiConnect extends GetConnect {
       return Response(body: e.toString());
     }
   }
+
+  Future<Response> editSeries(int id, AddSeriesModel series) async {
+    try {
+      final res = await post(EndPoints.editSeries(id), series.toJson(),
+          headers: authHeader());
+      return res;
+    } catch (e) {
+      return Response(body: e.toString());
+    }
+  }
+
+  Future<Response> deleteSeries(int id) async {
+    try {
+      final res =
+          await delete(EndPoints.deleteSeries(id), headers: authHeader());
+      return res;
+    } catch (e) {
+      return Response(body: e.toString());
+    }
+  }
+  Future<Response> updateSeriesStatus(int id,bool status) async {
+    try {
+      final res =
+          await post(EndPoints.deleteSeries(id),{"status":status}, headers: authHeader());
+      return res;
+    } catch (e) {
+      return Response(body: e.toString());
+    }
+  }
 }

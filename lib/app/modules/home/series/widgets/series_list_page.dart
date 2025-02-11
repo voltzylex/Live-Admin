@@ -23,10 +23,9 @@ class _SeriesListPageState extends State<SeriesListPage> {
 
   // Handle edit Series action
   void _editSeries(int id) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Edit Series with ID: $id')),
-    );
-    Get.to(() => EditSeriesPage(ser: widget.series), arguments: id);
+    widget.series.id = id;
+    // Get.to(() => EditSeriesPage(ser: widget.series), arguments: id);
+    Get.find<DashboardController>().changePage(EditSeriesPage.name);
   }
 
   // Handle on Tap

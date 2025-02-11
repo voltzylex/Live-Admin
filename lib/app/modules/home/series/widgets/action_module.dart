@@ -3,10 +3,19 @@ import 'dart:developer';
 
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/series/controllers/series_controller.dart';
+import 'package:live_admin/app/modules/home/series/views/series_page.dart';
 
 class ActionButtons extends StatelessWidget {
-  const ActionButtons({super.key, required this.ser});
+  const ActionButtons({
+    super.key,
+    required this.ser,
+    this.isEdit = false,
+    this.id,
+  }) : assert(!isEdit || id != null, "If isEdit is true, id must be provided");
+
   final SeriesController ser;
+  final bool isEdit;
+  final int? id; // Optional, but required when isEdit is true
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +23,13 @@ class ActionButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         ElevatedButton(
-          onPressed: () => ser.isUpload.toggle(),
+          onPressed: () {
+            if (isEdit) {
+              Get.find<DashboardController>().changePage(SeriesPage.name);
+            } else {
+              ser.isUpload.toggle();
+            }
+          },
           style: ElevatedButton.styleFrom(
             foregroundColor: AppColors.borderL1,
             backgroundColor: AppColors.content,
@@ -56,7 +71,9 @@ class ActionButtons extends StatelessWidget {
             }
 
             // If validation passes, proceed to save the series.
-            ser.saveSeries(context);
+            isEdit
+                ? ser.editSeriesApi(context, id ?? 0)
+                : ser.saveSeries(context);
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.primary,

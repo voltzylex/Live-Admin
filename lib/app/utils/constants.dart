@@ -23,6 +23,9 @@ class EndPoints {
   static String getPlanHistory(int id) => "planhistory/$id";
   static String subscribe = "subscribe";
   static String addSeries = "store/series";
+  static String editSeries(int id) => "update/series/$id";
+  static String deleteSeries(int id) => "delete/series/$id";
+  static String updateSeriesStatus(int id) => "update/seriesstatus/$id";
 
   static const String getUser = "admin/users";
   static const Duration timeout = Duration(seconds: 30);

@@ -45,9 +45,11 @@ class _EpisodeCardState extends State<EpisodeCard> {
               height: 60,
               decoration: BoxDecoration(
                 color: AppColors.primary.withOpacity(0.1),
-                image: ser.addSeasons[seasonIndex].episodes[episodeIndex]
-                            .thumbnail !=
-                        null
+                image: (ser.addSeasons[seasonIndex].episodes[episodeIndex]
+                                .thumbnail !=
+                            null &&
+                        !isCheckURL(ser.addSeasons[seasonIndex]
+                            .episodes[episodeIndex].thumbnail!))
                     ? DecorationImage(
                         image: MemoryImage(
                           base64Decode(ser.addSeasons[seasonIndex]

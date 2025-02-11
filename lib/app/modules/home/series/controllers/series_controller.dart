@@ -9,12 +9,13 @@ import 'package:live_admin/app/modules/home/series/models/add_series_model.dart'
 import 'package:live_admin/app/modules/home/series/models/series_model.dart';
 import 'package:live_admin/app/modules/home/series/models/single_series_model..dart';
 import 'package:live_admin/app/utils/constants.dart';
+import 'package:live_admin/main.dart';
 
 class SeriesController extends GetxController with StateMixin<SeriesModel> {
   SeriesController get to => Get.isRegistered<SeriesController>()
       ? Get.find<SeriesController>()
       : Get.put(SeriesController());
-
+  int? id;
   // Controllers for series input
   final TextEditingController seriesNameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
@@ -55,24 +56,33 @@ class SeriesController extends GetxController with StateMixin<SeriesModel> {
         getSeries(callback);
       }
     });
-    ever(
-        addSeasons,
-        (callback) => log("Add season ${addSeasons.map(
-              (element) => element.toJson(),
-            )}"));
+    // ever(
+    //     addSeasons,
+    //     (callback) => log("Add season ${addSeasons.map(
+    //           (element) => element.toJson(),
+    //         )}"));
   }
 
   // Add Season
   void addSeason(BuildContext context) {
     for (var se in addSeasons) {
-      if (!se.key!.currentState!.validate()) {
-        return;
-      }
-      if (se.image == null) {
+      // if (!se.key!.currentState!.validate()) {
+      //   return;
+      // }
+      // if (se.image == null) {
+      //   ToastHelper.showToast(
+      //     context: context,
+      //     title: 'Please Select Season Image',
+      //     description: 'Please select an image before proceeding!',
+      //     type: ToastType.error,
+      //   );
+      //   return;
+      // }
+      if (se.episodes.isEmpty) {
         ToastHelper.showToast(
           context: context,
-          title: 'Please Select Season Image',
-          description: 'Please select an image before proceeding!',
+          title: 'Please Provide Episodes ',
+          description: 'Please Add episodes before proceeding',
           type: ToastType.error,
         );
         return;
@@ -256,8 +266,7 @@ class SeriesController extends GetxController with StateMixin<SeriesModel> {
         series: AddSeries(
             name: seriesNameController.text,
             description: descriptionController.text,
-            coverImage: 
-             base64Encode(image.value!),
+            coverImage: base64Encode(image.value!),
             seasons: addSeasons));
     // log("Final season: ${newSeries.toJson()}");
     // return;
@@ -298,7 +307,8 @@ class SeriesController extends GetxController with StateMixin<SeriesModel> {
   void clearField() {
     seriesNameController.clear();
     descriptionController.clear();
-    image(null);
+    image.value = null;
+
     seasons.clear();
     seriesNameController.clear();
 
@@ -308,6 +318,7 @@ class SeriesController extends GetxController with StateMixin<SeriesModel> {
     selectedType("");
     isUpload(false);
     seasons.clear();
+    addSeasons.clear();
   }
 
   Future<void> getSeries(int? page) async {
@@ -322,13 +333,93 @@ class SeriesController extends GetxController with StateMixin<SeriesModel> {
     }
   }
 
-  Rxn<SingleSeriesModel?> editSeries = Rxn<SingleSeriesModel?>();
   Future<SingleSeriesModel?> getSeriesById(int id) async {
     try {
       final res = await ApiConnect.instance.getSeriesById(id);
       return SingleSeriesModel.fromJson(res.body);
     } catch (e) {
       return null;
+    }
+  }
+
+  Rxn<SingleSeriesModel?> editSeries = Rxn<SingleSeriesModel?>();
+  // Edit Series
+  Future<void> editSeriesApi(BuildContext context, int id) async {
+    final url = editSeries.value?.series?.poster ?? "";
+    log("Edit Series url : $url");
+    if (image.value == null && (!isCheckURL(url))) {
+      ToastHelper.showToast(
+        context: context,
+        title: 'Validation Error',
+        description: 'Please upload a series cover image!',
+        type: ToastType.error,
+      );
+      return;
+    }
+    if (addSeasons.isEmpty) {
+      ToastHelper.showToast(
+        context: context,
+        title: 'Validation Error',
+        description: 'Please add at least one season!',
+        type: ToastType.error,
+      );
+      return;
+    }
+    for (var adS in addSeasons) {
+      for (var ep in adS.episodes) {
+        if (!ep.key.currentState!.validate()) {
+          return;
+        }
+        if (ep.thumbnail == null) {
+          ToastHelper.showToast(
+            context: context,
+            title: 'Please Select Episode Image',
+            description: 'Please select an image before proceeding!',
+            type: ToastType.error,
+          );
+          return;
+        }
+      }
+    }
+
+    final newSeries = AddSeriesModel(
+        series: AddSeries(
+            name: seriesNameController.text,
+            description: descriptionController.text,
+            coverImage: image.value == null ? url : base64Encode(image.value!),
+            seasons: addSeasons));
+    log("Edit series data ${newSeries.toJson()}");
+    try {
+      showLoading();
+      final res = await ApiConnect.instance.editSeries(id, newSeries);
+      // hideLoading();
+      // Send your addSeriesModel to your API to save the series
+      if (res.statusCode == 200) {
+        ToastHelper.showToast(
+          context: context,
+          title: 'Series Edited Successfully',
+          description: '',
+          type: ToastType.success,
+        );
+        getSeries(1);
+        clearField();
+      } else {
+        ToastHelper.showToast(
+          context: context,
+          title: 'Server Error',
+          description: res.body.toString(),
+          type: ToastType.error,
+        );
+      }
+    } catch (e) {
+      ToastHelper.showToast(
+        context: context,
+        title: 'Server Error',
+        description: e.toString(),
+        type: ToastType.error,
+      );
+    } finally {
+      hideLoading();
     }
   }
 }

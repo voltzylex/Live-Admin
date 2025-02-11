@@ -1,6 +1,4 @@
 // widgets/season_card.dart
-import 'dart:convert';
-
 import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/series/controllers/series_controller.dart';
 
@@ -48,41 +46,42 @@ class SeasonCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Season Image Container
-                  GestureDetector(
-                    onTap: () => ser.pickSeasonImage(context, seasonIndex),
-                    child: Container(
-                      width: 100,
-                      height: (MediaQuery.sizeOf(context).height / 5) - 20,
-                      decoration: BoxDecoration(
-                        color: AppColors.white.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: AppColors.borderL1),
-                        image: ser.addSeasons[seasonIndex].image != null
-                            ? DecorationImage(
-                                image: MemoryImage(base64Decode(
-                                    ser.addSeasons[seasonIndex].image!)),
-                                fit: BoxFit.cover,
-                              )
-                            : null,
-                      ),
-                      child: ser.addSeasons[seasonIndex].image == null
-                          ? Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Icon(Icons.image,
-                                    color: Colors.white, size: 40),
-                                SizedBox(height: 10),
-                                Text(
-                                  "Upload Image",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ],
-                            )
-                          : null,
-                    ),
-                  ),
+                  // GestureDetector(
+                  //   onTap: () => ser.pickSeasonImage(context, seasonIndex),
+                  //   child: Container(
+                  //     width: 100,
+                  //     height: (MediaQuery.sizeOf(context).height / 5) - 20,
+                  //     decoration: BoxDecoration(
+                  //       color: AppColors.white.withOpacity(0.1),
+                  //       borderRadius: BorderRadius.circular(8),
+                  //       border: Border.all(color: AppColors.borderL1),
+                  //       image: ser.addSeasons[seasonIndex].image != null
+                  //           ? DecorationImage(
+                  //               image: MemoryImage(base64Decode(
+                  //                   ser.addSeasons[seasonIndex].image!)),
+                  //               fit: BoxFit.cover,
+                  //             )
+                  //           : null,
+                  //     ),
+                  //     child: ser.addSeasons[seasonIndex].image == null
+                  //         ? Column(
+                  //             mainAxisAlignment: MainAxisAlignment.center,
+                  //             children: const [
+                  //               Icon(Icons.image,
+                  //                   color: Colors.white, size: 40),
+                  //               SizedBox(height: 10),
+                  //               Text(
+                  //                 "Upload Image",
+                  //                 style: TextStyle(color: Colors.white),
+                  //               ),
+                  //             ],
+                  //           )
+                  //         : null,
+                  //   ),
+                  // ),
                   const SizedBox(width: 10),
                   // Season Description Text Field
+                  /*
                   Expanded(
                     child: TextFormField(
                       controller:
@@ -109,6 +108,7 @@ class SeasonCard extends StatelessWidget {
                       },
                     ),
                   ),
+                  */
                 ],
               ),
               // If image is not provided, show an error message below the image field
@@ -128,6 +128,7 @@ class SeasonCard extends StatelessWidget {
                     episodeIndex++)
                   EpisodeCard(
                     ser: ser,
+                    isEdit: true,
                     seasonIndex: seasonIndex,
                     episodeIndex: episodeIndex,
                   ),

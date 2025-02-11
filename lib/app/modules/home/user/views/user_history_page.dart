@@ -11,6 +11,7 @@ import 'package:live_admin/app/utils/loading.dart';
 class UserHistoryPage extends StatefulWidget {
   const UserHistoryPage({super.key});
   static const name = "/history";
+  
   @override
   State<UserHistoryPage> createState() => _UserHistoryPageState();
 }
