@@ -16,11 +16,6 @@ class SeriesListPage extends StatefulWidget {
 }
 
 class _SeriesListPageState extends State<SeriesListPage> {
-  // Handle toggle status
-  void _toggleStatus(int id) {
-    // Implement status toggle logic here
-  }
-
   // Handle edit Series action
   void _editSeries(int id) {
     widget.series.id = id;
@@ -36,9 +31,7 @@ class _SeriesListPageState extends State<SeriesListPage> {
 
   // Handle delete Series action
   void _deleteSeries(int id) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Deleted Series with ID: $id')),
-    );
+    widget.series.deleteSeries(id, context);
   }
 
   // Navigate to the next page
@@ -105,7 +98,7 @@ class _SeriesListPageState extends State<SeriesListPage> {
         ),
         BaseButton(
           onPressed: () {
-            widget.series.isUpload.toggle();
+            widget.series.isAddSeries.toggle();
           },
           child: Container(
             padding: EdgeInsets.symmetric(
@@ -156,9 +149,9 @@ class _SeriesListPageState extends State<SeriesListPage> {
         source: SeriesDataSource(
           context,
           state.series,
+          ser: widget.series,
           onEdit: _editSeries,
           onDelete: _deleteSeries,
-          onToggleStatus: _toggleStatus,
           onTap: _onTap,
         ),
       ),

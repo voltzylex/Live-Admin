@@ -12,7 +12,7 @@ class SeriesPage extends StatelessWidget {
     final ser = Get.put(SeriesController());
 
     return Obx(() {
-      if (!ser.isUpload.value) {
+      if (!ser.isAddSeries.value) {
         return SeriesListPage(
           series: ser,
         );

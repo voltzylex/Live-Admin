@@ -27,7 +27,7 @@ class ActionButtons extends StatelessWidget {
             if (isEdit) {
               Get.find<DashboardController>().changePage(SeriesPage.name);
             } else {
-              ser.isUpload.toggle();
+              ser.isAddSeries.toggle();
             }
           },
           style: ElevatedButton.styleFrom(

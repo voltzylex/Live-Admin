@@ -116,6 +116,7 @@ class Series extends Equatable {
     required this.createdAt,
     required this.updatedAt,
     required this.seasons,
+    required this.status,
   });
 
   final int id;
@@ -123,6 +124,7 @@ class Series extends Equatable {
   final String description;
   final String poster;
   final num viewCount;
+  final num status;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final List<Season> seasons;
@@ -136,6 +138,7 @@ class Series extends Equatable {
     DateTime? createdAt,
     DateTime? updatedAt,
     List<Season>? seasons,
+    num? status,
   }) {
     return Series(
       id: id ?? this.id,
@@ -146,22 +149,24 @@ class Series extends Equatable {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       seasons: seasons ?? this.seasons,
+      status: status ?? this.status,
     );
   }
 
   factory Series.fromJson(Map<String, dynamic> json) {
     return Series(
-      id: json["id"] ?? 0,
-      title: json["title"] ?? "",
-      description: json["description"] ?? "",
-      poster: json["poster"] ?? "",
-      viewCount: json["view_count"] ?? 0,
-      createdAt: DateTime.tryParse(json["created_at"] ?? ""),
-      updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
-      seasons: json["seasons"] == null
-          ? []
-          : List<Season>.from(json["seasons"]!.map((x) => Season.fromJson(x))),
-    );
+        id: json["id"] ?? 0,
+        title: json["title"] ?? "",
+        description: json["description"] ?? "",
+        poster: json["poster"] ?? "",
+        viewCount: json["view_count"] ?? 0,
+        createdAt: DateTime.tryParse(json["created_at"] ?? ""),
+        updatedAt: DateTime.tryParse(json["updated_at"] ?? ""),
+        seasons: json["seasons"] == null
+            ? []
+            : List<Season>.from(
+                json["seasons"]!.map((x) => Season.fromJson(x))),
+        status: json["status"]);
   }
 
   Map<String, dynamic> toJson() => {
@@ -172,6 +177,7 @@ class Series extends Equatable {
         "view_count": viewCount,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
+        "status": status,
         "seasons": seasons.map((x) => x.toJson()).toList(),
       };
 
@@ -185,6 +191,7 @@ class Series extends Equatable {
         createdAt,
         updatedAt,
         seasons,
+        status
       ];
 }
 

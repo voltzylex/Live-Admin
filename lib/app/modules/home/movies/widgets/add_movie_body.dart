@@ -261,7 +261,8 @@ class _AddMovieBodyState extends State<AddMovieBody> {
                               return;
                             }
                             formKey.currentState?.reset();
-                            widget.mov.isUpload.toggle();
+                            // widget.mov.isUpload.toggle();
+                            Get.back();
                           },
                           style: ElevatedButton.styleFrom(
                             foregroundColor: AppColors.borderL1,

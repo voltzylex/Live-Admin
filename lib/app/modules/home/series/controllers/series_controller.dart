@@ -28,7 +28,7 @@ class SeriesController extends GetxController with StateMixin<SeriesModel> {
   RxString selectedType = ''.obs;
   final Rxn<Uint8List> image = Rxn(); // Series cover image
   final picker = ImagePicker();
-  RxBool isUpload = false.obs;
+  RxBool isAddSeries = false.obs;
 
   // Seasons and Episodes
   final RxList<AddSeason> addSeasons = <AddSeason>[].obs;
@@ -316,7 +316,7 @@ class SeriesController extends GetxController with StateMixin<SeriesModel> {
     image(null);
     selectedCategory("");
     selectedType("");
-    isUpload(false);
+    isAddSeries(false);
     seasons.clear();
     addSeasons.clear();
   }
@@ -420,6 +420,71 @@ class SeriesController extends GetxController with StateMixin<SeriesModel> {
       );
     } finally {
       hideLoading();
+    }
+  }
+
+  Future<void> deleteSeries(int id, BuildContext context) async {
+    try {
+      showLoading();
+      final res = await ApiConnect.instance.deleteSeries(id);
+      hideLoading();
+      if (res.statusCode == 200) {
+        state!.series.removeWhere(
+          (element) => element.id == id,
+        );
+        update();
+        ToastHelper.showToast(
+          context: context,
+          title: 'Deleted Succesfully',
+          description: res.body["message"] ?? 'Series Deleted Succesfully',
+          type: ToastType.error,
+        );
+      }
+    } catch (e) {
+      hideLoading();
+      ToastHelper.showToast(
+        context: context,
+        title: 'Some error occured',
+        description: e.toString(),
+        type: ToastType.error,
+      );
+    }
+  }
+
+  /// Toggle Series Status
+  void toggleSeriesStatus(int seriesId, bool status) async {
+    // Find the index of the series in the current state
+    final seriesIndex =
+        state?.series.indexWhere((series) => series.id == seriesId);
+    if (seriesIndex != null && seriesIndex != -1) {
+      // Create a new list from the current series list
+      final updatedSeries = List<Series>.from(state!.series);
+
+      // Show loading indicator
+      showLoading();
+      try {
+        // Make the API call to update status
+        await ApiConnect.instance.updateSeriesStatus(seriesId, status);
+
+        // Update the status locally using copyWith.
+        updatedSeries[seriesIndex] = updatedSeries[seriesIndex].copyWith(
+          status: status ? 1 : 0,
+        );
+
+        // Log the updated status for debugging
+        log("Toggle status is ${updatedSeries[seriesIndex]}");
+
+        // Update the state with the new series list and mark status as success.
+        change(state!.copyWith(series: updatedSeries),
+            status: RxStatus.success());
+      } catch (e) {
+        log("Error updating series status: $e");
+        // Update state to error if needed.
+        change(state!, status: RxStatus.error(e.toString()));
+      } finally {
+        // Hide the loading indicator
+        hideLoading();
+      }
     }
   }
 }

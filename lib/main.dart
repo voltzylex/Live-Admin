@@ -8,7 +8,9 @@ import 'package:responsive_framework/responsive_framework.dart';
   final pattern = r"^(https?:\/\/)?([\w\-]+\.)+[\w]{2,}(\/\S*)?$";
   return RegExp(pattern, caseSensitive: false).hasMatch(s);
 }
-
+bool isTrue(num n){
+  return n.toInt() ==0?false:true;
+}
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SC.to.init();

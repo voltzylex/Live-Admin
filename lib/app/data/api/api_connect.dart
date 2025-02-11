@@ -470,10 +470,12 @@ class ApiConnect extends GetConnect {
       return Response(body: e.toString());
     }
   }
-  Future<Response> updateSeriesStatus(int id,bool status) async {
+
+  Future<Response> updateSeriesStatus(int id, bool status) async {
     try {
-      final res =
-          await post(EndPoints.deleteSeries(id),{"status":status}, headers: authHeader());
+      final res = await post(
+          EndPoints.updateSeriesStatus(id), {"status": status},
+          headers: authHeader());
       return res;
     } catch (e) {
       return Response(body: e.toString());

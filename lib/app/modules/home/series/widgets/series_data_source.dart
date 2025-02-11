@@ -1,23 +1,21 @@
 import 'package:live_admin/app/global_imports.dart';
-import 'package:live_admin/app/modules/home/movies/controllers/movies_controller.dart';
+import 'package:live_admin/app/modules/home/series/controllers/series_controller.dart';
 import 'package:live_admin/app/modules/home/series/models/series_model.dart';
+import 'package:live_admin/main.dart';
 
 class SeriesDataSource extends DataTableSource {
   final BuildContext context;
   final List<Series> series;
   final void Function(int id) onEdit;
   final void Function(int id) onDelete;
-  final void Function(int id) onToggleStatus;
-  final void Function(Series ser) onTap;
 
-  SeriesDataSource(
-    this.context,
-    this.series, {
-    required this.onEdit,
-    required this.onDelete,
-    required this.onToggleStatus,
-    required this.onTap,
-  });
+  final void Function(Series ser) onTap;
+  final SeriesController ser;
+  SeriesDataSource(this.context, this.series,
+      {required this.onEdit,
+      required this.onDelete,
+      required this.onTap,
+      required this.ser});
 
   @override
   DataRow getRow(int index) {
@@ -50,8 +48,9 @@ class SeriesDataSource extends DataTableSource {
         DataCell(Text(DateFormat('dd/MMM/yyyy')
             .format(seri.createdAt ?? DateTime.now()))),
         DataCell(Text(
-          true ? "Visible" : "Hidden",
-          style: TextStyle(color: true ? AppColors.green : AppColors.red),
+          isTrue(seri.status) ? "Visible" : "Hidden",
+          style: TextStyle(
+              color: isTrue(seri.status) ? AppColors.green : AppColors.red),
         )),
         DataCell(FittedBox(
           child: Row(
@@ -59,38 +58,30 @@ class SeriesDataSource extends DataTableSource {
               SizedBox(
                 height: 30,
                 child: FittedBox(
-                  child: Obx(
-                    () => Switch(
-                      value: MoviesController().to.isSwitchOn.value,
-                      thumbColor: WidgetStateProperty.resolveWith<Color>(
-                          (Set<WidgetState> states) {
-                        if (states.contains(WidgetState.disabled)) {
-                          return AppColors.borderL1;
-                        }
-                        return AppColors.white;
-                      }),
-                      activeColor: AppColors.primary2,
-                      trackOutlineColor:
-                          WidgetStateProperty.all(AppColors.transparent),
-                      inactiveTrackColor: Color(0xff506586),
-                      // onChanged: (_) => onToggleStatus(movie["id"]),
-                      onChanged: (value) =>
-                          MoviesController().to.isSwitchOn(value),
-                    ),
+                  child: Switch(
+                    value: isTrue(seri.status),
+                    thumbColor: WidgetStateProperty.resolveWith<Color>(
+                        (Set<WidgetState> states) {
+                      if (states.contains(WidgetState.disabled)) {
+                        return AppColors.borderL1;
+                      }
+                      return AppColors.white;
+                    }),
+                    activeColor: AppColors.primary2,
+                    trackOutlineColor:
+                        WidgetStateProperty.all(AppColors.transparent),
+                    inactiveTrackColor: Color(0xff506586),
+                    onChanged: (value) =>
+                        ser.toggleSeriesStatus(seri.id, value),
                   ),
                 ),
               ),
               IconButton(
                 icon: SvgPicture.asset(Assets.delete),
-                // onPressed: () {
-                //   onEdit(seri.id);
-                //   log("on edit called");
-                // },
-                onPressed: () {},
+                onPressed: () => onDelete(seri.id),
               ),
               IconButton(
                 icon: SvgPicture.asset(Assets.edit),
-                // onPressed: () => onDelete(movie["id"]),
                 onPressed: () => onEdit(seri.id),
               ),
             ],

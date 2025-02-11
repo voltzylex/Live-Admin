@@ -15,8 +15,6 @@ class MoviesListPage extends StatefulWidget {
 }
 
 class _MoviesListPageState extends State<MoviesListPage> {
-  
-
   // Handle edit movie action
   void _editMovie(Movie movie) {
     log("Edit movie called ");
@@ -112,7 +110,25 @@ class _MoviesListPageState extends State<MoviesListPage> {
         ),
         BaseButton(
           onPressed: () {
-            widget.mov.isUpload.toggle();
+            // widget.mov.isUpload.toggle();
+            Get.dialog(
+              Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16.0),
+                ),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: AppColors.content, // Set a solid background color
+                    borderRadius: BorderRadius.circular(16.0),
+                  ),
+                  child: AddMovieBody(
+                    mov: widget.mov,
+                  ),
+                ),
+              ),
+            );
           },
           child: Container(
             padding: EdgeInsets.symmetric(
