@@ -13,14 +13,14 @@ class OverviewSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return das.obx(
-      (state) => _buildOverviewContent(state),
+      (state) => _buildOverviewContent(state, context),
       onLoading: _buildShimmerEffect(), // Shimmer effect while loading
       onError: (error) => Center(child: Text('Error: $error')),
     );
   }
 
   // Overview Content
-  Widget _buildOverviewContent(DashboardModel? state) {
+  Widget _buildOverviewContent(DashboardModel? state, BuildContext? context) {
     return Container(
       width: Get.width,
       constraints: BoxConstraints(minHeight: 180, maxHeight: 220),
@@ -34,7 +34,72 @@ class OverviewSection extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         spacing: 10,
         children: [
-          Text("Overview", style: AppTextStyles.title),
+          Row(
+            children: [
+              Text("Overview", style: AppTextStyles.title),
+              Spacer(),
+              PopupMenuButton<String>(
+                onSelected: (value) {},
+                color: AppColors.content,
+                surfaceTintColor: AppColors.green,
+                offset: const Offset(0, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                icon: Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.backgroundLight,
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  padding: const EdgeInsets.all(8),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Last 30 Days", // Profile
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w300),
+                      ),
+                      const SizedBox(width: 10),
+                      Opacity(
+                        opacity: .6,
+                        child: const Icon(
+                          Icons.keyboard_arrow_down_rounded,
+                          color: AppColors.black,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                itemBuilder: (context) {
+                  return [
+                    PopupMenuItem<String>(
+                      value: '7 Days',
+                      child: ListTile(
+                        title: Text('7 Days', style: AppTextStyles.title.s18),
+                      ),
+                    ),
+                    PopupMenuItem<String>(
+                      value: '30 Days',
+                      child: ListTile(
+                        title: Text(
+                          '30 Days',
+                          style: AppTextStyles.title.s18,
+                        ),
+                        onTap: () async {
+                          das.fetchDashboard(date: DateTime(
+                            DateTime.now().year,
+                            
+                          ));
+                        },
+                      ),
+                    ),
+                  ];
+                },
+              ),
+            ],
+          ),
           Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

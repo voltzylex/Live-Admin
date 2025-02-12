@@ -5,6 +5,7 @@ import 'package:live_admin/app/modules/home/movies/controllers/movies_controller
 import 'package:live_admin/app/modules/home/movies/models/movies_model.dart';
 import 'package:live_admin/app/modules/home/movies/widgets/add_movie_body.dart';
 import 'package:live_admin/app/modules/home/movies/widgets/movie_data_source.dart';
+import 'package:live_admin/app/utils/constants.dart';
 
 class MoviesListPage extends StatefulWidget {
   const MoviesListPage({super.key, required this.mov});
@@ -43,7 +44,14 @@ class _MoviesListPageState extends State<MoviesListPage> {
 
   // Handle delete movie action
   void _deleteMovie(Movie id) {
-    widget.mov.deleteMovie(id.id, context);
+    showConfirmationDialog(
+      context: context,
+      title: "Confirm Deletion",
+      content: "Are you sure you want to delete this movie?",
+      onConfirm: () {
+        widget.mov.deleteMovie(id.id, context);
+      },
+    );
   }
 
   // Navigate to the next page

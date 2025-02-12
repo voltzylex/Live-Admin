@@ -21,12 +21,10 @@ class DashboardController extends GetxController
         log("Series cont called ${currentPage.value} : ");
         switch (currentPage.value) {
           case SeriesPage.name:
-            () {
-              log("Series cont called");
-              final s = SeriesController().to;
-              s.isAddSeries(false);
-              s.clearField();
-            };
+            final s = SeriesController().to;
+            s.isAddSeries(false);
+            s.clearField();
+
             break;
           default:
         }
@@ -45,10 +43,11 @@ class DashboardController extends GetxController
   }
 
   // Fetch dashboard data
-  Future<void> fetchDashboard() async {
+  Future<void> fetchDashboard({DateTime? date}) async {
+      DateTime selectedDate = DateTime.now().subtract(Duration(days: days));
     try {
       change(null, status: RxStatus.loading());
-      final res = await ApiConnect.instance.getDashboard(null);
+      final res = await ApiConnect.instance.getDashboard(date);
       change(DashboardModel.fromJson(res.body), status: RxStatus.success());
     } catch (e) {
       change(null, status: RxStatus.error(e.toString()));

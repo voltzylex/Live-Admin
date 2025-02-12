@@ -4,6 +4,7 @@ import 'package:live_admin/app/global_imports.dart';
 import 'package:live_admin/app/modules/home/Series/widgets/Series_data_source.dart';
 import 'package:live_admin/app/modules/home/series/controllers/series_controller.dart';
 import 'package:live_admin/app/modules/home/series/views/edit_series_page.dart';
+import 'package:live_admin/app/utils/constants.dart';
 
 import '../models/series_model.dart';
 
@@ -31,7 +32,14 @@ class _SeriesListPageState extends State<SeriesListPage> {
 
   // Handle delete Series action
   void _deleteSeries(int id) {
-    widget.series.deleteSeries(id, context);
+    showConfirmationDialog(
+      context: context,
+      title: "Confirm Deletion",
+      content: "Are you sure you want to delete this series?",
+      onConfirm: () {
+        widget.series.deleteSeries(id, context);
+      },
+    );
   }
 
   // Navigate to the next page
