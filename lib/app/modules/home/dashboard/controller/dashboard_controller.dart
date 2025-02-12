@@ -9,7 +9,7 @@ import 'package:live_admin/app/modules/home/series/views/series_page.dart';
 class DashboardController extends GetxController
     with StateMixin<DashboardModel> {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
+ RxString selectedPeriod = "30 Days".obs;
   String? currentRoute;
   @override
   void onInit() {
@@ -43,11 +43,12 @@ class DashboardController extends GetxController
   }
 
   // Fetch dashboard data
-  Future<void> fetchDashboard({DateTime? date}) async {
-      DateTime selectedDate = DateTime.now().subtract(Duration(days: days));
+  Future<void> fetchDashboard({int? day}) async {
+    DateTime selectedDate = DateTime.now().subtract(Duration(days: day ?? 0));
     try {
       change(null, status: RxStatus.loading());
-      final res = await ApiConnect.instance.getDashboard(date);
+      final res = await ApiConnect.instance
+          .getDashboard(day != null ? selectedDate : null);
       change(DashboardModel.fromJson(res.body), status: RxStatus.success());
     } catch (e) {
       change(null, status: RxStatus.error(e.toString()));
